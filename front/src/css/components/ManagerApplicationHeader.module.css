@@ -1,0 +1,39 @@
+.head {
+  margin-top: 100px;
+  display: flex;
+  align-items: center;
+  width: 1800px;
+  margin: 25px auto;
+  height: 70px;
+  border-radius: 10px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  background-color: rgb(192, 189, 189);
+  border: 2px solid black;
+}
+.startDate {
+  margin-left: 38px;
+}
+.finishDate {
+  margin-left: 30px;
+}
+.description {
+  margin-left: 95px;
+}
+.typeApp {
+  margin-left: 132px;
+}
+.typeBr {
+  margin-left: 80px;
+}
+.status {
+  margin-left: 95px;
+}
+.elevator {
+  margin-left: 130px;
+}
+.applicant {
+  margin-left: 95px;
+}
+.engeener {
+  margin-left: 155px;
+}

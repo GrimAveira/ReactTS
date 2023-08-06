@@ -1,0 +1,71 @@
+.application {
+  display: flex;
+  width: 1500px;
+  margin: 25px auto;
+  align-items: center;
+  height: 150px;
+  border-radius: 10px;
+  border: 2px solid black;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  background-color: rgb(192, 189, 189);
+}
+.idApplication {
+  flex-basis: 30px;
+  position: relative;
+  height: 90%;
+  margin: 10px;
+  font-size: 15px;
+}
+.dataTable {
+  margin-left: 20px;
+  padding: 10px;
+  width: 120px;
+  list-style-type: none;
+}
+.dataTime {
+  display: inline-block;
+  text-align: center;
+  font-size: 1.9vw;
+}
+.dataData {
+  display: inline-block;
+  text-align: center;
+  font-size: 1vw;
+}
+.applicationType {
+  text-align: center;
+  flex-basis: 230px;
+  border-right: 2px solid black;
+  border-left: 2px solid black;
+  line-height: 154px;
+}
+.breakingType {
+  text-align: center;
+  line-height: 154px;
+  flex-basis: 200px;
+  border-right: 2px solid black;
+}
+.description {
+  padding: 5px;
+  border-right: 2px solid black;
+  flex-basis: 350px;
+  height: 95%;
+}
+.applicationStatus {
+  text-align: center;
+  justify-content: center;
+  flex-basis: 180px;
+  border-right: 2px solid black;
+  line-height: 154px;
+}
+.manager {
+  text-align: center;
+  flex-basis: 180px;
+}
+.engineersTable {
+  flex-basis: 180px;
+  padding: 10px;
+  list-style-type: none;
+  height: auto;
+  padding: 55px 10px;
+}

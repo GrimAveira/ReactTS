@@ -1,0 +1,91 @@
+.container {
+  overflow-x: hidden;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+}
+.pdf {
+  margin-top: 100px;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+.text {
+  margin-left: 40px;
+  margin-top: 20px;
+}
+.button {
+  position: fixed;
+  width: 50px;
+  height: 50px;
+  right: 1%;
+  top: 92%;
+  transition: 0.5s;
+}
+.button:hover {
+  color: cyan;
+}
+.application {
+  display: flex;
+  margin-left: 60px;
+}
+.finish {
+  margin: auto 10px;
+}
+.idApplication {
+  flex-basis: 30px;
+  height: 90%;
+  margin: 10px;
+  font-size: 15px;
+}
+.dataTableStart {
+  bottom: 20px;
+  padding: 5px;
+  width: 110px;
+  list-style-type: none;
+}
+.dataTableFinish {
+  bottom: 20px;
+  padding: 5px;
+  width: 110px;
+  list-style-type: none;
+}
+.dataTime {
+  display: inline-block;
+  text-align: center;
+  font-size: 1.9vw;
+}
+.dataData {
+  display: inline-block;
+  text-align: center;
+  font-size: 1vw;
+}
+.description {
+  margin: 10px;
+  padding: 5px;
+  height: 90%;
+}
+.applicant {
+  flex-basis: 140px;
+}
+table {
+  margin-top: 10px;
+  border: 1px solid #000;
+  width: 700px;
+  box-sizing: border-box;
+  border-collapse: collapse;
+  align-self: flex-start;
+  text-align: center;
+}
+tr {
+  border: 1px solid #000;
+  box-sizing: border-box;
+  height: 100px;
+  width: 300px;
+}
+td {
+  border: 1px solid #000;
+  box-sizing: border-box;
+  height: 100px;
+  width: 300px;
+}

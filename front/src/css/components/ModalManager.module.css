@@ -1,0 +1,33 @@
+.container {
+  display: flex;
+  align-items: center;
+  width: 1750px;
+  border-radius: 10px;
+  border: 2px solid black;
+  padding: 10px;
+}
+.description {
+  width: 250px;
+  height: 150px;
+}
+.button {
+  margin: 10px;
+  width: 40px;
+  height: 40px;
+  align-self: flex-end;
+  color: black;
+  border-radius: 5px;
+  transition: 0.5s;
+  margin-left: auto;
+}
+.button:hover {
+  color: cyan;
+}
+.address {
+  padding: 5px;
+  margin-left: 10px;
+  border: 1.5px solid black;
+  border-radius: 5px;
+  flex-basis: 550px;
+  text-align: center;
+}

@@ -1,0 +1,12 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+.addPanel {
+  display: flex;
+  flex-wrap: wrap;
+  z-index: 100;
+  margin-top: 100px;
+  width: 100vw;
+}

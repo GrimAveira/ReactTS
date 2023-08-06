@@ -1,0 +1,134 @@
+.application {
+  display: flex;
+  width: 1800px;
+  margin: 25px auto;
+  align-items: center;
+  height: 150px;
+  border-radius: 10px;
+  border: 2px solid black;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  background-color: rgb(192, 189, 189);
+}
+.finish {
+  flex-basis: 150px;
+  text-align: center;
+  margin: auto 10px;
+  border-left: 2px solid black;
+  padding: 55px 0px;
+}
+.idApplication {
+  flex-basis: 30px;
+  height: 90%;
+  margin: 10px;
+  font-size: 15px;
+}
+.dataTableStart {
+  bottom: 20px;
+  padding: 5px;
+  width: 110px;
+  list-style-type: none;
+}
+.dataTableFinish {
+  bottom: 20px;
+  margin-left: 40px;
+  margin-right: 21px;
+  width: 110px;
+  list-style-type: none;
+}
+.dataTime {
+  display: inline-block;
+  text-align: center;
+  font-size: 1.9vw;
+}
+.dataData {
+  display: inline-block;
+  text-align: center;
+  font-size: 1vw;
+}
+.applicationType {
+  text-align: center;
+  flex-basis: 180px;
+  border-right: 2px solid black;
+  line-height: 154px;
+}
+.breakingType {
+  text-align: center;
+  line-height: 154px;
+  flex-basis: 160px;
+}
+.applicationStatus {
+  text-align: center;
+  justify-content: center;
+  flex-basis: 170px;
+  border-right: 2px solid black;
+  border-left: 2px solid black;
+  line-height: 154px;
+}
+.elevator {
+  text-align: center;
+  justify-content: center;
+  flex-basis: 170px;
+  border-right: 2px solid black;
+  line-height: 154px;
+}
+.description {
+  padding: 5px;
+  border-left: 2px solid black;
+  border-right: 2px solid black;
+  flex-basis: 220px;
+  height: 93%;
+  background-color: rgb(192, 189, 189);
+}
+.applicant {
+  height: 100%;
+  text-align: center;
+  flex-basis: 140px;
+  border-right: 2px solid black;
+}
+.divBlock {
+  margin-left: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-left: 2px solid black;
+  height: 100%;
+}
+.message {
+  margin: 7px;
+  width: 35px;
+  height: 35px;
+  transition: 1s;
+  align-self: center;
+}
+.message:hover {
+  color: cyan;
+}
+.detail {
+  margin: 7px;
+  align-self: center;
+  transition: 0.5s;
+  width: 35px;
+  height: 35px;
+}
+.detail:hover {
+  color: cyan;
+}
+.button {
+  margin: 7px;
+  width: 35px;
+  height: 35px;
+  align-self: center;
+  transition: 0.5s;
+  bottom: 0;
+  margin-bottom: 5px;
+}
+.button:hover {
+  color: cyan;
+}
+.engineersTable {
+  flex-basis: 180px;
+  padding: 10px;
+  list-style-type: none;
+  height: auto;
+  padding: 45px 10px;
+}

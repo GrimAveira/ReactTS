@@ -1,0 +1,33 @@
+.userHead {
+  margin-top: 100px;
+  display: flex;
+  align-items: center;
+  width: 1500px;
+  margin: 25px auto;
+  height: 70px;
+  border-radius: 10px;
+  border: 2px solid black;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  background-color: rgb(192, 189, 189);
+}
+.userDate {
+  margin: 30px;
+}
+.userTypeApp {
+  margin-left: 44px;
+}
+.userTypeBr {
+  margin-left: 114px;
+}
+.userDescription {
+  margin-left: 180px;
+}
+.userStatus {
+  margin-left: 212px;
+}
+.userManager {
+  margin-left: 105px;
+}
+.userEngeener {
+  margin-left: 75px;
+}

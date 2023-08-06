@@ -1,0 +1,23 @@
+.form {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border: 2px solid black;
+  background-color: rgb(192, 189, 189);
+  border-radius: 10px;
+  margin: 10px;
+  width: 600px;
+}
+.id {
+  flex-basis: 100px;
+  margin: 10px;
+}
+.button {
+  margin: 10px;
+  width: 30px;
+  height: 30px;
+  transition: 0.5s;
+}
+.button:hover {
+  color: cyan;
+}

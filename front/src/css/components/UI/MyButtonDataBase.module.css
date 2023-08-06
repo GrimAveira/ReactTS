@@ -1,0 +1,12 @@
+.button {
+  margin-left: 10px;
+  margin-right: 10px;
+  width: 30px;
+  height: 30px;
+  transition: 0.5s;
+  border: none;
+  background: none;
+}
+.button:hover {
+  color: cyan;
+}

@@ -1,0 +1,50 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+}
+.applications {
+  margin-top: 80px;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+.button {
+  position: fixed;
+  width: 50px;
+  height: 50px;
+  right: 3%;
+  bottom: 5%;
+  transition: 0.5s;
+}
+.button:hover {
+  color: cyan;
+}
+.containerPagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 50px;
+}
+.counter {
+  text-align: center;
+  width: 30px;
+  height: 30px;
+  font-size: 25px;
+}
+.buttonPag {
+  width: 30px;
+  height: 30px;
+  font-size: 25px;
+  background-color: rgb(192, 189, 189);
+  border-radius: 5px;
+}
+.buttonPag:hover {
+  color: aqua;
+}
+.buttonPag:disabled {
+  border: none;
+  background-color: none;
+  color: gray;
+}

@@ -1,0 +1,35 @@
+.container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #5c5c5c;
+}
+.forms {
+  margin-top: 80px;
+}
+.form {
+  display: flex;
+  flex-direction: column;
+  border-radius: 5px;
+  border: 1px solid gray;
+  width: 400px;
+  margin-top: 20px;
+  background-color: #20232a;
+  padding: 20px;
+}
+.header {
+  font-size: 25px;
+  align-self: center;
+  color: white;
+}
+.text {
+  margin: 10px;
+  padding: 5px;
+  text-align: justify;
+  color: white;
+  font-size: 15px;
+  border: 1px solid aqua;
+  border-radius: 5px;
+  font-size: 17px;
+}

@@ -1,0 +1,36 @@
+.container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+.reports {
+  margin-top: 70px;
+  height: 100vw;
+}
+.containerPagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 50px;
+}
+.counter {
+  text-align: center;
+  width: 30px;
+  height: 30px;
+  font-size: 25px;
+}
+.buttonPag {
+  width: 30px;
+  height: 30px;
+  font-size: 25px;
+  background-color: rgb(192, 189, 189);
+  border-radius: 5px;
+}
+.buttonPag:hover {
+  color: aqua;
+}
+.buttonPag:disabled {
+  border: none;
+  background-color: none;
+  color: gray;
+}
