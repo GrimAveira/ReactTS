@@ -1,11 +1,10 @@
 import "./App.css";
-import Registration from "./components/pages/Registration";
+import Applications from "./components/pages/Applications";
 
 function App() {
   return (
     <div className="App">
-      {/* <Registration /> */}
-      Привет
+      <Applications />
     </div>
   );
 }
