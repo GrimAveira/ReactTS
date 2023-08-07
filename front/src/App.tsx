@@ -1,12 +1,7 @@
-import "./App.css";
-import Applications from "./components/pages/Applications";
+import AppRoutes from "./components/AppRoutes";
 
 function App() {
-  return (
-    <div className="App">
-      <Applications />
-    </div>
-  );
+  return <AppRoutes />;
 }
 
 export default App;

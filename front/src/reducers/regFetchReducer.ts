@@ -1,41 +1,33 @@
-import { IRegFetch, IRegFetchAction } from "../interface";
+import { IRegFetch, IRegFetchAction } from "../interface/index";
 
-export const INITIAL_DATA = {
-  area: [{}],
-  street: [{}],
+export const INITIAL_DATA: IRegFetch = {
+  area: [],
+  street: [],
   loading: true,
-  error: { status: false, message: "" },
+  error: "",
 };
 
 export const regFetch = (state: IRegFetch, action: IRegFetchAction) => {
   switch (action.type) {
     case "FETCH_AREA":
       return {
-        street: state.area,
-        loading: state.loading,
-        error: { status: state.error.status, message: state.error.message },
-        area: action.payload,
+        ...state,
+        area: action.payload.data,
       };
     case "FETCH_STREET":
       return {
-        street: action.payload,
-        loading: state.loading,
-        error: { status: state.error.status, message: state.error.message },
-        area: state.area,
+        ...state,
+        street: action.payload.data,
       };
     case "FETCH_SUCCESS":
       return {
-        error: { status: state.error.status, message: state.error.message },
-        area: state.area,
-        street: state.area,
+        ...state,
         loading: false,
       };
     case "FETCH_ERROR":
       return {
-        area: state.area,
-        street: state.area,
-        loading: false,
-        error: { status: true, message: action.payload },
+        ...state,
+        error: action.payload.error,
       };
     default:
       return state;

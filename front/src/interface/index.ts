@@ -14,11 +14,14 @@ export interface IRegValues {
 }
 export interface IRegFetch {
   loading: boolean;
-  area: {}[];
-  street: {}[];
-  error: { status: boolean; message: string };
+  area: { id: number; name: string }[];
+  street: { id: number; name: string }[];
+  error: string;
 }
-
+export interface IRegFetchAction {
+  type: string;
+  payload: { data: { id: number; name: string }[]; error: string };
+}
 export interface IRegValuesAction {
   type: string;
   payload: {
@@ -26,17 +29,14 @@ export interface IRegValuesAction {
     value: string;
   };
 }
-export interface IRegFetchAction {
-  type: string;
-  payload: {}[];
-}
+
 export interface IFormSelect {
   onChange: any;
   name: string;
   placeholder: string;
   label: string;
   required: boolean;
-  options: [];
+  options: any[];
 }
 export interface IAddForm {
   setActive: (flag: boolean) => void;
@@ -121,14 +121,14 @@ export interface IPart {
 }
 export interface IFormInputProps {
   label?: string;
-  errorMessage: string;
+  errorMessage?: string;
   name?: string;
-  onChange: (event: { target: { name: string; value: string } }) => void;
-  placeholder: string;
-  type: string;
-  pattern: string;
+  onChange: any;
+  placeholder?: string;
+  type?: string;
+  pattern?: string;
   required: boolean;
-  value: string | number;
+  value?: string | number;
 }
 export interface IElevator {
   serial_number: number;

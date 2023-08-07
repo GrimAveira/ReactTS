@@ -38,17 +38,18 @@ function ModalVillage({
   };
 
   return (
-    <div className={styles.container}>
+    <form className={styles.container} onSubmit={submitHandler}>
       <textarea
         className={styles.description}
         onChange={changeHandlerDescription}
         placeholder="В подъезде вашего дома сломан/неисправен лифт, что выражается в..."
         value={description}
+        required={true}
       />
-      <button className={styles.button} onClick={submitHandler}>
+      <button className={styles.button} type="submit">
         Создать заявку
       </button>
-    </div>
+    </form>
   );
 }
 
