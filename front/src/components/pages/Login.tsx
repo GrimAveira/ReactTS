@@ -1,12 +1,12 @@
-import axios from "axios";
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "../../css/pages/Login.module.css";
 import FormInput from "../UI/FormInput";
 import { AuthContext } from "../../context/AuthContext";
+import UserService from "../../API/UserService";
 
 function Login() {
-  const { toggleIsAuthTrue } = useContext(AuthContext);
+  const { toggleIsAuth } = useContext(AuthContext);
   const [loginData, setLoginData] = useState({
     login: "",
     password: "",
@@ -18,23 +18,22 @@ function Login() {
       [event.target.name]: event.target.value,
     }));
   };
+  async function login(loginData: { login: string; password: string }) {
+    const userData = await UserService.login(loginData);
+    return userData;
+  }
   const submitHandler = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
     try {
-      axios
-        .post("http://localhost:8800/api/auth/login", loginData)
-        .then((response) => {
-          localStorage.setItem("token", response.data.token);
-          localStorage.setItem("role", response.data.role);
-          toggleIsAuthTrue();
-          navigate("/applications");
-        })
-        .catch((error) => alert(error.response.data));
+      const userData = await login(loginData);
+      localStorage.setItem("token", userData.token);
+      localStorage.setItem("role", userData.role);
+      toggleIsAuth(true);
+      navigate("/applications");
     } catch (error) {
       console.log(error);
     }
   };
-
   const inputs = [
     {
       id: 1,

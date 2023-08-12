@@ -7,11 +7,11 @@ import { AuthContext } from "../context/AuthContext";
 
 function Heading({ toggleShow }: { toggleShow: () => void }) {
   const navigate = useNavigate();
-  const { isAuth, toggleIsAuthFalse } = useContext(AuthContext);
+  const { isAuth, toggleIsAuth } = useContext(AuthContext);
   const exitHandler = () => {
     if (window.confirm("Вы действительно хотите выйти?")) {
       localStorage.clear();
-      toggleIsAuthFalse();
+      toggleIsAuth(false);
       navigate("/");
     }
   };

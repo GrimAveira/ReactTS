@@ -1,4 +1,4 @@
-export interface IRegValues {
+export interface IUserInfo {
   login: string;
   password: string;
   confirmPassword: string;
@@ -12,6 +12,10 @@ export interface IRegValues {
   entrance: string;
   apartment: string;
 }
+export interface IUserData {
+  role: string;
+  token: string;
+}
 export interface IRegFetch {
   loading: boolean;
   area: { id: number; name: string }[];
@@ -22,12 +26,9 @@ export interface IRegFetchAction {
   type: string;
   payload: { data: { id: number; name: string }[]; error: string };
 }
-export interface IRegValuesAction {
-  type: string;
-  payload: {
-    name: string;
-    value: string;
-  };
+export interface IInputChanges {
+  name: string;
+  value: string;
 }
 
 export interface IFormSelect {
@@ -137,4 +138,11 @@ export interface IElevator {
   house: number;
   entrance: number;
   address: string;
+}
+export interface IData {
+  id: number;
+  name: string;
+}
+export interface ISignal {
+  signal: AbortSignal;
 }

@@ -13,11 +13,8 @@ import { AuthContext } from "../context/AuthContext";
 
 function AppRoutes() {
   const [isAuth, setIsAuth] = useState(false);
-  const toggleIsAuthFalse = () => {
-    setIsAuth(false);
-  };
-  const toggleIsAuthTrue = () => {
-    setIsAuth(true);
+  const toggleIsAuth = (value: boolean) => {
+    setIsAuth(value);
   };
   useEffect(() => {
     axios
@@ -34,7 +31,6 @@ function AppRoutes() {
           localStorage.clear();
           alert("Сессия истекла");
         }
-        console.log(err);
       });
   }, []);
   return (
@@ -43,8 +39,7 @@ function AppRoutes() {
         <AuthContext.Provider
           value={{
             isAuth: isAuth,
-            toggleIsAuthFalse: toggleIsAuthFalse,
-            toggleIsAuthTrue: toggleIsAuthTrue,
+            toggleIsAuth: toggleIsAuth,
           }}
         >
           <Routes>

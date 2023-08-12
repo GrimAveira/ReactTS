@@ -1,73 +1,38 @@
-import { useEffect, useMemo, useReducer } from "react";
+import { useEffect, useMemo } from "react";
 import styles from "../../css/pages/Registration.module.css";
 import FormInput from "../UI/FormInput";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import FormSelect from "../UI/FormSelect";
-import {
-  INITIAL_REG_VALUES,
-  regValueReducer,
-} from "../../reducers/regValuesReducer";
-import AreaService from "../../API/AreaService";
-import StreetService from "../../API/StreetService";
 import Loader from "../Loader";
-import { IRegValues } from "../../interface";
-import { INITIAL_DATA, regFetch } from "../../reducers/regFetchReducer";
+import { IData, IUserInfo } from "../../interface";
+import UserService from "../../API/UserService";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux";
+import { fetchNecRegData } from "../../store/reducers/ActionCreators";
+import { userRegDataSlice } from "../../store/reducers/UserRegDataSlice";
+import Error from "../Error";
 
 function Registration() {
-  const navigate = useNavigate();
-  const [data, dispatchData] = useReducer(regFetch, INITIAL_DATA);
-  const [regValues, dispatchRegValues] = useReducer(
-    regValueReducer,
-    INITIAL_REG_VALUES
+  const dispatch = useAppDispatch();
+
+  const { changeInput } = userRegDataSlice.actions;
+
+  const { area, street, isLoading, error } = useAppSelector(
+    (state) => state.necRegDataReducer
   );
+  const userData = useAppSelector((state) => state.userRedDataReducer);
+  console.log(userData);
+  const navigate = useNavigate();
   useEffect(() => {
     const controller = new AbortController();
-
-    async function area(): Promise<void> {
-      try {
-        const areaResponse = await AreaService.getAll({
-          signal: controller.signal,
-        });
-        dispatchData({
-          type: "FETCH_AREA",
-          payload: { data: areaResponse.data, error: "" },
-        });
-      } catch (error: any) {
-        dispatchData({
-          type: "FETCH_ERROR",
-          payload: { data: [], error: error.massage },
-        });
-      }
-    }
-    async function street() {
-      try {
-        const streetResponse = await StreetService.getAll({
-          signal: controller.signal,
-        });
-        dispatchData({ type: "FETCH_STREET", payload: streetResponse.data });
-      } catch (error: any) {
-        dispatchData({
-          type: "FETCH_ERROR",
-          payload: { data: [], error: error.massage },
-        });
-      }
-    }
-    try {
-      area();
-      street();
-    } catch (error: any) {
-      console.log(error.message);
-    } finally {
-      dispatchData({
-        type: "FETCH_SUCCESS",
-        payload: { data: [], error: "" },
-      });
-    }
+    dispatch(
+      fetchNecRegData({
+        signal: controller.signal,
+      })
+    );
     return () => {
       controller.abort();
     };
-  }, []);
+  }, [dispatch]);
   const inputs = [
     {
       id: 1,
@@ -98,7 +63,7 @@ function Registration() {
       placeholder: "Подтвердить пароль",
       errorMessage: "Пароли не совпадают!",
       label: "Подтвердить пароль",
-      pattern: regValues.password,
+      pattern: userData.password,
       required: true,
     },
     {
@@ -183,7 +148,7 @@ function Registration() {
         placeholder: "Район",
         label: "Район",
         required: true,
-        options: data.area.map((area: { id: number; name: string }) => {
+        options: area.map((area: IData) => {
           return { value: area.id, label: area.name, name: "area" };
         }),
       },
@@ -193,96 +158,62 @@ function Registration() {
         placeholder: "Улица",
         label: "Улица",
         required: true,
-        options: data.street.map((street: { id: number; name: string }) => {
+        options: street.map((street: IData) => {
           return { value: street.id, label: street.name, name: "street" };
         }),
       },
     ];
-  }, [data.area, data.street]);
-  const submitHandler = async (event: { preventDefault: () => void }) => {
-    event.preventDefault();
+  }, [area, street]);
+  async function regUser(userInfo: IUserInfo) {
+    const response = await UserService.registration(userInfo);
+    return response;
+  }
+  const submitHandler = async () => {
     try {
-      if (regValues.password === regValues.confirmPassword)
-        await axios
-          .post("http://localhost:8800/api/auth/registration", regValues)
-          .then((response) => {
-            alert(response.data);
-            navigate("/login");
-          })
-          .catch((err) => {
-            alert(err.response.data);
-          });
-      else alert("Подтвержденный пароль не совпадает с введённым");
-    } catch (error) {
+      if (userData.password === userData.confirmPassword) {
+        alert(regUser(userData));
+        navigate("/login");
+      } else alert("Подтвержденный пароль не совпадает с введённым");
+    } catch (error: any) {
       alert(error);
     }
   };
-  const changeHandlerInput = (event: {
-    target: { name: string; value: string };
-  }) => {
-    dispatchRegValues({
-      type: "CHANGE_VALUE",
-      payload: {
-        name: event.target.name,
-        value: event.target.value,
-      },
-    });
+  const changeHandlerInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(
+      changeInput({ name: event.target.name, value: event.target.value })
+    );
   };
   const changeHandlerSelect = (newValue: { name: string; value: string }) => {
-    dispatchRegValues({
-      type: "CHANGE_VALUE",
-      payload: {
-        name: newValue.name,
-        value: newValue.value,
-      },
-    });
+    dispatch(changeInput({ name: newValue.name, value: newValue.value }));
   };
-  if (data.error)
-    return (
-      <div
-        style={{
-          marginTop: 30,
-          marginLeft: "auto",
-          marginRight: "auto",
-          textAlign: "center",
-          width: 200,
-          fontSize: 30,
-          border: "solid",
-        }}
-      >
-        ERROR : {data.error}
-      </div>
-    );
+  if (error) return <Error errorMessage={error}></Error>;
+  if (isLoading) return <Loader />;
   return (
     <div className={styles.containerRegistration}>
-      {data.loading ? (
-        <Loader />
-      ) : (
-        <div className={styles.form}>
-          <form onSubmit={submitHandler}>
-            {inputs.map((input) => {
-              return (
-                <FormInput
-                  key={input.id}
-                  {...input}
-                  onChange={changeHandlerInput}
-                  value={regValues[input.name as keyof IRegValues]}
-                />
-              );
-            })}
-            {selects.map((select) => {
-              return (
-                <FormSelect
-                  key={select.id}
-                  {...select}
-                  onChange={changeHandlerSelect}
-                />
-              );
-            })}
-            <button className={styles.button}>Зарегистрироваться</button>
-          </form>
-        </div>
-      )}
+      <div className={styles.form}>
+        <form onSubmit={submitHandler}>
+          {inputs.map((input) => {
+            return (
+              <FormInput
+                key={input.id}
+                {...input}
+                onChange={changeHandlerInput}
+                value={userData[input.name as keyof IUserInfo]}
+              />
+            );
+          })}
+          {selects.map((select) => {
+            return (
+              <FormSelect
+                key={select.id}
+                {...select}
+                onChange={changeHandlerSelect}
+              />
+            );
+          })}
+          <button className={styles.button}>Зарегистрироваться</button>
+        </form>
+      </div>
     </div>
   );
 }
