@@ -1,6 +1,6 @@
 import styles from "../css/components/ManagerApplication.module.css";
-import FormSelectApp from "./UI/FormSelectApp";
-import FormSelectAppMulti from "./UI/FormSelectAppMulti";
+import FormSelectApp from "./UI/SelectFormApp";
+import FormSelectAppMulti from "./UI/SelectFormAppMulti";
 import { useEffect, useLayoutEffect, useMemo, useState } from "react";
 import { MdCreate } from "react-icons/md";
 import axios from "axios";

@@ -1,8 +1,8 @@
 import axios from "axios";
 import styles from "../../css/components/inputAdds/ListFeaturesForm.module.css";
 import { useEffect, useState } from "react";
-import AddInputForm from "./AddInputForm";
-import FormSelectAppMulti from "../UI/FormSelectAppMulti";
+import AddInputForm from "../UI/AddInputFormError";
+import FormSelectAppMulti from "../UI/SelectFormAppMulti";
 import MyButtonDataBase from "../UI/MyButtonDataBase";
 
 function ListFeaturesForm() {
@@ -66,7 +66,6 @@ function ListFeaturesForm() {
   };
 
   const input = {
-    id: 1,
     name: "value",
     type: "text",
     placeholder: "Значение характеристики",
@@ -77,7 +76,7 @@ function ListFeaturesForm() {
   };
   const selects = [
     {
-      id: 1,
+      id: "1",
       name: "elevator",
       placeholder: "Лифт",
       label: "Лифт",
@@ -87,7 +86,7 @@ function ListFeaturesForm() {
       }),
     },
     {
-      id: 2,
+      id: "2",
       name: "feature",
       placeholder: "Характеристика",
       label: "Характеристика",
@@ -111,7 +110,7 @@ function ListFeaturesForm() {
           {...str}
         />
       ))}
-      <AddInputForm key={input.id} onChange={changeHandlerInput} {...input} />
+      <AddInputForm onChange={changeHandlerInput} {...input} />
       <MyButtonDataBase />
     </form>
   );

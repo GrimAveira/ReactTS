@@ -4,7 +4,7 @@ import { BsDownload } from "react-icons/bs";
 import axios from "axios";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
-import FormSelectApp from "../UI/FormSelectApp";
+import FormSelectApp from "../UI/SelectFormApp";
 import { IApp, IEmployee } from "../../interface";
 
 function printDocument() {

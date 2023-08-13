@@ -1,5 +1,5 @@
 import React from "react";
-import AddInputForm from "./AddInputForm";
+import AddInputForm from "../UI/AddInputFormError";
 import axios from "axios";
 import styles from "../../css/components/inputAdds/FeatureForm.module.css";
 import { useState } from "react";
@@ -34,12 +34,11 @@ function FeatureForm() {
   return (
     <form className={styles.form} onChange={submitHandler}>
       <AddInputForm
-        type={"text"}
-        placeholder={"Характеристика"}
-        errorMessage={
-          "Название характеристики должно состоять из 3-30 символов!"
-        }
-        pattern={"^[А-яа-я -]{3,30}$"}
+        name="feature"
+        type="text"
+        placeholder="Характеристика"
+        title="Название характеристики должно состоять из 3-30 символов!"
+        pattern="^[А-яа-я -]{3,30}$"
         required={true}
         onChange={changeHandler}
       />

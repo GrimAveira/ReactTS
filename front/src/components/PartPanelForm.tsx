@@ -3,8 +3,9 @@ import { MdOutlinePlaylistAddCheck } from "react-icons/md";
 import axios from "axios";
 import styles from "../css/components/PartPanelForm.module.css";
 import FormSelectParts from "./FormSelectParts";
-import FormInput from "./UI/FormInput";
+import FormInput from "./UI/InputFormLabel";
 import { IPart } from "../interface";
+import InputForm from "./UI/InputForm";
 
 function PartModalForm({
   applicationId,
@@ -61,9 +62,9 @@ function PartModalForm({
     }
   };
   const input = {
-    type: "number",
+    type: "string",
     placeholder: "Количество",
-    errorMessage:
+    title:
       "Количество должно состоять из 1-10 символов и не может включать специальные символы!",
     pattern: "^[0-9]{1,10}$",
     required: true,
@@ -82,7 +83,7 @@ function PartModalForm({
   return (
     <div className={styles.form}>
       <FormSelectParts {...select} onChange={changeHandlerSelect} />
-      <FormInput {...input} onChange={changeHandlerInput} value={part.qty} />
+      <InputForm {...input} onChange={changeHandlerInput} value={part.qty} />
       <MdOutlinePlaylistAddCheck
         className={styles.button}
         onClick={addHandler}

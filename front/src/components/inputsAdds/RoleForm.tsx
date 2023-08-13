@@ -1,5 +1,5 @@
 import React from "react";
-import AddInputForm from "./AddInputForm";
+import AddInputForm from "../UI/AddInputFormError";
 import axios from "axios";
 import styles from "../../css/components/inputAdds/RoleForm.module.css";
 import { useState } from "react";
@@ -33,10 +33,11 @@ function RoleForm() {
   return (
     <form className={styles.form} onSubmit={submitHandler}>
       <AddInputForm
-        type={"text"}
-        placeholder={"Роль"}
-        errorMessage={"Название роли должно состоять из 3-30 символов!"}
-        pattern={"^[А-яа-я -]{3,30}$"}
+        name="role"
+        type="text"
+        placeholder="Роль"
+        title="Название роли должно состоять из 3-30 символов!"
+        pattern="^[А-яа-я -]{3,30}$"
         required={true}
         onChange={changeHandler}
       />

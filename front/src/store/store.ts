@@ -1,11 +1,15 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
-import necRegDataReducer from "./reducers/NecRegDataSlice";
 import userRegDataReducer from "./reducers/UserRegDataSlice";
 import loginDataReducer from "./reducers/LoginDataSlice";
 import authReducer from "./reducers/AuthSlice";
+import areaReducer from "./reducers/AreaSlice";
+import streetReducer from "./reducers/StreetSlice";
+import addressReducer from "./reducers/AddressFormSlice";
 
 const rootReducer = combineReducers({
-  necRegDataReducer,
+  addressReducer,
+  areaReducer,
+  streetReducer,
   userRegDataReducer,
   loginDataReducer,
   authReducer,

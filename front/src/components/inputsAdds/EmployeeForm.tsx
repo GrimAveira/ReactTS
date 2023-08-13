@@ -2,8 +2,8 @@ import { useEffect } from "react";
 import axios from "axios";
 import styles from "../../css/components/inputAdds/EmployeeForm.module.css";
 import { useState } from "react";
-import AddInputForm from "./AddInputForm";
-import FormSelect from "../UI/FormSelectAppMulti";
+import AddInputForm from "../UI/AddInputFormError";
+import FormSelect from "../UI/SelectFormAppMulti";
 import MyButtonDataBase from "../UI/MyButtonDataBase";
 
 function EmployeeForm() {
@@ -55,7 +55,7 @@ function EmployeeForm() {
 
   const inputs = [
     {
-      id: 1,
+      id: "1",
       name: "surname",
       type: "text",
       placeholder: "Фамилия",
@@ -65,7 +65,7 @@ function EmployeeForm() {
       required: true,
     },
     {
-      id: 2,
+      id: "2",
       name: "name",
       type: "text",
       placeholder: "Имя",
@@ -76,7 +76,7 @@ function EmployeeForm() {
     },
 
     {
-      id: 3,
+      id: "3",
       name: "patronymic",
       type: "text",
       placeholder: "Отчество",
@@ -89,7 +89,7 @@ function EmployeeForm() {
 
   const selects = [
     {
-      id: 1,
+      id: "1",
       name: "post",
       placeholder: "Должности",
       label: "Должонсти",

@@ -35,10 +35,11 @@ export const userRegDataSlice = createSlice({
   name: "userRegData",
   initialState,
   reducers: {
-    changeInput(state, action: PayloadAction<IInputChanges>) {
+    changeUserRegData(state, action: PayloadAction<IInputChanges>) {
       state[action.payload.name as keyof UserInfo] = action.payload.value;
     },
   },
 });
 
 export default userRegDataSlice.reducer;
+export const { changeUserRegData } = userRegDataSlice.actions;

@@ -1,7 +1,7 @@
 import Select from "react-select";
 import styles from "../../css/components/UI/FormSelectAppMulti.module.css";
 import { IFormSelectAppMulti } from "../../interface";
-function FormSelectAppMulti(props: IFormSelectAppMulti) {
+function SelectFormAppMulti(props: IFormSelectAppMulti) {
   const { onChange } = props;
   return (
     <div className={styles.formInput}>
@@ -10,4 +10,4 @@ function FormSelectAppMulti(props: IFormSelectAppMulti) {
   );
 }
 
-export default FormSelectAppMulti;
+export default SelectFormAppMulti;

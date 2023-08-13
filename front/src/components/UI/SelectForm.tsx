@@ -1,7 +1,7 @@
 import Select from "react-select";
 import styles from "../../css/components/UI/FormInput.module.css";
 import { IFormSelect } from "../../interface";
-function FormSelect(props: IFormSelect) {
+function SelectForm(props: IFormSelect) {
   const { label, ...selectProps } = props;
 
   return (
@@ -12,4 +12,4 @@ function FormSelect(props: IFormSelect) {
   );
 }
 
-export default FormSelect;
+export default SelectForm;

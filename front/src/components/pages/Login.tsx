@@ -1,10 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import styles from "../../css/pages/Login.module.css";
-import FormInput from "../UI/FormInput";
 import UserService from "../../API/UserService";
 import { changeLoginData } from "../../store/reducers/LoginDataSlice";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { changeIsAuth } from "../../store/reducers/AuthSlice";
+import InputForm from "../UI/InputForm";
 
 function Login() {
   const dispatch = useAppDispatch();
@@ -38,7 +38,6 @@ function Login() {
   };
   const inputs = [
     {
-      id: 1,
       type: "text",
       name: "login",
       placeholder: "Логин",
@@ -46,7 +45,6 @@ function Login() {
       required: true,
     },
     {
-      id: 2,
       type: "password",
       name: "password",
       label: "Пароль",
@@ -60,9 +58,9 @@ function Login() {
       <form onSubmit={submitHandler} className={styles.form}>
         {inputs.map((input) => {
           return (
-            <FormInput
-              key={input.id}
+            <InputForm
               {...input}
+              key={input.name}
               value={loginData[input.name as keyof typeof loginData]}
               onChange={changeHandler}
             />

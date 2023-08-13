@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import styles from "../css/components/ModalManager.module.css";
 import axios from "axios";
-import FormSelectApp from "../components/UI/FormSelectApp";
+import FormSelectApp from "./UI/SelectFormApp";
 import ModalManagerHeader from "./ModalManagerHeader";
 import { MdOutlinePlaylistAddCheck } from "react-icons/md";
-import FormSelectAppMulti from "./UI/FormSelectAppMulti";
-import { IEmployee } from "../interface";
+import FormSelectAppMulti from "./UI/SelectFormAppMulti";
+import { IEmployee, IInputChanges } from "../interface";
+import { ActionMeta, OnChangeValue, SingleValue } from "react-select";
 
 function ModalManager({
   statusBD,
@@ -105,7 +106,10 @@ function ModalManager({
         })
         .catch((error) => alert(error.response.data));
   };
-  const changeHandlerSelect = (newValue: { name: string; value: any[] }) => {
+  const changeHandlerSelect = (
+    newValue: IInputChanges,
+    actionMeta: ActionMeta<IInputChanges>
+  ) => {
     if (newValue.name === "applicant") {
       setUserIdAddressActive(newValue.value[1]);
       setApplicationData((prev) => ({

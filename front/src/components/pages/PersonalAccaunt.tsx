@@ -1,9 +1,8 @@
-import React from "react";
 import { useState, useEffect } from "react";
 import styles from "../../css/pages/PersonalAccaunt.module.css";
 import axios from "axios";
-import FormInput from "../UI/FormInput";
-import FormSelect from "../UI/FormSelect";
+import FormSelect from "../UI/SelectForm";
+import InputForm from "../UI/InputForm";
 
 function PersonalAccaunt() {
   const [userValues, setUserValues] = useState({
@@ -109,9 +108,7 @@ function PersonalAccaunt() {
         alert(error);
       }
   };
-  const changeHandlerInput = (event: {
-    target: { name: string; value: number };
-  }) => {
+  const changeHandlerInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUserValues((prev) => ({
       ...prev,
       [event.target.name]: event.target.value,
@@ -126,7 +123,6 @@ function PersonalAccaunt() {
 
   const inputs = [
     {
-      id: 1,
       name: "login",
       type: "text",
       placeholder: "Логин",
@@ -137,7 +133,6 @@ function PersonalAccaunt() {
       required: true,
     },
     {
-      id: 2,
       name: "password",
       type: "password",
       placeholder: "Пароль",
@@ -148,7 +143,6 @@ function PersonalAccaunt() {
       required: true,
     },
     {
-      id: 3,
       name: "surname",
       type: "text",
       placeholder: "Фамилия",
@@ -159,7 +153,6 @@ function PersonalAccaunt() {
       required: true,
     },
     {
-      id: 4,
       name: "name",
       type: "text",
       placeholder: "Имя",
@@ -170,7 +163,6 @@ function PersonalAccaunt() {
       required: true,
     },
     {
-      id: 5,
       name: "patronymic",
       type: "text",
       placeholder: "Отчество",
@@ -181,7 +173,6 @@ function PersonalAccaunt() {
       required: true,
     },
     {
-      id: 6,
       name: "phoneNumber",
       type: "number",
       placeholder: "Телефонный номер",
@@ -191,7 +182,6 @@ function PersonalAccaunt() {
       required: true,
     },
     {
-      id: 7,
       name: "house",
       type: "number",
       placeholder: "Номер дома",
@@ -201,7 +191,6 @@ function PersonalAccaunt() {
       required: true,
     },
     {
-      id: 8,
       name: "entrance",
       type: "number",
       placeholder: "Номер подъезда",
@@ -211,7 +200,6 @@ function PersonalAccaunt() {
       required: true,
     },
     {
-      id: 9,
       name: "apartment",
       type: "number",
       placeholder: "Номер квартиры",
@@ -250,9 +238,9 @@ function PersonalAccaunt() {
         <form onSubmit={submitHandler}>
           {inputs.map((input) => {
             return (
-              <FormInput
-                key={input.id}
+              <InputForm
                 {...input}
+                key={input.name}
                 value={userValues[input.name as keyof typeof userValues]}
                 onChange={changeHandlerInput}
               />

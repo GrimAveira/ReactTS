@@ -3,7 +3,7 @@ import { RxUpdate } from "react-icons/rx";
 import { RiDeleteBin2Line } from "react-icons/ri";
 import axios from "axios";
 import styles from "../css/components/PartModalForm.module.css";
-import FormInput from "./UI/FormInput";
+import InputForm from "./UI/InputForm";
 
 function PartModalForm({
   rowId,
@@ -69,7 +69,7 @@ function PartModalForm({
   const input = {
     type: "number",
     placeholder: "Количество",
-    errorMessage:
+    title:
       "Количество должно состоять из 1-10 символов и не может включать специальные символы!",
     pattern: "^[0-9]{1,10}$",
     required: true,
@@ -79,7 +79,7 @@ function PartModalForm({
     <div className={styles.form}>
       <div className={styles.name}>{partName}</div>
       <div className={styles.manufacturer}>{manufacturer}</div>
-      <FormInput {...input} onChange={changeHandler} value={part.qty} />
+      <InputForm {...input} onChange={changeHandler} value={part.qty} />
       <RxUpdate className={styles.button} onClick={updateHandler} />
       <RiDeleteBin2Line className={styles.button} onClick={deleteHandler} />
     </div>

@@ -2,8 +2,8 @@ import { useEffect } from "react";
 import axios from "axios";
 import styles from "../../css/components/inputAdds/ElevatorPasport.module.css";
 import { useState } from "react";
-import AddInputForm from "./AddInputForm";
-import FormSelectAppMulti from "../UI/FormSelectAppMulti";
+import AddInputForm from "../UI/AddInputFormError";
+import FormSelectAppMulti from "../UI/SelectFormAppMulti";
 import MyButtonDataBase from "../UI/MyButtonDataBase";
 
 function ElevatorPasport() {
@@ -74,7 +74,7 @@ function ElevatorPasport() {
 
   const inputs = [
     {
-      id: 1,
+      id: "1",
       name: "serialNumber",
       type: "number",
       placeholder: "Серийный номер",
@@ -83,7 +83,7 @@ function ElevatorPasport() {
       required: true,
     },
     {
-      id: 2,
+      id: "2",
       name: "productionYear",
       type: "number",
       placeholder: "Год производства",
@@ -94,7 +94,7 @@ function ElevatorPasport() {
   ];
   const selects = [
     {
-      id: 1,
+      id: "1",
       name: "manufacturer",
       placeholder: "Производитель",
       label: "Производитель",
@@ -104,7 +104,7 @@ function ElevatorPasport() {
       }),
     },
     {
-      id: 2,
+      id: "2",
       name: "address",
       placeholder: "Адрес",
       label: "Адрес",
@@ -126,7 +126,7 @@ function ElevatorPasport() {
       ),
     },
     {
-      id: 3,
+      id: "3",
       name: "elevatorType",
       placeholder: "Тип лифта",
       label: "Тип лифта",
@@ -139,8 +139,8 @@ function ElevatorPasport() {
 
   return (
     <form className={styles.form} onSubmit={submitHandler}>
-      {inputs.map((inp) => (
-        <AddInputForm key={inp.id} onChange={changeHandlerInput} {...inp} />
+      {inputs.map((input) => (
+        <AddInputForm key={input.id} onChange={changeHandlerInput} {...input} />
       ))}
       {selects.map((str) => (
         <FormSelectAppMulti

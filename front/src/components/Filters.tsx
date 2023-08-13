@@ -1,6 +1,7 @@
 import styles from "../css/components/Filters.module.css";
-import FormSelectApp from "./UI/FormSelectApp";
-import FormInput from "./UI/FormInput";
+import FormSelectApp from "./UI/SelectFormApp";
+import FormInput from "./UI/InputFormLabel";
+import InputForm from "./UI/InputForm";
 
 function Filters({
   statuses,
@@ -25,14 +26,12 @@ function Filters({
   const inputs = [
     {
       text: "Начальное значение интервала даты создания:",
-      id: 1,
       name: "start_date",
       type: "date",
       required: true,
     },
     {
       text: "Конечное значение интервала даты создания:",
-      id: 2,
       name: "finish_date",
       type: "date",
       required: true,
@@ -42,9 +41,9 @@ function Filters({
     <div className={styles.container}>
       <FormSelectApp {...select} onChange={selectHandler} />
       {inputs.map((input) => (
-        <div key={input.id} style={{ display: "flex" }}>
+        <div key={input.name} style={{ display: "flex" }}>
           <div className={styles.text}>{input.text}</div>
-          <FormInput key={input.id} {...input} onChange={inputHandler} />
+          <InputForm {...input} onChange={inputHandler} />
         </div>
       ))}
     </div>

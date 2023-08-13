@@ -3,14 +3,23 @@ import AreaService from "../../API/AreaService";
 import StreetService from "../../API/StreetService";
 import { ISignal } from "../../interface";
 
-export const fetchNecRegData = createAsyncThunk(
+export const fetchArea = createAsyncThunk(
   "area/getAll",
-  async (params: ISignal, thunkAPI) => {
+  async (params: ISignal | undefined, thunkAPI) => {
     try {
-      const area = AreaService.getAll(params);
-      const street = StreetService.getAll(params);
-      const response = await Promise.all([area, street]);
-      return { area: response[0], street: response[1] };
+      const response = await AreaService.getAll(params);
+      return response;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+export const fetchStreet = createAsyncThunk(
+  "street/getAll",
+  async (params: ISignal | undefined, thunkAPI) => {
+    try {
+      const response = await StreetService.getAll(params);
+      return response;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.message);
     }

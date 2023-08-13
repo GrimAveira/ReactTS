@@ -1,3 +1,5 @@
+import { GroupBase, Props } from "react-select";
+
 export interface IUserInfo {
   login: string;
   password: string;
@@ -12,6 +14,7 @@ export interface IUserInfo {
   entrance: string;
   apartment: string;
 }
+
 export interface IUserData {
   role: string;
   token: string;
@@ -50,17 +53,12 @@ export interface IModal {
   setActive: (flag: boolean) => void;
   children: JSX.Element;
 }
-export interface IAddInputForm {
-  errorMessage: string;
-  name?: string;
-  type: string;
-  placeholder: string;
-  pattern: string;
-  required: boolean;
-  onChange: (event: {
-    preventDefault: () => void;
-    target: { name: string; value: string };
-  }) => void;
+export interface IInputLabel
+  extends React.DetailedHTMLProps<
+    React.InputHTMLAttributes<HTMLInputElement>,
+    HTMLInputElement
+  > {
+  label: string;
 }
 export interface IFormSelectAppMulti {
   isMulty?: boolean;
@@ -72,6 +70,7 @@ export interface IFormSelectAppMulti {
   options: any;
 }
 export interface IInput {
+  id: string;
   name: string;
   type: string;
   placeholder: string;
