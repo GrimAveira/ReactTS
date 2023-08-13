@@ -1,6 +1,6 @@
 import { Provider } from "react-redux";
 import AppRoutes from "./components/AppRoutes";
-import { setupStore } from "./store";
+import { setupStore } from "./store/store";
 
 const store = setupStore();
 

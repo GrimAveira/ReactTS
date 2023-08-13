@@ -1,22 +1,24 @@
-import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "../../css/pages/Login.module.css";
 import FormInput from "../UI/FormInput";
-import { AuthContext } from "../../context/AuthContext";
 import UserService from "../../API/UserService";
+import { changeLoginData } from "../../store/reducers/LoginDataSlice";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux";
+import { changeIsAuth } from "../../store/reducers/AuthSlice";
 
 function Login() {
-  const { toggleIsAuth } = useContext(AuthContext);
-  const [loginData, setLoginData] = useState({
-    login: "",
-    password: "",
-  });
+  const dispatch = useAppDispatch();
+
+  const loginData = useAppSelector((state) => state.loginDataReducer);
+  console.log(loginData);
   const navigate = useNavigate();
-  const changeHandler = (event: { target: { name: any; value: any } }) => {
-    setLoginData((prev) => ({
-      ...prev,
-      [event.target.name]: event.target.value,
-    }));
+
+  const changeHandler = (event: {
+    target: { name: string; value: string };
+  }) => {
+    dispatch(
+      changeLoginData({ name: event.target.name, value: event.target.value })
+    );
   };
   async function login(loginData: { login: string; password: string }) {
     const userData = await UserService.login(loginData);
@@ -28,7 +30,7 @@ function Login() {
       const userData = await login(loginData);
       localStorage.setItem("token", userData.token);
       localStorage.setItem("role", userData.role);
-      toggleIsAuth(true);
+      dispatch(changeIsAuth(true));
       navigate("/applications");
     } catch (error) {
       console.log(error);

@@ -1,13 +1,10 @@
 import { IData } from "../../interface";
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
+import { fetchNecRegData } from "./ActionCreators";
 
 interface NecRegDataState {
   isLoading: boolean;
-  error: string;
-  area: IData[];
-  street: IData[];
-}
-interface NecRegDataPayload {
+  error: string | undefined;
   area: IData[];
   street: IData[];
 }
@@ -22,20 +19,21 @@ const initialState: NecRegDataState = {
 export const necRegDataSlice = createSlice({
   name: "necRegData",
   initialState: initialState,
-  reducers: {
-    necRegDataFetching(state) {
+  reducers: {},
+  extraReducers: (builder) => {
+    builder.addCase(fetchNecRegData.pending, (state) => {
       state.isLoading = true;
-    },
-    necRegDataFetchingSuccess(state, action: PayloadAction<NecRegDataPayload>) {
+    });
+    builder.addCase(fetchNecRegData.fulfilled, (state, action) => {
       state.isLoading = false;
       state.error = "";
       state.area = action.payload.area;
       state.street = action.payload.street;
-    },
-    necRegDataFetchingError(state, action: PayloadAction<string>) {
+    });
+    builder.addCase(fetchNecRegData.rejected, (state, action) => {
       state.isLoading = false;
-      state.error = action.payload;
-    },
+      state.error = action.error.message;
+    });
   },
 });
 

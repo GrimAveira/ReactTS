@@ -2,16 +2,17 @@ import styles from "../css/components/Heading.module.css";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
+import { useAppDispatch, useAppSelector } from "../hooks/redux";
+import { changeIsAuth } from "../store/reducers/AuthSlice";
 
 function Heading({ toggleShow }: { toggleShow: () => void }) {
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { isAuth, toggleIsAuth } = useContext(AuthContext);
+  const isAuth = useAppSelector((state) => state.authReducer);
   const exitHandler = () => {
     if (window.confirm("Вы действительно хотите выйти?")) {
       localStorage.clear();
-      toggleIsAuth(false);
+      dispatch(changeIsAuth(false));
       navigate("/");
     }
   };

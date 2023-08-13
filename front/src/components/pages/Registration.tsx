@@ -19,8 +19,7 @@ function Registration() {
   const { area, street, isLoading, error } = useAppSelector(
     (state) => state.necRegDataReducer
   );
-  const userData = useAppSelector((state) => state.userRedDataReducer);
-  console.log(userData);
+  const userData = useAppSelector((state) => state.userRegDataReducer);
   const navigate = useNavigate();
   useEffect(() => {
     const controller = new AbortController();

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import ManagerApplicationHeader from "../ManagerApplicationHeader";
 import axios from "axios";
 import styles from "../../css/pages/ReportApplication.module.css";

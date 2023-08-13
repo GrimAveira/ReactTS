@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   publicNotShellRoutes,
   publicShellRoutes,
@@ -9,13 +8,12 @@ import styles from "../App.module.css";
 import Shell from "./Shell";
 import { useEffect } from "react";
 import axios from "axios";
-import { AuthContext } from "../context/AuthContext";
+import { useAppSelector } from "../hooks/redux";
+import { changeIsAuth } from "../store/reducers/AuthSlice";
 
 function AppRoutes() {
-  const [isAuth, setIsAuth] = useState(false);
-  const toggleIsAuth = (value: boolean) => {
-    setIsAuth(value);
-  };
+  const isAuth = useAppSelector((state) => state.authReducer);
+
   useEffect(() => {
     axios
       .get("http://localhost:8800/api/auth/check", {
@@ -24,7 +22,7 @@ function AppRoutes() {
         },
       })
       .then(() => {
-        setIsAuth(true);
+        changeIsAuth(true);
       })
       .catch((err) => {
         if (err.response.data.message === "jwt expired") {
@@ -36,40 +34,32 @@ function AppRoutes() {
   return (
     <BrowserRouter>
       <div className={styles.app}>
-        <AuthContext.Provider
-          value={{
-            isAuth: isAuth,
-            toggleIsAuth: toggleIsAuth,
-          }}
-        >
-          <Routes>
-            <Route element={<Shell />}>
-              {publicShellRoutes.map((route) => (
-                <Route
-                  key={route.path}
-                  path={route.path}
-                  element={<route.element />}
-                />
-              ))}
-              {isAuth &&
-                privateShellRoutes.map((route) => (
-                  <Route
-                    key={route.path}
-                    path={route.path}
-                    element={<route.element />}
-                  />
-                ))}
-            </Route>
-
-            {publicNotShellRoutes.map((route) => (
+        <Routes>
+          <Route element={<Shell />}>
+            {publicShellRoutes.map((route) => (
               <Route
                 key={route.path}
                 path={route.path}
                 element={<route.element />}
               />
             ))}
-          </Routes>
-        </AuthContext.Provider>
+            {isAuth &&
+              privateShellRoutes.map((route) => (
+                <Route
+                  key={route.path}
+                  path={route.path}
+                  element={<route.element />}
+                />
+              ))}
+          </Route>
+          {publicNotShellRoutes.map((route) => (
+            <Route
+              key={route.path}
+              path={route.path}
+              element={<route.element />}
+            />
+          ))}
+        </Routes>
       </div>
     </BrowserRouter>
   );
