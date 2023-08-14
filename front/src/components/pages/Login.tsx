@@ -8,9 +8,7 @@ import InputForm from "../UI/InputForm";
 
 function Login() {
   const dispatch = useAppDispatch();
-
   const loginData = useAppSelector((state) => state.loginDataReducer);
-  console.log(loginData);
   const navigate = useNavigate();
 
   const changeHandler = (event: {

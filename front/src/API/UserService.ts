@@ -16,4 +16,11 @@ export default class User {
     );
     return response.data;
   }
+  static async authCheck(token: string) {
+    await axios.get("http://localhost:8800/api/auth/check", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  }
 }

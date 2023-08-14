@@ -8,7 +8,7 @@ import { changeIsAuth } from "../store/reducers/AuthSlice";
 function Heading({ toggleShow }: { toggleShow: () => void }) {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const isAuth = useAppSelector((state) => state.authReducer);
+  const authInfo = useAppSelector((state) => state.authReducer);
   const exitHandler = () => {
     if (window.confirm("Вы действительно хотите выйти?")) {
       localStorage.clear();
@@ -18,7 +18,7 @@ function Heading({ toggleShow }: { toggleShow: () => void }) {
   };
   return (
     <div className={styles.head} id="navbar">
-      {isAuth && (
+      {authInfo.isAuth && (
         <RxHamburgerMenu className={styles.showBtn} onClick={toggleShow} />
       )}
       <Link to="/" className={styles.btn}>
@@ -30,7 +30,7 @@ function Heading({ toggleShow }: { toggleShow: () => void }) {
       <Link to="registration" className={styles.linkReg}>
         Регистрация
       </Link>
-      {isAuth ? (
+      {authInfo.isAuth ? (
         <Link to="/" className={styles.btn} onClick={exitHandler}>
           Выход
         </Link>
