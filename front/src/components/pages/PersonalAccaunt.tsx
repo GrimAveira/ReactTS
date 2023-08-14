@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import styles from "../../css/pages/PersonalAccaunt.module.css";
 import axios from "axios";
-import FormSelect from "../UI/SelectForm";
 import InputForm from "../UI/InputForm";
+import SelectForm from "../UI/SelectForm";
 
 function PersonalAccaunt() {
   const [userValues, setUserValues] = useState({
@@ -211,20 +211,16 @@ function PersonalAccaunt() {
   ];
   const selects = [
     {
-      id: 1,
       name: "area",
       placeholder: "Район",
-      label: "Район",
       required: true,
       options: areas.map((area: { id: number; name: string }) => {
         return { value: area.id, label: area.name, name: "area" };
       }),
     },
     {
-      id: 2,
       name: "street",
       placeholder: "Улица",
-      label: "Улица",
       required: true,
       options: streets.map((street: { id: number; name: string }) => {
         return { value: street.id, label: street.name, name: "street" };
@@ -248,8 +244,8 @@ function PersonalAccaunt() {
           })}
           {selects.map((select) => {
             return (
-              <FormSelect
-                key={select.id}
+              <SelectForm
+                key={select.name}
                 {...select}
                 onChange={changeHandlerSelect}
               />

@@ -1,7 +1,6 @@
 import { ChangeEvent, useEffect, useMemo } from "react";
 import styles from "../../css/pages/Registration.module.css";
 import { useNavigate } from "react-router-dom";
-import FormSelect from "../UI/SelectForm";
 import Loader from "../Loader";
 import { IData, IUserInfo } from "../../interface";
 import UserService from "../../API/UserService";
@@ -10,6 +9,7 @@ import { changeUserRegData } from "../../store/reducers/UserRegDataSlice";
 import Error from "../Error";
 import { fetchArea, fetchStreet } from "../../store/reducers/ActionCreators";
 import InputFormErrorLabel from "../UI/InputFormLabel";
+import SelectForm from "../UI/SelectForm";
 
 function Registration() {
   const dispatch = useAppDispatch();
@@ -193,7 +193,7 @@ function Registration() {
           })}
           {selects.map((select) => {
             return (
-              <FormSelect
+              <SelectForm
                 key={select.name}
                 {...select}
                 onChange={changeHandlerSelect}

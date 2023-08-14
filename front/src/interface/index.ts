@@ -1,4 +1,4 @@
-import { GroupBase, Props } from "react-select";
+import StateManagedSelect, { GroupBase, Props } from "react-select";
 
 export interface IUserInfo {
   login: string;
@@ -14,7 +14,9 @@ export interface IUserInfo {
   entrance: string;
   apartment: string;
 }
-
+export interface ISelectFormLabel extends StateManagedSelect {
+  label: string;
+}
 export interface IUserData {
   role: string;
   token: string;
@@ -70,8 +72,8 @@ export interface IFormSelectAppMulti {
   options: any;
 }
 export interface IInput {
-  id: string;
-  name: string;
+  id?: string;
+  name?: string;
   type: string;
   placeholder: string;
   errorMessage: string;

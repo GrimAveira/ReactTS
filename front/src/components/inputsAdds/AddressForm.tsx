@@ -2,14 +2,14 @@ import axios from "axios";
 import styles from "../../css/components/inputAdds/AddressForm.module.css";
 import { useEffect } from "react";
 import AddInputForm from "../UI/AddInputFormError";
-import FormSelectAppMulti from "../UI/SelectFormAppMulti";
 import MyButtonDataBase from "../UI/MyButtonDataBase";
-import { IISelect, IInput } from "../../interface";
+import { IData, IISelect, IInput } from "../../interface";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { fetchArea, fetchStreet } from "../../store/reducers/ActionCreators";
 import Loader from "../Loader";
 import Error from "../Error";
 import { changeAddressState } from "../../store/reducers/AddressFormSlice";
+import SelectForm from "../UI/SelectForm";
 
 function AddressForm() {
   const dispatch = useAppDispatch();
@@ -47,7 +47,6 @@ function AddressForm() {
   console.log(address);
   const inputs = [
     {
-      id: "1",
       name: "house",
       type: "string",
       placeholder: "Номер дома",
@@ -56,7 +55,6 @@ function AddressForm() {
       required: true,
     },
     {
-      id: "2",
       name: "entrance",
       type: "string",
       placeholder: "Номер подъезда",
@@ -71,18 +69,16 @@ function AddressForm() {
       placeholder: "Улица",
       label: "Улица",
       required: true,
-      options: streetsInfo.street.map(
-        (street: { id: number; name: string }) => {
-          return { value: street.id, label: street.name, name: "street" };
-        }
-      ),
+      options: streetsInfo.street.map((street: IData) => {
+        return { value: street.id, label: street.name, name: "street" };
+      }),
     },
     {
       name: "area",
       placeholder: "Район",
       label: "Район",
       required: true,
-      options: areasInfo.area.map((area: { id: number; name: string }) => {
+      options: areasInfo.area.map((area: IData) => {
         return { value: area.id, label: area.name, name: "area" };
       }),
     },
@@ -93,10 +89,14 @@ function AddressForm() {
   return (
     <form className={styles.form} onChange={submitHandler}>
       {inputs.map((input: IInput) => (
-        <AddInputForm {...input} key={input.id} onChange={changeHandlerInput} />
+        <AddInputForm
+          {...input}
+          key={input.name}
+          onChange={changeHandlerInput}
+        />
       ))}
       {selects.map((select: IISelect) => (
-        <FormSelectAppMulti
+        <SelectForm
           {...select}
           key={select.name}
           onChange={changeHandlerSelect}

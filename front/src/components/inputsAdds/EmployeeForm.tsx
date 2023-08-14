@@ -3,7 +3,7 @@ import axios from "axios";
 import styles from "../../css/components/inputAdds/EmployeeForm.module.css";
 import { useState } from "react";
 import AddInputForm from "../UI/AddInputFormError";
-import FormSelect from "../UI/SelectFormAppMulti";
+import FormSelect from "../UI/SelectFormMulti";
 import MyButtonDataBase from "../UI/MyButtonDataBase";
 
 function EmployeeForm() {

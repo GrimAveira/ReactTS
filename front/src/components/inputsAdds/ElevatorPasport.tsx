@@ -3,7 +3,7 @@ import axios from "axios";
 import styles from "../../css/components/inputAdds/ElevatorPasport.module.css";
 import { useState } from "react";
 import AddInputForm from "../UI/AddInputFormError";
-import FormSelectAppMulti from "../UI/SelectFormAppMulti";
+import FormSelectAppMulti from "../UI/SelectFormMulti";
 import MyButtonDataBase from "../UI/MyButtonDataBase";
 
 function ElevatorPasport() {
