@@ -5,6 +5,7 @@ import { IAddress, IPostFormToken, ISignal } from "../../interface";
 import UserService from "../../API/UserService";
 import AddressService from "../../API/AddressService";
 import AppStatusService from "../../API/AppStatusService";
+import AppTypeService from "../../API/AppTypeService";
 
 export const fetchArea = createAsyncThunk(
   "area/getAll",
@@ -41,7 +42,7 @@ export const checkAuth = createAsyncThunk(
   }
 );
 export const addAddress = createAsyncThunk(
-  "address/add",
+  "API/postResponse",
   async (payload: IPostFormToken<IAddress>, thunkAPI) => {
     try {
       let response;
@@ -53,12 +54,24 @@ export const addAddress = createAsyncThunk(
   }
 );
 export const addAppStatus = createAsyncThunk(
-  "appStatus/add",
+  "API/postResponse",
   async (payload: IPostFormToken<{ status: string }>, thunkAPI) => {
     try {
       let response;
       if (payload.token !== null)
         response = await AppStatusService.add(payload);
+      return response;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.response.data.message);
+    }
+  }
+);
+export const addAppType = createAsyncThunk(
+  "API/postResponse",
+  async (payload: IPostFormToken<{ appType: string }>, thunkAPI) => {
+    try {
+      let response;
+      if (payload.token !== null) response = await AppTypeService.add(payload);
       return response;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.response.data.message);

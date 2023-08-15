@@ -5,7 +5,6 @@ import authReducer from "./reducers/AuthSlice";
 import areaReducer from "./reducers/AreaSlice";
 import streetReducer from "./reducers/StreetSlice";
 import addressReducer from "./reducers/AddressFormSlice";
-import appStatusReducer from "./reducers/AppStatusSlice";
 
 const rootReducer = combineReducers({
   addressReducer,
@@ -14,7 +13,6 @@ const rootReducer = combineReducers({
   userRegDataReducer,
   loginDataReducer,
   authReducer,
-  appStatusReducer,
 });
 
 export const setupStore = () => {

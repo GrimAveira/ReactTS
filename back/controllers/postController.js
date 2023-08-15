@@ -264,7 +264,7 @@ class postController {
   async newApplicationType(req, res) {
     db.query(
       "INSERT elevator_company.application_type (name) values (?)",
-      [req.body.applicationType],
+      [req.body.appType],
       (err, data) => {
         if (err) return res.json(err);
         return res.status(200).json("Тип заявки добавился!");

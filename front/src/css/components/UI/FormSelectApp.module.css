@@ -1,12 +1,5 @@
-.formInput {
-  display: flex;
-  flex-direction: column;
-  width: 160px;
-  margin-left: 10px;
-}
-
 .select {
-  margin: 10px 0px;
+  margin: 20px 0px;
   border-radius: 5px;
   border: 1px solid gray;
 }

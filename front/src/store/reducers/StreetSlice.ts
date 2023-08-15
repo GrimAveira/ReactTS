@@ -10,7 +10,7 @@ interface StreetState {
 
 const initialState: StreetState = {
   isLoading: false,
-  error: "aboba",
+  error: "",
   street: [],
 };
 
