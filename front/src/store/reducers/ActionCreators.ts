@@ -78,3 +78,15 @@ export const addAppType = createAsyncThunk(
     }
   }
 );
+export const addArea = createAsyncThunk(
+  "API/postResponse",
+  async (payload: IPostFormToken<{ area: string }>, thunkAPI) => {
+    try {
+      let response;
+      if (payload.token !== null) response = await AreaService.add(payload);
+      return response;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.response.data.message);
+    }
+  }
+);
