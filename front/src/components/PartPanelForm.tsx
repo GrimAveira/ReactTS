@@ -3,7 +3,6 @@ import { MdOutlinePlaylistAddCheck } from "react-icons/md";
 import axios from "axios";
 import styles from "../css/components/PartPanelForm.module.css";
 import FormSelectParts from "./FormSelectParts";
-import FormInput from "./UI/InputFormLabel";
 import { IPart } from "../interface";
 import InputForm from "./UI/InputForm";
 

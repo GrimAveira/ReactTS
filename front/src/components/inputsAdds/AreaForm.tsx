@@ -1,5 +1,5 @@
 import React from "react";
-import AddInputForm from "../UI/AddInputFormError";
+import AddInputForm from "../UI/AddInputForm";
 import axios from "axios";
 import styles from "../../css/components/inputAdds/AreaForm.module.css";
 import { useState } from "react";

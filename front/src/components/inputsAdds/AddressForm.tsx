@@ -1,11 +1,14 @@
-import axios from "axios";
 import styles from "../../css/components/inputAdds/AddressForm.module.css";
 import { useEffect } from "react";
-import AddInputForm from "../UI/AddInputFormError";
+import AddInputForm from "../UI/AddInputForm";
 import MyButtonDataBase from "../UI/MyButtonDataBase";
 import { IData, IISelect, IInput } from "../../interface";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
-import { fetchArea, fetchStreet } from "../../store/reducers/ActionCreators";
+import {
+  addAddress,
+  fetchArea,
+  fetchStreet,
+} from "../../store/reducers/ActionCreators";
 import Loader from "../Loader";
 import Error from "../Error";
 import { changeAddressState } from "../../store/reducers/AddressFormSlice";
@@ -33,24 +36,19 @@ function AddressForm() {
     dispatch(changeAddressState({ name: option.name, value: option.value }));
   };
 
-  const submitHandler = () => {
+  const submitHandler = (event: React.ChangeEvent<HTMLFormElement>) => {
+    event.preventDefault();
     if (window.confirm("Вы действительно хотите внести изменения?"))
-      axios
-        .post("http://localhost:8800/api/post/address", address, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        })
-        .then((resp) => alert(resp.data))
-        .catch((err) => alert(err.response.data));
+      dispatch(
+        addAddress({ data: address, token: localStorage.getItem("token") })
+      );
   };
-  console.log(address);
   const inputs = [
     {
       name: "house",
       type: "string",
       placeholder: "Номер дома",
-      errorMessage: "Номер дома должен состоять только из 1-5 цифр",
+      title: "Номер дома должен состоять только из 1-5 цифр",
       pattern: `^[0-9]{1,5}$`,
       required: true,
     },
@@ -58,7 +56,7 @@ function AddressForm() {
       name: "entrance",
       type: "string",
       placeholder: "Номер подъезда",
-      errorMessage: "Номер подъезда должен состоять только из 1-5 цифр",
+      title: "Номер подъезда должен состоять только из 1-5 цифр",
       pattern: `^[0-9]{1,5}$`,
       required: true,
     },
@@ -87,7 +85,7 @@ function AddressForm() {
   if (areasInfo.error || streetsInfo.error)
     return <Error errorText={`${areasInfo.area || streetsInfo.error}`} />;
   return (
-    <form className={styles.form} onChange={submitHandler}>
+    <form className={styles.form} onSubmit={submitHandler}>
       {inputs.map((input: IInput) => (
         <AddInputForm
           {...input}

@@ -1,14 +1,9 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { IInputChanges } from "../../interface";
+import { IAddress, IInputChanges } from "../../interface";
+import { addAddress } from "./ActionCreators";
+import { alertError, alertSuccess } from "../../functions/toast";
 
-interface AddressState {
-  area: string;
-  street: string;
-  house: string;
-  entrance: string;
-}
-
-const initialState: AddressState = {
+const initialState: IAddress = {
   area: "",
   street: "",
   house: "",
@@ -20,8 +15,20 @@ export const addressFormSlice = createSlice({
   initialState,
   reducers: {
     changeAddressState(state, action: PayloadAction<IInputChanges>) {
-      state[action.payload.name as keyof AddressState] = action.payload.value;
+      state[action.payload.name as keyof IAddress] = action.payload.value;
     },
+  },
+  extraReducers(builder) {
+    builder
+      .addCase(
+        addAddress.fulfilled.type,
+        (_, action: PayloadAction<string>) => {
+          alertSuccess(action.payload);
+        }
+      )
+      .addCase(addAddress.rejected.type, (_, action: PayloadAction<string>) => {
+        alertError(action.payload);
+      });
   },
 });
 

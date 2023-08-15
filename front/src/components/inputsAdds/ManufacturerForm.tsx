@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import axios from "axios";
 import styles from "../../css/components/inputAdds/ManufacturerForm.module.css";
 import { useState } from "react";
-import AddInputForm from "../UI/AddInputFormError";
+import AddInputForm from "../UI/AddInputForm";
 import FormSelectAppMulti from "../UI/SelectFormMulti";
 import MyButtonDataBase from "../UI/MyButtonDataBase";
 

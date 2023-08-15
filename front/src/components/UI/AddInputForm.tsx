@@ -6,11 +6,9 @@ const AddInputForm = (
     HTMLInputElement
   >
 ) => {
-  const { ...remainsProps } = props;
-
   return (
     <div className={styles.formInput}>
-      <input className={styles.input} {...remainsProps} />
+      <input className={styles.input} {...props} />
     </div>
   );
 };

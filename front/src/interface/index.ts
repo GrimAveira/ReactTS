@@ -14,6 +14,17 @@ export interface IUserInfo {
   entrance: string;
   apartment: string;
 }
+export interface IAddress {
+  area: string;
+  street: string;
+  house: string;
+  entrance: string;
+}
+export interface IPostFormToken<T> {
+  data: T;
+  token: string | null;
+}
+
 export interface ISelectFormLabel extends StateManagedSelect {
   label: string;
 }
@@ -76,7 +87,7 @@ export interface IInput {
   name?: string;
   type: string;
   placeholder: string;
-  errorMessage: string;
+  title?: string;
   pattern: string;
   required: boolean;
 }

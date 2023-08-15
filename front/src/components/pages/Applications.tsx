@@ -166,7 +166,9 @@ function Applications() {
         <AiOutlinePlus
           className={styles.button}
           type="submit"
-          onClick={() => setModalActive(true)}
+          onClick={() => {
+            setModalActive(true);
+          }}
         />
         <Modal active={modalActive} setActive={setModalActive}>
           {localStorage.getItem("role") === "1" ? (

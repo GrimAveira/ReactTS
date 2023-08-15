@@ -6,7 +6,7 @@ import ModalManagerHeader from "./ModalManagerHeader";
 import { MdOutlinePlaylistAddCheck } from "react-icons/md";
 import FormSelectAppMulti from "./UI/SelectFormMulti";
 import { IEmployee, IInputChanges } from "../interface";
-import { ActionMeta, OnChangeValue, SingleValue } from "react-select";
+import { ActionMeta } from "react-select";
 
 function ModalManager({
   statusBD,

@@ -1,7 +1,7 @@
 import axios from "axios";
 import styles from "../../css/components/inputAdds/ListFeaturesForm.module.css";
 import { useEffect, useState } from "react";
-import AddInputForm from "../UI/AddInputFormError";
+import AddInputForm from "../UI/AddInputForm";
 import FormSelectAppMulti from "../UI/SelectFormMulti";
 import MyButtonDataBase from "../UI/MyButtonDataBase";
 
