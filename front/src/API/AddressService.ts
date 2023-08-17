@@ -14,4 +14,13 @@ export default class AddressService {
     );
     return response.data;
   }
+  static async getAll(params: { signal: AbortSignal; token: string | null }) {
+    const response = await axios.get("http://localhost:8800/api/get/address", {
+      signal: params.signal,
+      headers: {
+        Authorization: `Bearer ${params.token}`,
+      },
+    });
+    return response.data;
+  }
 }

@@ -15,6 +15,7 @@ export interface IUserInfo {
   apartment: string;
 }
 export interface IAddress {
+  id: string;
   area: string;
   street: string;
   house: string;
@@ -46,7 +47,10 @@ export interface IInputChanges {
   name: string;
   value: string;
 }
-
+export interface IError {
+  status: string;
+  message: string;
+}
 export interface IFormSelect {
   onChange: any;
   name: string;

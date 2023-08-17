@@ -6,7 +6,7 @@ import { IData, IUserInfo } from "../../interface";
 import UserService from "../../API/UserService";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { changeUserRegData } from "../../store/reducers/UserRegDataSlice";
-import Error from "../Error";
+import Error from "../CustomError";
 import { fetchArea, fetchStreet } from "../../store/reducers/ActionCreators";
 import InputFormErrorLabel from "../UI/InputFormLabel";
 import SelectForm from "../UI/SelectForm";

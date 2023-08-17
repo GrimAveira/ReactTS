@@ -8,20 +8,20 @@ class postController {
       db.query(
         `SELECT id FROM elevator_company.application_type WHERE name='${req.body.type}'`,
         (err, data) => {
-          if (err) return res.json(err.sqlMessage);
+          if (err) return res.status(500).json(err.sqlMessage);
           if (!data.length) return res.status(400).json("Не найден тип заявки");
           type = data[0].id;
           db.query(
             `SELECT id FROM elevator_company.breaking_type WHERE name='${req.body.breaking}'`,
             (err, data) => {
-              if (err) return res.json(err.sqlMessage);
+              if (err) return res.status(500).json(err.sqlMessage);
               if (!data.length)
                 return res.status(400).json("Не найдена поломка");
               breaking = data[0].id;
               db.query(
                 `SELECT id FROM elevator_company.application_status WHERE name='${req.body.status}'`,
                 (err, data) => {
-                  if (err) return res.json(err.sqlMessage);
+                  if (err) return res.status(500).json(err.sqlMessage);
                   if (!data.length)
                     return res.status(400).json("Не найден статус заявки");
                   status = data[0].id;
@@ -29,18 +29,22 @@ class postController {
                     db.query(
                       `UPDATE elevator_company.application SET type='${type}', status='${status}', elevator='${req.body.elevator}', description='${req.body.description}', breaking='${breaking}' WHERE id='${req.body.id}'`,
                       (err, data) => {
-                        if (err) return res.json(err.sqlMessage);
+                        if (err) return res.status(500).json(err.sqlMessage);
                         db.query(
                           `SELECT application_number FROM elevator_company.group_employees WHERE application_number='${req.body.id}'`,
                           (err, data) => {
-                            if (err) return res.json(err.sqlMessage);
+                            if (err)
+                              return res.status(500).json(err.sqlMessage);
                             if (!data.length)
                               req.body.employees.forEach((emp) => {
                                 db.query(
                                   `INSERT elevator_company.group_employees (application_number, personnel_number) values (?,?)`,
                                   [req.body.id, emp],
                                   (err, data) => {
-                                    if (err) return res.json(err);
+                                    if (err)
+                                      return res
+                                        .status(500)
+                                        .json(err.sqlMessage);
                                   }
                                 );
                               });
@@ -66,7 +70,10 @@ class postController {
                                   `INSERT elevator_company.group_employees (application_number, personnel_number) values (?,?)`,
                                   [req.body.id, emp],
                                   (err, data) => {
-                                    if (err) return res.json(err);
+                                    if (err)
+                                      return res
+                                        .status(500)
+                                        .json(err.sqlMessage);
                                   }
                                 );
                               });
@@ -94,10 +101,7 @@ class postController {
           "INSERT elevator_company.application (type,description,status,applicant) values (?,?,?,?)",
           [1, req.body.description, 6, req.user.id],
           (err, data) => {
-            if (err) {
-              console.log(err);
-              return res.json(err);
-            }
+            if (err) return res.status(500).json(err.sqlMessage);
 
             return res.status(200).json("Заявка была успешно добавлена!");
           }
@@ -116,17 +120,17 @@ class postController {
         db.query(
           `SELECT id FROM elevator_company.application_type WHERE name='${req.body.type}'`,
           (err, data) => {
-            if (err) return res.json(err.sqlMessage);
+            if (err) return res.status(500).json(err.sqlMessage);
             type = data[0].id;
             db.query(
               `SELECT id FROM elevator_company.breaking_type WHERE name='${req.body.breaking}'`,
               (err, data) => {
-                if (err) return res.json(err.sqlMessage);
+                if (err) return res.status(500).json(err.sqlMessage);
                 breaking = data[0].id;
                 db.query(
                   `SELECT id FROM elevator_company.application_status WHERE name='${req.body.status}'`,
                   (err, data) => {
-                    if (err) return res.json(err.sqlMessage);
+                    if (err) return res.status(500).json(err.sqlMessage);
                     status = data[0].id;
                     db.query(
                       `INSERT elevator_company.application (type,description,status,applicant,breaking) values (?,?,?,?,?)`,
@@ -138,11 +142,12 @@ class postController {
                         breaking,
                       ],
                       (err, data) => {
-                        if (err) return res.json(err.sqlMessage);
+                        if (err) return res.status(500).json(err.sqlMessage);
                         db.query(
                           `SELECT MAX(id) from elevator_company.application`,
                           (err, data) => {
-                            if (err) return res.json(err.sqlMessage);
+                            if (err)
+                              return res.status(500).json(err.sqlMessage);
 
                             req.body.employees.forEach((emp) => {
                               db.query(
@@ -176,7 +181,7 @@ class postController {
       "INSERT elevator_company.street (name) values (?)",
       [req.body.street],
       (err, data) => {
-        if (err) return res.json(err);
+        if (err) return res.status(500).json(err.sqlMessage);
         return res.status(200).json("Улица добавилась!");
       }
     );
@@ -186,7 +191,7 @@ class postController {
       "INSERT elevator_company.role (name) values (?)",
       [req.body.role],
       (err, data) => {
-        if (err) return res.json(err);
+        if (err) return res.status(500).json(err.sqlMessage);
         return res.status(200).json("Роль добавилась!");
       }
     );
@@ -196,7 +201,7 @@ class postController {
       "INSERT elevator_company.post (name) values (?)",
       [req.body.post],
       (err, data) => {
-        if (err) return res.json(err);
+        if (err) return res.status(500).json(err.sqlMessage);
         return res.status(200).json("Должность добавилась!");
       }
     );
@@ -206,7 +211,7 @@ class postController {
       "INSERT elevator_company.type_manufacturer (name) values (?)",
       [req.body.manufacturerType],
       (err, data) => {
-        if (err) return res.json(err);
+        if (err) return res.status(500).json(err.sqlMessage);
         return res.status(200).json("Тип производителя добавился!");
       }
     );
@@ -216,7 +221,7 @@ class postController {
       "INSERT elevator_company.features_type (name) values (?)",
       [req.body.feature],
       (err, data) => {
-        if (err) return res.json(err.sqlMessage);
+        if (err) return res.status(500).json(err.sqlMessage);
         return res.status(200).json("Характеристика добавилась!");
       }
     );
@@ -226,7 +231,7 @@ class postController {
       "INSERT elevator_company.elevator_type (name) values (?)",
       [req.body.elevatorType],
       (err, data) => {
-        if (err) return res.json(err);
+        if (err) return res.status(500).json(err.sqlMessage);
         return res.status(200).json("Тип лифта добавился!");
       }
     );
@@ -236,7 +241,7 @@ class postController {
       "INSERT elevator_company.breaking_type (name) values (?)",
       [req.body.breaking],
       (err, data) => {
-        if (err) return res.json(err);
+        if (err) return res.status(500).json(err.sqlMessage);
         return res.status(200).json("Поломка добавилась!");
       }
     );
@@ -246,7 +251,7 @@ class postController {
       "INSERT elevator_company.area (name) values (?)",
       [req.body.area],
       (err, data) => {
-        if (err) return res.json(err);
+        if (err) return res.status(500).json(err.sqlMessage);
         return res.status(200).json("Район добавился!");
       }
     );
@@ -256,7 +261,7 @@ class postController {
       "INSERT elevator_company.application_status (name) values (?)",
       [req.body.status],
       (err, data) => {
-        if (err) return res.json(err);
+        if (err) return res.status(500).json(err.sqlMessage);
         return res.status(200).json("Статус заявки добавился!");
       }
     );
@@ -266,7 +271,7 @@ class postController {
       "INSERT elevator_company.application_type (name) values (?)",
       [req.body.appType],
       (err, data) => {
-        if (err) return res.json(err);
+        if (err) return res.status(500).json(err.sqlMessage);
         return res.status(200).json("Тип заявки добавился!");
       }
     );
@@ -276,7 +281,7 @@ class postController {
       "INSERT elevator_company.employee (surname, name, patronymic, post) values (?,?,?,?)",
       [req.body.surname, req.body.name, req.body.patronymic, req.body.post],
       (err, data) => {
-        if (err) return res.json(err);
+        if (err) return res.status(500).json(err.sqlMessage);
         return res.status(200).json("Рабочий добавился!");
       }
     );
@@ -286,7 +291,7 @@ class postController {
       "INSERT elevator_company.manufacturer (name, type) values (?,?)",
       [req.body.name, req.body.type],
       (err, data) => {
-        if (err) return res.json(err);
+        if (err) return res.status(500).json(err.sqlMessage);
         return res.status(200).json("Прозводитель добавился!");
       }
     );
@@ -296,7 +301,7 @@ class postController {
       "INSERT elevator_company.part (name, manufacturer) values (?,?)",
       [req.body.name, req.body.manufacturer],
       (err, data) => {
-        if (err) return res.json(err);
+        if (err) return res.status(500).json(err.sqlMessage);
         return res.status(200).json("Деталь добавилась!");
       }
     );
@@ -306,7 +311,7 @@ class postController {
       "INSERT elevator_company.address (area, street, house, entrance) values (?,?,?,?)",
       [req.body.area, req.body.street, req.body.house, req.body.entrance],
       (err, data) => {
-        if (err) return res.json(err);
+        if (err) return res.status(500).json(err.sqlMessage);
         return res.status(200).json("Адрес добавился!");
       }
     );
@@ -322,7 +327,7 @@ class postController {
         req.body.elevatorType,
       ],
       (err, data) => {
-        if (err) return res.json(err);
+        if (err) return res.status(500).json(err.sqlMessage);
         return res.status(200).json("Лифт добавился!");
       }
     );
@@ -332,7 +337,7 @@ class postController {
       "INSERT elevator_company.features_list (serial_number, feature_type, value) values (?,?,?)",
       [req.body.elevator, req.body.feature, req.body.value],
       (err, data) => {
-        if (err) return res.json(err);
+        if (err) return res.status(500).json(err.sqlMessage);
         return res.status(200).json("Характеристика добавилась!");
       }
     );
@@ -342,25 +347,27 @@ class postController {
       "INSERT elevator_company.parts_list (application_number, part, quantity) values (?,?,?)",
       [req.body.appicationId, req.body.partId, req.body.qty],
       (err, data) => {
-        if (err) return res.json(err);
+        if (err) return res.status(500).json(err.sqlMessage);
         return res.status(200).json("Деталь добавилась!");
       }
     );
   }
   async updateElevatorAddress(req, res) {
     db.query(
-      `UPDATE elevator_company.elevator_pasport set address='${req.body.address}' where serial_number='${req.body.id}'`,
+      `UPDATE elevator_company.elevator_pasport set address='${req.body.addressId}' where serial_number='${req.body.elevatorId}'`,
       (err, data) => {
-        if (err) return res.json(err);
+        if (err) return res.status(500).json(err.sqlMessage);
         return res.status(200).json("Адрес изменен!");
       }
     );
   }
   async deleteElevator(req, res) {
     db.query(
-      `DELETE FROM elevator_company.elevator_pasport WHERE serial_number='${req.body.id}'`,
+      `DELETE FROM elevator_company.elevator_pasport WHERE serial_number='${req.body.elevatorId}'`,
       (err, data) => {
-        if (err) return res.json(err);
+        if (err) {
+          return res.status(500).json(err.sqlMessage);
+        }
         return res.status(200).json("Лифт удален!");
       }
     );
@@ -369,7 +376,7 @@ class postController {
     db.query(
       `DELETE FROM elevator_company.parts_list WHERE id='${req.body.id}'`,
       (err, data) => {
-        if (err) return res.json(err);
+        if (err) return res.status(500).json(err.sqlMessage);
         return res.status(200).json("Деталь откреплена от лифта!");
       }
     );
@@ -378,7 +385,7 @@ class postController {
     db.query(
       `UPDATE elevator_company.parts_list SET quantity='${req.body.qty}' WHERE id='${req.body.id}'`,
       (err, data) => {
-        if (err) return res.json(err);
+        if (err) return res.status(500).json(err.sqlMessage);
         return res.status(200).json("Деталь изменена!");
       }
     );

@@ -10,7 +10,7 @@ import {
   fetchStreet,
 } from "../../store/reducers/ActionCreators";
 import Loader from "../Loader";
-import Error from "../Error";
+import Error from "../CustomError";
 import { changeAddressState } from "../../store/reducers/AddressFormSlice";
 import SelectForm from "../UI/SelectApplicationForm";
 

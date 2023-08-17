@@ -1,7 +1,6 @@
-import React from "react";
 import Select from "react-select";
 import styles from "../../css/components/inputAdds/FormSelectAppElevatorWidth.module.css";
-function FormSelectAppElevatorWidth(props: any) {
+function SelectFormElevatorWidth(props: any) {
   return (
     <div className={styles.formInput}>
       <Select className={styles.select} {...props} />
@@ -9,4 +8,4 @@ function FormSelectAppElevatorWidth(props: any) {
   );
 }
 
-export default FormSelectAppElevatorWidth;
+export default SelectFormElevatorWidth;

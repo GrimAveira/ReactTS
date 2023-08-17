@@ -1,9 +1,10 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { IAddress, IInputChanges } from "../../interface";
+import { IAddress, IError, IInputChanges } from "../../interface";
 import { addAddress } from "./ActionCreators";
 import { alertError, alertSuccess } from "../../functions/toast";
 
 const initialState: IAddress = {
+  id: "",
   area: "",
   street: "",
   house: "",
@@ -26,8 +27,8 @@ export const addressFormSlice = createSlice({
           alertSuccess(action.payload);
         }
       )
-      .addCase(addAddress.rejected.type, (_, action: PayloadAction<string>) => {
-        alertError(action.payload);
+      .addCase(addAddress.rejected.type, (_, action: PayloadAction<IError>) => {
+        alertError(`${action.payload.status}: ${action.payload.message}`);
       });
   },
 });

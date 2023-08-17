@@ -7,6 +7,8 @@ import AddressService from "../../API/AddressService";
 import AppStatusService from "../../API/AppStatusService";
 import AppTypeService from "../../API/AppTypeService";
 import BreakingTypeService from "../../API/BreakingTypeService";
+import ElevatorService from "../../API/ElevatorService";
+import { AxiosError } from "axios";
 
 export const fetchArea = createAsyncThunk(
   "area/getAll",
@@ -14,8 +16,13 @@ export const fetchArea = createAsyncThunk(
     try {
       const response = await AreaService.getAll(params);
       return response;
-    } catch (error: any) {
-      return thunkAPI.rejectWithValue(error.message);
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        return thunkAPI.rejectWithValue({
+          status: error.message,
+          message: error.response?.data,
+        });
+      }
     }
   }
 );
@@ -25,8 +32,13 @@ export const fetchStreet = createAsyncThunk(
     try {
       const response = await StreetService.getAll(params);
       return response;
-    } catch (error: any) {
-      return thunkAPI.rejectWithValue(error.message);
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        return thunkAPI.rejectWithValue({
+          status: error.message,
+          message: error.response?.data,
+        });
+      }
     }
   }
 );
@@ -37,8 +49,13 @@ export const checkAuth = createAsyncThunk(
       let response;
       if (token !== null) response = await UserService.authCheck(token);
       return response;
-    } catch (error: any) {
-      return thunkAPI.rejectWithValue(error.response.data.message);
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        return thunkAPI.rejectWithValue({
+          status: error.message,
+          message: error.response?.data,
+        });
+      }
     }
   }
 );
@@ -49,8 +66,13 @@ export const addAddress = createAsyncThunk(
       let response;
       if (payload.token !== null) response = await AddressService.add(payload);
       return response;
-    } catch (error: any) {
-      return thunkAPI.rejectWithValue(error.response.data.message);
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        return thunkAPI.rejectWithValue({
+          status: error.message,
+          message: error.response?.data,
+        });
+      }
     }
   }
 );
@@ -62,8 +84,13 @@ export const addAppStatus = createAsyncThunk(
       if (payload.token !== null)
         response = await AppStatusService.add(payload);
       return response;
-    } catch (error: any) {
-      return thunkAPI.rejectWithValue(error.response.data.message);
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        return thunkAPI.rejectWithValue({
+          status: error.message,
+          message: error.response?.data,
+        });
+      }
     }
   }
 );
@@ -74,8 +101,13 @@ export const addAppType = createAsyncThunk(
       let response;
       if (payload.token !== null) response = await AppTypeService.add(payload);
       return response;
-    } catch (error: any) {
-      return thunkAPI.rejectWithValue(error.response.data.message);
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        return thunkAPI.rejectWithValue({
+          status: error.message,
+          message: error.response?.data,
+        });
+      }
     }
   }
 );
@@ -86,8 +118,13 @@ export const addArea = createAsyncThunk(
       let response;
       if (payload.token !== null) response = await AreaService.add(payload);
       return response;
-    } catch (error: any) {
-      return thunkAPI.rejectWithValue(error.response.data.message);
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        return thunkAPI.rejectWithValue({
+          status: error.message,
+          message: error.response?.data,
+        });
+      }
     }
   }
 );
@@ -99,8 +136,98 @@ export const addBreaking = createAsyncThunk(
       if (payload.token !== null)
         response = await BreakingTypeService.add(payload);
       return response;
-    } catch (error: any) {
-      return thunkAPI.rejectWithValue(error.response.data.message);
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        return thunkAPI.rejectWithValue({
+          status: error.message,
+          message: error.response?.data,
+        });
+      }
+    }
+  }
+);
+export const fetchAddresses = createAsyncThunk(
+  "address/getAll",
+  async (payload: { signal: AbortSignal; token: string | null }, thunkAPI) => {
+    try {
+      let response;
+      if (payload.token !== null)
+        response = await AddressService.getAll(payload);
+      return response;
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        return thunkAPI.rejectWithValue({
+          status: error.message,
+          message: error.response?.data,
+        });
+      }
+    }
+  }
+);
+export const fetchElevators = createAsyncThunk(
+  "elevator/getAll",
+  async (payload: { signal: AbortSignal; token: string | null }, thunkAPI) => {
+    try {
+      let response;
+      if (payload.token !== null)
+        response = await ElevatorService.getAll(payload);
+      return response;
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        return thunkAPI.rejectWithValue({
+          status: error.message,
+          message: error.response?.data,
+        });
+      }
+    }
+  }
+);
+export const updateElevator = createAsyncThunk(
+  "API/postResponse",
+  async (
+    payload: {
+      addressId: string;
+      elevatorId: string;
+      token: string | null;
+    },
+    thunkAPI
+  ) => {
+    try {
+      let response;
+      if (payload.token !== null)
+        response = await ElevatorService.update(payload);
+      return response;
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        return thunkAPI.rejectWithValue({
+          status: error.message,
+          message: error.response?.data,
+        });
+      }
+    }
+  }
+);
+export const deleteElevator = createAsyncThunk(
+  "API/postResponse",
+  async (
+    payload: {
+      elevatorId: string;
+      token: string | null;
+    },
+    thunkAPI
+  ) => {
+    try {
+      let response;
+      if (payload.token !== null)
+        response = await ElevatorService.delete(payload);
+      return response;
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        return thunkAPI.rejectWithValue({
+          status: error.message,
+          message: error.response?.data,
+        });
+      }
     }
   }
 );
