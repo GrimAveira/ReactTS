@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import styles from "../../css/pages/PersonalAccaunt.module.css";
 import axios from "axios";
 import InputForm from "../UI/InputForm";
-import SelectForm from "../UI/SelectForm";
+import SelectForm from "../UI/SelectApplicationForm";
 
 function PersonalAccaunt() {
   const [userValues, setUserValues] = useState({

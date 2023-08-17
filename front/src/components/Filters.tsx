@@ -1,5 +1,5 @@
 import styles from "../css/components/Filters.module.css";
-import FormSelectApp from "./UI/SelectForm";
+import FormSelectApp from "./UI/SelectApplicationForm";
 import InputForm from "./UI/InputForm";
 
 function Filters({

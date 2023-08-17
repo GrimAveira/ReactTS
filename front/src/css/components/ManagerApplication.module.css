@@ -98,3 +98,7 @@
 .button:hover {
   color: cyan;
 }
+.select {
+  display: flex;
+  flex-direction: row;
+}

@@ -1,6 +1,6 @@
 import styles from "../css/components/ManagerApplication.module.css";
-import FormSelectApp from "./UI/SelectForm";
-import FormSelectAppMulti from "./UI/SelectFormMulti";
+import SelectForm from "./UI/SelectApplicationForm";
+import SelectFormMulti from "./UI/SelectFormMulti";
 import { useEffect, useLayoutEffect, useMemo, useState } from "react";
 import { MdCreate } from "react-icons/md";
 import axios from "axios";
@@ -262,16 +262,19 @@ function ManagerApplication(data: {
         placeholder="Описание заявки"
         value={application.description}
       />
-      {selects.map((select: any) => (
-        <FormSelectApp
-          key={select.id}
-          {...select}
-          onChange={changeHandlerSelect}
-        />
-      ))}
+      <div className={styles.select}>
+        {selects.map((select: any) => (
+          <SelectForm
+            key={select.id}
+            {...select}
+            onChange={changeHandlerSelect}
+          />
+        ))}
+      </div>
+
       <div className={styles.applicant}>{applicant}</div>
       {
-        <FormSelectAppMulti
+        <SelectFormMulti
           key={selectMulti.id}
           {...selectMulti}
           onChange={changeHandlerMultiSelect}

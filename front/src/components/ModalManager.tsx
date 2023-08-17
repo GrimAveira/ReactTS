@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "../css/components/ModalManager.module.css";
 import axios from "axios";
-import FormSelectApp from "./UI/SelectForm";
+import FormSelectApp from "./UI/SelectApplicationForm";
 import ModalManagerHeader from "./ModalManagerHeader";
 import { MdOutlinePlaylistAddCheck } from "react-icons/md";
 import FormSelectAppMulti from "./UI/SelectFormMulti";

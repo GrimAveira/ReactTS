@@ -12,7 +12,7 @@ import {
 import Loader from "../Loader";
 import Error from "../Error";
 import { changeAddressState } from "../../store/reducers/AddressFormSlice";
-import SelectForm from "../UI/SelectForm";
+import SelectForm from "../UI/SelectApplicationForm";
 
 function AddressForm() {
   const dispatch = useAppDispatch();
