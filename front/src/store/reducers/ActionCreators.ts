@@ -6,6 +6,7 @@ import UserService from "../../API/UserService";
 import AddressService from "../../API/AddressService";
 import AppStatusService from "../../API/AppStatusService";
 import AppTypeService from "../../API/AppTypeService";
+import BreakingTypeService from "../../API/BreakingTypeService";
 
 export const fetchArea = createAsyncThunk(
   "area/getAll",
@@ -84,6 +85,19 @@ export const addArea = createAsyncThunk(
     try {
       let response;
       if (payload.token !== null) response = await AreaService.add(payload);
+      return response;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.response.data.message);
+    }
+  }
+);
+export const addBreaking = createAsyncThunk(
+  "API/postResponse",
+  async (payload: IPostFormToken<{ breaking: string }>, thunkAPI) => {
+    try {
+      let response;
+      if (payload.token !== null)
+        response = await BreakingTypeService.add(payload);
       return response;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.response.data.message);
