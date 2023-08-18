@@ -12,6 +12,8 @@ import {
 } from "../../store/reducers/ActionCreators";
 import { changeElevatorPassport } from "../../store/reducers/PassportElevatorFormSlice";
 import { IAddress, IData, IInputChanges } from "../../interface";
+import Loader from "../Loader";
+import CustomError from "../CustomError";
 
 function ElevatorPassport() {
   const dispatch = useAppDispatch();
@@ -52,7 +54,13 @@ function ElevatorPassport() {
         })
       );
   };
-
+  if (
+    elevatorInfo.addressesIsLoading ||
+    elevatorInfo.elevatorTypesIsLoading ||
+    elevatorInfo.manufacturersIsLoading
+  )
+    return <Loader />;
+  if (elevatorInfo.error) return <CustomError errorText={elevatorInfo.error} />;
   const inputs = [
     {
       name: "serialNumber",

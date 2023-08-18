@@ -232,6 +232,7 @@ class postController {
       [req.body.elevatorType],
       (err, data) => {
         if (err) return res.status(500).json(err.sqlMessage);
+
         return res.status(200).json("Тип лифта добавился!");
       }
     );

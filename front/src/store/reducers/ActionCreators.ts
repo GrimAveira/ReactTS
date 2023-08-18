@@ -300,3 +300,20 @@ export const addElevator = createAsyncThunk(
     }
   }
 );
+export const addElevatorType = createAsyncThunk(
+  "API/postResponse",
+  async (payload: IPostFormToken<{ elevatorType: string }>, thunkAPI) => {
+    try {
+      let response;
+      if (payload.token !== null)
+        response = await ElevatorTypeService.add(payload);
+      return response;
+    } catch (error: unknown) {
+      if (error instanceof AxiosError)
+        return thunkAPI.rejectWithValue({
+          status: error.message,
+          message: error.response?.data,
+        });
+    }
+  }
+);
