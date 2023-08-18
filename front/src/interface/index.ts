@@ -51,6 +51,10 @@ export interface IError {
   status: string;
   message: string;
 }
+export interface IManufacturer {
+  id: number;
+  name: string;
+}
 export interface IFormSelect {
   onChange: any;
   name: string;
@@ -161,4 +165,11 @@ export interface IData {
 }
 export interface ISignal {
   signal: AbortSignal;
+}
+export interface IElevatorPassport {
+  serialNumber: string;
+  productionYear: string;
+  manufacturer: string;
+  address: string;
+  elevatorType: string;
 }

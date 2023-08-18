@@ -1,13 +1,17 @@
 import axios from "axios";
+import { IElevator, IElevatorPassport } from "../interface";
 
 export default class ElevatorService {
   static async getAll(payload: { signal: AbortSignal; token: string | null }) {
-    const response = await axios.get("http://localhost:8800/api/get/elevator", {
-      signal: payload.signal,
-      headers: {
-        Authorization: `Bearer ${payload.token}`,
-      },
-    });
+    const response = await axios.get<IElevator>(
+      "http://localhost:8800/api/get/elevator",
+      {
+        signal: payload.signal,
+        headers: {
+          Authorization: `Bearer ${payload.token}`,
+        },
+      }
+    );
     return response.data;
   }
   static async update(payload: {
@@ -30,6 +34,21 @@ export default class ElevatorService {
     const response = await axios.post(
       "http://localhost:8800/api/post/elevatorDelete",
       { elevatorId: payload.elevatorId },
+      {
+        headers: {
+          Authorization: `Bearer ${payload.token}`,
+        },
+      }
+    );
+    return response.data;
+  }
+  static async add(payload: {
+    elevatorPassport: IElevatorPassport;
+    token: string | null;
+  }) {
+    const response = await axios.post(
+      "http://localhost:8800/api/post/elevator",
+      payload.elevatorPassport,
       {
         headers: {
           Authorization: `Bearer ${payload.token}`,

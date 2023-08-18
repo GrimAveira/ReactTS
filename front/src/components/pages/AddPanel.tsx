@@ -16,7 +16,7 @@ import EmployeeForm from "../inputsAdds/EmployeeForm";
 import ManufacturerForm from "../inputsAdds/ManufacturerForm";
 import PartForm from "../inputsAdds/PartForm";
 import AddressForm from "../inputsAdds/AddressForm";
-import ElevatorPasport from "../inputsAdds/ElevatorPasport";
+import ElevatorPassport from "../inputsAdds/ElevatorPassport";
 import ListFeaturesForm from "../inputsAdds/ListFeaturesForm";
 import EditElevatorForm from "../inputsAdds/EditElevatorForm";
 
@@ -121,7 +121,7 @@ function AddPanel() {
             (activeModalType === 9 && <ElevatorTypeForm />) ||
             (activeModalType === 10 && <AreaForm />) ||
             (activeModalType === 11 && <EmployeeForm />) ||
-            (activeModalType === 12 && <ElevatorPasport />) ||
+            (activeModalType === 12 && <ElevatorPassport />) ||
             (activeModalType === 13 && <PartForm />) ||
             (activeModalType === 14 && <ListFeaturesForm />) ||
             (activeModalType === 15 && <ManufacturerForm />) ||

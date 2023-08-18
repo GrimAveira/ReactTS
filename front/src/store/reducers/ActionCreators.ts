@@ -1,7 +1,12 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import AreaService from "../../API/AreaService";
 import StreetService from "../../API/StreetService";
-import { IAddress, IPostFormToken, ISignal } from "../../interface";
+import {
+  IAddress,
+  IElevatorPassport,
+  IPostFormToken,
+  ISignal,
+} from "../../interface";
 import UserService from "../../API/UserService";
 import AddressService from "../../API/AddressService";
 import AppStatusService from "../../API/AppStatusService";
@@ -9,6 +14,8 @@ import AppTypeService from "../../API/AppTypeService";
 import BreakingTypeService from "../../API/BreakingTypeService";
 import ElevatorService from "../../API/ElevatorService";
 import { AxiosError } from "axios";
+import ManufacturerService from "../../API/ManufacturerService";
+import ElevatorTypeService from "../../API/ElevatorTypeService";
 
 export const fetchArea = createAsyncThunk(
   "area/getAll",
@@ -220,6 +227,68 @@ export const deleteElevator = createAsyncThunk(
       let response;
       if (payload.token !== null)
         response = await ElevatorService.delete(payload);
+      return response;
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        return thunkAPI.rejectWithValue({
+          status: error.message,
+          message: error.response?.data,
+        });
+      }
+    }
+  }
+);
+export const fetchManufacturers = createAsyncThunk(
+  "manufacturer/getAll",
+  async (
+    payload: { signal: AbortSignal; token: string | null; type: string },
+    thunkAPI
+  ) => {
+    try {
+      let response;
+      if (payload.token !== null)
+        response = await ManufacturerService.getAll(payload);
+      return response;
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        return thunkAPI.rejectWithValue({
+          status: error.message,
+          message: error.response?.data,
+        });
+      }
+    }
+  }
+);
+export const fetchElevatorTypes = createAsyncThunk(
+  "elevatorTypes/getAll",
+  async (payload: { signal: AbortSignal; token: string | null }, thunkAPI) => {
+    try {
+      let response;
+      if (payload.token !== null)
+        response = await ElevatorTypeService.getAll(payload);
+      return response;
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        return thunkAPI.rejectWithValue({
+          status: error.message,
+          message: error.response?.data,
+        });
+      }
+    }
+  }
+);
+export const addElevator = createAsyncThunk(
+  "API/postResponse",
+  async (
+    payload: {
+      elevatorPassport: IElevatorPassport;
+      token: string | null;
+    },
+    thunkAPI
+  ) => {
+    try {
+      let response;
+      if (payload.token !== null) response = await ElevatorService.add(payload);
       return response;
     } catch (error: unknown) {
       if (error instanceof AxiosError) {
