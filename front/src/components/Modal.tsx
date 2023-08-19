@@ -6,13 +6,13 @@ function Modal(props: IModal) {
   return (
     <div
       className={`${styles.modal} ${active ? styles.modalActive : ""}`}
-      onClick={() => setActive(false)}
+      onMouseDown={() => setActive(false)}
     >
       <div
         className={`${styles.modal__content} ${
           active ? styles.modal__contentActive : ""
         }`}
-        onClick={(e) => e.stopPropagation()}
+        onMouseDown={(e) => e.stopPropagation()}
       >
         {children}
       </div>
