@@ -4,7 +4,9 @@ import StreetService from "../../API/StreetService";
 import {
   IAddress,
   IElevatorPassport,
+  IEmployeePost,
   IPostFormToken,
+  ISiganlToken,
   ISignal,
 } from "../../interface";
 import UserService from "../../API/UserService";
@@ -16,6 +18,8 @@ import ElevatorService from "../../API/ElevatorService";
 import { AxiosError } from "axios";
 import ManufacturerService from "../../API/ManufacturerService";
 import ElevatorTypeService from "../../API/ElevatorTypeService";
+import EmployeeService from "../../API/EmployeeService";
+import PostService from "../../API/PostService";
 
 export const fetchArea = createAsyncThunk(
   "area/getAll",
@@ -307,6 +311,47 @@ export const addElevatorType = createAsyncThunk(
       let response;
       if (payload.token !== null)
         response = await ElevatorTypeService.add(payload);
+      return response;
+    } catch (error: unknown) {
+      if (error instanceof AxiosError)
+        return thunkAPI.rejectWithValue({
+          status: error.message,
+          message: error.response?.data,
+        });
+    }
+  }
+);
+export const addEmployee = createAsyncThunk(
+  "API/postResponse",
+  async (payload: IPostFormToken<{ employee: IEmployeePost }>, thunkAPI) => {
+    try {
+      let response;
+      if (payload.token !== null)
+        response = await EmployeeService.add({
+          data: payload.data,
+          token: payload.token,
+        });
+      return response;
+    } catch (error: unknown) {
+      if (error instanceof AxiosError)
+        return thunkAPI.rejectWithValue({
+          status: error.message,
+          message: error.response?.data,
+        });
+    }
+  }
+);
+export const fetchPosts = createAsyncThunk(
+  "post/getAll",
+  async (payload: ISiganlToken, thunkAPI) => {
+    try {
+      let response;
+      if (payload.token !== null)
+        response = await PostService.getAll({
+          signal: payload.signal,
+          token: payload.token,
+        });
+      console.log(response);
       return response;
     } catch (error: unknown) {
       if (error instanceof AxiosError)

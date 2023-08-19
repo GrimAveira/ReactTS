@@ -54,13 +54,6 @@ function ElevatorPassport() {
         })
       );
   };
-  if (
-    elevatorInfo.addressesIsLoading ||
-    elevatorInfo.elevatorTypesIsLoading ||
-    elevatorInfo.manufacturersIsLoading
-  )
-    return <Loader />;
-  if (elevatorInfo.error) return <CustomError errorText={elevatorInfo.error} />;
   const inputs = [
     {
       name: "serialNumber",
@@ -112,6 +105,13 @@ function ElevatorPassport() {
       }),
     },
   ];
+  if (
+    elevatorInfo.addressesIsLoading ||
+    elevatorInfo.elevatorTypesIsLoading ||
+    elevatorInfo.manufacturersIsLoading
+  )
+    return <Loader />;
+  if (elevatorInfo.error) return <CustomError errorText={elevatorInfo.error} />;
 
   return (
     <form className={styles.form} onSubmit={submitHandler}>

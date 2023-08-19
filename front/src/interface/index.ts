@@ -55,6 +55,17 @@ export interface IManufacturer {
   id: number;
   name: string;
 }
+export interface IEmployeePost {
+  name: string;
+  surname: string;
+  patronymic: string;
+  post: string;
+}
+export interface ISiganlToken {
+  signal: AbortSignal;
+  token: string | null;
+}
+
 export interface IFormSelect {
   onChange: any;
   name: string;
