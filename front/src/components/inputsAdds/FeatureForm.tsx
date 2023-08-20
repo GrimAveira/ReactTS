@@ -1,38 +1,29 @@
 import React from "react";
 import AddInputForm from "../UI/AddInputForm";
-import axios from "axios";
 import styles from "../../css/components/inputAdds/FeatureForm.module.css";
 import { useState } from "react";
 import MyButtonDataBase from "../UI/MyButtonDataBase";
+import { useAppDispatch } from "../../hooks/redux";
+import { addFeature } from "../../store/reducers/ActionCreators";
 
 function FeatureForm() {
   const [feature, setFeature] = useState("");
+  const dispatch = useAppDispatch();
 
-  const changeHandler = (event: {
-    preventDefault: () => void;
-    target: { value: React.SetStateAction<string> };
-  }) => {
-    event.preventDefault();
+  const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+    event.stopPropagation();
     setFeature(event.target.value);
   };
-  const submitHandler = () => {
+  const submitHandler = (event: React.ChangeEvent<HTMLFormElement>) => {
+    event.preventDefault();
     if (window.confirm("Вы действительно хотите внести изменения?"))
-      axios
-        .post(
-          "http://localhost:8800/api/post/feature",
-          { feature },
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        )
-        .then((resp) => alert(resp.data))
-        .catch((err) => alert(err.response.data));
+      dispatch(
+        addFeature({ data: { feature }, token: localStorage.getItem("token") })
+      );
   };
 
   return (
-    <form className={styles.form} onChange={submitHandler}>
+    <form className={styles.form} onSubmit={submitHandler}>
       <AddInputForm
         name="feature"
         type="text"

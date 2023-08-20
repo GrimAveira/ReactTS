@@ -20,6 +20,7 @@ import ManufacturerService from "../../API/ManufacturerService";
 import ElevatorTypeService from "../../API/ElevatorTypeService";
 import EmployeeService from "../../API/EmployeeService";
 import PostService from "../../API/PostService";
+import FeatureService from "../../API/FeatureService";
 
 export const fetchArea = createAsyncThunk(
   "area/getAll",
@@ -352,6 +353,26 @@ export const fetchPosts = createAsyncThunk(
           token: payload.token,
         });
       console.log(response);
+      return response;
+    } catch (error: unknown) {
+      if (error instanceof AxiosError)
+        return thunkAPI.rejectWithValue({
+          status: error.message,
+          message: error.response?.data,
+        });
+    }
+  }
+);
+export const addFeature = createAsyncThunk(
+  "API/postResponse",
+  async (payload: IPostFormToken<{ feature: string }>, thunkAPI) => {
+    try {
+      let response;
+      if (payload.token !== null)
+        response = await FeatureService.add({
+          data: payload.data,
+          token: payload.token,
+        });
       return response;
     } catch (error: unknown) {
       if (error instanceof AxiosError)

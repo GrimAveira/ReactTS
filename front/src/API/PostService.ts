@@ -9,7 +9,6 @@ export default class PostService {
         Authorization: `Bearer ${payload.token}`,
       },
     });
-    console.log(response);
     return response.data;
   }
 }
