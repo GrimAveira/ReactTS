@@ -8,6 +8,7 @@ import addressReducer from "./reducers/AddressFormSlice";
 import elevatorFormReducer from "./reducers/ElevatorFormSlice";
 import passportElevatorReducer from "./reducers/PassportElevatorFormSlice";
 import employeeFormReducer from "./reducers/EmployeeFormSlice";
+import listFeaturesFormReducer from "./reducers/ListFeaturesFormSlice";
 
 const rootReducer = combineReducers({
   addressReducer,
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
   elevatorFormReducer,
   passportElevatorReducer,
   employeeFormReducer,
+  listFeaturesFormReducer,
 });
 
 export const setupStore = () => {

@@ -65,7 +65,11 @@ export interface ISiganlToken {
   signal: AbortSignal;
   token: string | null;
 }
-
+export interface IFeatureList {
+  elevator: string;
+  feature: string;
+  value: string;
+}
 export interface IFormSelect {
   onChange: any;
   name: string;

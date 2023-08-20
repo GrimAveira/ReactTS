@@ -1,5 +1,5 @@
 import axios from "axios";
-import { IPostFormToken } from "../interface";
+import { IPostFormToken, ISiganlToken } from "../interface";
 
 export default class FeatureService {
   static async add(payload: IPostFormToken<{ feature: string }>) {
@@ -12,6 +12,15 @@ export default class FeatureService {
         },
       }
     );
+    return response.data;
+  }
+  static async getAll(payload: ISiganlToken) {
+    const response = await axios.get("http://localhost:8800/api/get/feature", {
+      signal: payload.signal,
+      headers: {
+        Authorization: `Bearer ${payload.token}`,
+      },
+    });
     return response.data;
   }
 }

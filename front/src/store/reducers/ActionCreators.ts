@@ -5,6 +5,7 @@ import {
   IAddress,
   IElevatorPassport,
   IEmployeePost,
+  IFeatureList,
   IPostFormToken,
   ISiganlToken,
   ISignal,
@@ -352,7 +353,6 @@ export const fetchPosts = createAsyncThunk(
           signal: payload.signal,
           token: payload.token,
         });
-      console.log(response);
       return response;
     } catch (error: unknown) {
       if (error instanceof AxiosError)
@@ -370,6 +370,46 @@ export const addFeature = createAsyncThunk(
       let response;
       if (payload.token !== null)
         response = await FeatureService.add({
+          data: payload.data,
+          token: payload.token,
+        });
+      return response;
+    } catch (error: unknown) {
+      if (error instanceof AxiosError)
+        return thunkAPI.rejectWithValue({
+          status: error.message,
+          message: error.response?.data,
+        });
+    }
+  }
+);
+export const fetchFeatures = createAsyncThunk(
+  "feature/getAll",
+  async (payload: ISiganlToken, thunkAPI) => {
+    try {
+      let response;
+      if (payload.token !== null)
+        response = await FeatureService.getAll({
+          signal: payload.signal,
+          token: payload.token,
+        });
+      return response;
+    } catch (error: unknown) {
+      if (error instanceof AxiosError)
+        return thunkAPI.rejectWithValue({
+          status: error.message,
+          message: error.response?.data,
+        });
+    }
+  }
+);
+export const addElevatorFeature = createAsyncThunk(
+  "API/postResponse",
+  async (payload: IPostFormToken<{ featuresList: IFeatureList }>, thunkAPI) => {
+    try {
+      let response;
+      if (payload.token !== null)
+        response = await ElevatorService.addFeature({
           data: payload.data,
           token: payload.token,
         });

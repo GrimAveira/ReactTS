@@ -1,82 +1,65 @@
-import axios from "axios";
 import styles from "../../css/components/inputAdds/ListFeaturesForm.module.css";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import AddInputForm from "../UI/AddInputForm";
 import FormSelectAppMulti from "../UI/SelectFormMulti";
 import MyButtonDataBase from "../UI/MyButtonDataBase";
+import { IData, IInputChanges } from "../../interface";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux";
+import {
+  addElevatorFeature,
+  fetchElevators,
+  fetchFeatures,
+} from "../../store/reducers/ActionCreators";
+import { changeFeatureList } from "../../store/reducers/ListFeaturesFormSlice";
+import Loader from "../Loader";
+import CustomError from "../CustomError";
 
 function ListFeaturesForm() {
-  const [featuresList, setFeaturesList] = useState({
-    elevator: "",
-    feature: "",
-    value: "",
-  });
-  const [features, setFeatures] = useState([]);
-  const [elevators, setElevators] = useState([]);
+  const dispatch = useAppDispatch();
+  const {
+    elevatorIsLoading,
+    elevators,
+    error,
+    features,
+    featuresIsLoading,
+    featuresList,
+  } = useAppSelector((state) => state.listFeaturesFormReducer);
+  console.log(featuresList);
   useEffect(() => {
-    axios
-      .get("http://localhost:8800/api/get/feature", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      })
-      .then((response) => setFeatures(response.data))
-      .catch((err) => alert(err.response.data));
-    axios
-      .get("http://localhost:8800/api/get/elevator", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      })
-      .then((response) =>
-        setElevators(
-          response.data.map(
-            (value: { serial_number: string }) => value.serial_number
-          )
-        )
-      )
-      .catch((err) => alert(err.response.data));
-  }, []);
-  const changeHandlerInput = (event: {
-    preventDefault: () => void;
-    target: { name: any; value: any };
-  }) => {
+    const controller = new AbortController();
+    const token = localStorage.getItem("token");
+    dispatch(fetchFeatures({ signal: controller.signal, token }));
+    dispatch(fetchElevators({ signal: controller.signal, token }));
+  }, [dispatch]);
+  const changeHandlerInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
-    setFeaturesList((emp) => ({
-      ...emp,
-      [event.target.name]: event.target.value,
-    }));
+    dispatch(
+      changeFeatureList({ name: event.target.name, value: event.target.value })
+    );
   };
-  const changeHandlerSelect = (newValue: { name: any; value: any }) => {
-    setFeaturesList((prev) => ({
-      ...prev,
-      [newValue.name]: newValue.value,
-    }));
+  const changeHandlerSelect = (newValue: IInputChanges) => {
+    dispatch(changeFeatureList({ name: newValue.name, value: newValue.value }));
   };
-  const submitHandler = () => {
+  const submitHandler = (event: React.ChangeEvent<HTMLFormElement>) => {
+    event.preventDefault();
     if (window.confirm("Вы действительно хотите внести изменения?"))
-      axios
-        .post("http://localhost:8800/api/post/elevatorFeatures", featuresList, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
+      dispatch(
+        addElevatorFeature({
+          data: { featuresList },
+          token: localStorage.getItem("token"),
         })
-        .then((resp) => alert(resp.data))
-        .catch((err) => alert(err.response.data));
+      );
   };
-
   const input = {
     name: "value",
     type: "text",
     placeholder: "Значение характеристики",
-    errorMessage:
-      "Значение характеристики должно состоять только из 1-12 симолов",
-    pattern: "^[А-Яа-я0-9-/ .,]{1,12}$",
+    title: "Значение характеристики должно состоять только из 1-12 симолов",
+    pattern: "^[А-Яа-я0-9]{1,12}$",
     required: true,
   };
   const selects = [
     {
-      id: "1",
       name: "elevator",
       placeholder: "Лифт",
       label: "Лифт",
@@ -86,12 +69,11 @@ function ListFeaturesForm() {
       }),
     },
     {
-      id: "2",
       name: "feature",
       placeholder: "Характеристика",
       label: "Характеристика",
       required: true,
-      options: features.map((feature: { id: string; name: string }) => {
+      options: features.map((feature: IData) => {
         return {
           value: feature.id,
           label: feature.name,
@@ -100,12 +82,13 @@ function ListFeaturesForm() {
       }),
     },
   ];
-
+  if (elevatorIsLoading || featuresIsLoading) return <Loader />;
+  if (error) return <CustomError errorText={error} />;
   return (
-    <form className={styles.form} onChange={submitHandler}>
+    <form className={styles.form} onSubmit={submitHandler}>
       {selects.map((str) => (
         <FormSelectAppMulti
-          key={str.id}
+          key={str.name}
           onChange={changeHandlerSelect}
           {...str}
         />

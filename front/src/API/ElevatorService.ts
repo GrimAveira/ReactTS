@@ -1,5 +1,10 @@
 import axios from "axios";
-import { IElevator, IElevatorPassport } from "../interface";
+import {
+  IElevator,
+  IElevatorPassport,
+  IFeatureList,
+  IPostFormToken,
+} from "../interface";
 
 export default class ElevatorService {
   static async getAll(payload: { signal: AbortSignal; token: string | null }) {
@@ -49,6 +54,20 @@ export default class ElevatorService {
     const response = await axios.post(
       "http://localhost:8800/api/post/elevator",
       payload.elevatorPassport,
+      {
+        headers: {
+          Authorization: `Bearer ${payload.token}`,
+        },
+      }
+    );
+    return response.data;
+  }
+  static async addFeature(
+    payload: IPostFormToken<{ featuresList: IFeatureList }>
+  ) {
+    const response = await axios.post(
+      "http://localhost:8800/api/post/elevatorFeatures",
+      payload.data.featuresList,
       {
         headers: {
           Authorization: `Bearer ${payload.token}`,
