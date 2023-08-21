@@ -15,9 +15,8 @@ import CustomError from "../CustomError";
 
 function EmployeeForm() {
   const dispatch = useAppDispatch();
-  const { employee, error, posts, postsIsLoading } = useAppSelector(
-    (state) => state.employeeFormReducer
-  );
+  const employee = useAppSelector((state) => state.employeeFormReducer);
+  const fetchPostsInfo = useAppSelector((state) => state.fetcPostsReducer);
   useEffect(() => {
     const controller = new AbortController();
     dispatch(
@@ -79,18 +78,18 @@ function EmployeeForm() {
       required: true,
     },
   ];
-  console.log(posts);
   const select = {
     name: "post",
     placeholder: "Должности",
     label: "Должонсти",
     required: true,
-    options: posts.map((post: IData) => {
+    options: fetchPostsInfo.posts.map((post: IData) => {
       return { value: post.id, label: post.name, name: "post" };
     }),
   };
-  if (postsIsLoading) return <Loader />;
-  if (error) return <CustomError errorText={error} />;
+  if (fetchPostsInfo.isLoading) return <Loader />;
+  if (fetchPostsInfo.error)
+    return <CustomError errorText={fetchPostsInfo.error} />;
   return (
     <form className={styles.form} onSubmit={submitHandler}>
       {inputs.map((inp) => (

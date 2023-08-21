@@ -1,24 +1,11 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { fetchPosts } from "./ActionCreators";
-import { IData, IEmployeePost, IInputChanges } from "../../interface";
+import { IEmployeePost, IInputChanges } from "../../interface";
 
-interface EmployeeForm {
-  posts: IData[];
-  employee: IEmployeePost;
-  postsIsLoading: boolean;
-  error: string;
-}
-
-const initialState: EmployeeForm = {
-  posts: [],
-  employee: {
-    name: "",
-    surname: "",
-    patronymic: "",
-    post: "",
-  },
-  postsIsLoading: false,
-  error: "",
+const initialState: IEmployeePost = {
+  name: "",
+  surname: "",
+  patronymic: "",
+  post: "",
 };
 
 export const employeeFormSlice = createSlice({
@@ -26,36 +13,16 @@ export const employeeFormSlice = createSlice({
   initialState,
   reducers: {
     changeEmployeeForm(state, action: PayloadAction<IInputChanges>) {
-      state.employee[action.payload.name as keyof IEmployeePost] =
-        action.payload.value;
+      state[action.payload.name as keyof IEmployeePost] = action.payload.value;
     },
     clearEmployee(state) {
-      state.employee = {
+      state = {
         name: "",
         surname: "",
         patronymic: "",
         post: "",
       };
     },
-  },
-  extraReducers(builder) {
-    builder
-      .addCase(fetchPosts.pending.type, (state) => {
-        state.postsIsLoading = true;
-      })
-      .addCase(
-        fetchPosts.fulfilled.type,
-        (state, action: PayloadAction<IData[]>) => {
-          state.posts = action.payload;
-          state.postsIsLoading = false;
-        }
-      )
-      .addCase(
-        fetchPosts.rejected.type,
-        (state, action: PayloadAction<string>) => {
-          state.error = action.payload;
-        }
-      );
   },
 });
 
