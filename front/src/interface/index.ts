@@ -70,6 +70,10 @@ export interface IFeatureList {
   feature: string;
   value: string;
 }
+export interface IManufacturerForm {
+  name: string;
+  type: string;
+}
 export interface IFormSelect {
   onChange: any;
   name: string;

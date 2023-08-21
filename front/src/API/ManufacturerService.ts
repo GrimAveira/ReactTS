@@ -1,5 +1,10 @@
 import axios from "axios";
-import { IData } from "../interface";
+import {
+  IData,
+  IManufacturerForm,
+  IPostFormToken,
+  ISiganlToken,
+} from "../interface";
 
 export default class ManufacturerService {
   static async getAll(payload: {
@@ -12,6 +17,30 @@ export default class ManufacturerService {
       {
         params: { type: payload.type },
         signal: payload.signal,
+        headers: {
+          Authorization: `Bearer ${payload.token}`,
+        },
+      }
+    );
+    return response.data;
+  }
+  static async getAllType(payload: ISiganlToken) {
+    const response = await axios.get<IData>(
+      "http://localhost:8800/api/get/manufacturerType",
+      {
+        signal: payload.signal,
+        headers: {
+          Authorization: `Bearer ${payload.token}`,
+        },
+      }
+    );
+    return response.data;
+  }
+  static async add(payload: IPostFormToken<IManufacturerForm>) {
+    const response = await axios.post<IManufacturerForm>(
+      "http://localhost:8800/api/post/manufacturer",
+      payload.data,
+      {
         headers: {
           Authorization: `Bearer ${payload.token}`,
         },

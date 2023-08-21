@@ -6,6 +6,7 @@ import {
   IElevatorPassport,
   IEmployeePost,
   IFeatureList,
+  IManufacturerForm,
   IPostFormToken,
   ISiganlToken,
   ISignal,
@@ -410,6 +411,46 @@ export const addElevatorFeature = createAsyncThunk(
       let response;
       if (payload.token !== null)
         response = await ElevatorService.addFeature({
+          data: payload.data,
+          token: payload.token,
+        });
+      return response;
+    } catch (error: unknown) {
+      if (error instanceof AxiosError)
+        return thunkAPI.rejectWithValue({
+          status: error.message,
+          message: error.response?.data,
+        });
+    }
+  }
+);
+export const fetchManufacturerType = createAsyncThunk(
+  "manufacturerType/getAll",
+  async (payload: ISiganlToken, thunkAPI) => {
+    try {
+      let response;
+      if (payload.token !== null)
+        response = await ManufacturerService.getAllType({
+          signal: payload.signal,
+          token: payload.token,
+        });
+      return response;
+    } catch (error: unknown) {
+      if (error instanceof AxiosError)
+        return thunkAPI.rejectWithValue({
+          status: error.message,
+          message: error.response?.data,
+        });
+    }
+  }
+);
+export const addManufacturer = createAsyncThunk(
+  "API/postResponse",
+  async (payload: IPostFormToken<IManufacturerForm>, thunkAPI) => {
+    try {
+      let response;
+      if (payload.token !== null)
+        response = await ManufacturerService.add({
           data: payload.data,
           token: payload.token,
         });

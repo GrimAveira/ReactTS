@@ -1,61 +1,62 @@
 import { useEffect } from "react";
-import axios from "axios";
 import styles from "../../css/components/inputAdds/ManufacturerForm.module.css";
-import { useState } from "react";
 import AddInputForm from "../UI/AddInputForm";
 import FormSelectAppMulti from "../UI/SelectFormMulti";
 import MyButtonDataBase from "../UI/MyButtonDataBase";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux";
+import {
+  addManufacturer,
+  fetchManufacturerType,
+} from "../../store/reducers/ActionCreators";
+import { changeManufacturerFormData } from "../../store/reducers/ManufacturerFormSlice";
+import { IData } from "../../interface";
+import Loader from "../Loader";
+import CustomError from "../CustomError";
 
 function ManufacturerForm() {
-  const [manufacturer, setEmployee] = useState({
-    name: "",
-    type: "",
-  });
-  const [types, setTypes] = useState([]);
+  const dispatch = useAppDispatch();
+  const { error, manufacturer, manufacturerTypesIsLoading, manufacturerTypes } =
+    useAppSelector((state) => state.manufacturerFormSlice);
 
   useEffect(() => {
-    axios
-      .get("http://localhost:8800/api/get/manufacturerType", {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
+    const controller = new AbortController();
+    dispatch(
+      fetchManufacturerType({
+        signal: controller.signal,
+        token: localStorage.getItem("token"),
       })
-      .then((response) => setTypes(response.data))
-      .catch((err) => alert(err.response.data));
-  }, []);
-  const changeHandlerInput = (event: {
-    preventDefault: () => void;
-    target: { name: any; value: any };
-  }) => {
+    );
+  }, [dispatch]);
+  const changeHandlerInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
-    setEmployee((emp) => ({
-      ...emp,
-      [event.target.name]: event.target.value,
-    }));
+    dispatch(
+      changeManufacturerFormData({
+        name: event.target.name,
+        value: event.target.value,
+      })
+    );
   };
   const changeHandlerSelect = (newValue: { name: any; value: any }) => {
-    setEmployee((prev) => ({
-      ...prev,
-      [newValue.name]: newValue.value,
-    }));
+    dispatch(
+      changeManufacturerFormData({ name: newValue.name, value: newValue.value })
+    );
   };
-  const submitHandler = () => {
+  const submitHandler = (event: React.ChangeEvent<HTMLFormElement>) => {
+    event.preventDefault();
     if (window.confirm("Вы действительно хотите внести изменения?"))
-      axios
-        .post("http://localhost:8800/api/post/manufacturer", manufacturer, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
+      dispatch(
+        addManufacturer({
+          data: manufacturer,
+          token: localStorage.getItem("token"),
         })
-        .then((resp) => alert(resp.data))
-        .catch((err) => alert(err.response.data));
+      );
   };
 
   const input = {
     name: "name",
     type: "text",
     placeholder: "Производитель",
-    errorMessage:
+    title:
       "Название производителя должно состоять из 3-50 символов и не может включать специальные символы кроме пробела!",
     pattern: `^[А-Яа-я ]{3,50}$`,
     required: true,
@@ -66,11 +67,12 @@ function ManufacturerForm() {
     placeholder: "Специализация",
     label: "Специализация",
     required: true,
-    options: types.map((type: { id: string; name: string }) => {
+    options: manufacturerTypes.map((type: IData) => {
       return { value: type.id, label: type.name, name: "type" };
     }),
   };
-
+  if (manufacturerTypesIsLoading) return <Loader />;
+  if (error) return <CustomError errorText={error} />;
   return (
     <form className={styles.form} onSubmit={submitHandler}>
       <AddInputForm onChange={changeHandlerInput} {...input} />
