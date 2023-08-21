@@ -5,24 +5,26 @@ import authReducer from "./reducers/AuthSlice";
 import areaReducer from "./reducers/AreaSlice";
 import streetReducer from "./reducers/StreetSlice";
 import addressReducer from "./reducers/AddressFormSlice";
-import elevatorFormReducer from "./reducers/ElevatorFormSlice";
 import passportElevatorReducer from "./reducers/PassportElevatorFormSlice";
 import employeeFormReducer from "./reducers/EmployeeFormSlice";
 import listFeaturesFormReducer from "./reducers/ListFeaturesFormSlice";
-import manufacturerFormSlice from "./reducers/ManufacturerFormSlice";
+import manufacturerFormReducer from "./reducers/ManufacturerFormSlice";
+import fetchAddressesReducer from "./reducers/FetchAddressesSlice";
+import fetchElevatorsReducer from "./reducers/FetchElevatorsSlice";
 
 const rootReducer = combineReducers({
+  fetchElevatorsReducer,
+  fetchAddressesReducer,
   addressReducer,
   areaReducer,
   streetReducer,
   userRegDataReducer,
   loginDataReducer,
   authReducer,
-  elevatorFormReducer,
   passportElevatorReducer,
   employeeFormReducer,
   listFeaturesFormReducer,
-  manufacturerFormSlice,
+  manufacturerFormReducer,
 });
 
 export const setupStore = () => {

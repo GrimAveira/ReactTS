@@ -12,7 +12,12 @@ import CustomError from "../CustomError";
 
 function EditElevatorForm() {
   const dispatch = useAppDispatch();
-  const elevatorFormInfo = useAppSelector((state) => state.elevatorFormReducer);
+  const fetchAddressesInfo = useAppSelector(
+    (state) => state.fetchAddressesReducer
+  );
+  const fetchElevatorsInfo = useAppSelector(
+    (state) => state.fetchElevatorsReducer
+  );
   const [triger, setTriger] = useState(false);
 
   useEffect(() => {
@@ -24,16 +29,17 @@ function EditElevatorForm() {
       controller.abort();
     };
   }, [triger, dispatch]);
-  if (
-    elevatorFormInfo.addressesIsLoading ||
-    elevatorFormInfo.elevatorsIsLoading
-  )
+  if (fetchAddressesInfo.isLoading || fetchElevatorsInfo.isLoading)
     return <Loader />;
-  if (elevatorFormInfo.error)
-    return <CustomError errorText={`${elevatorFormInfo.error}`} />;
+  if (fetchAddressesInfo.error || fetchElevatorsInfo.error)
+    return (
+      <CustomError
+        errorText={`${fetchAddressesInfo.error} ${fetchElevatorsInfo.error}`}
+      />
+    );
   return (
     <div className={styles.container}>
-      {elevatorFormInfo.elevators.map((elevator: IElevator, idx) => (
+      {fetchElevatorsInfo.elevators.map((elevator: IElevator, idx) => (
         <EditElevatorFormSingle
           setTriger={setTriger}
           key={idx}
@@ -43,7 +49,7 @@ function EditElevatorForm() {
           house={elevator.house}
           entrance={elevator.entrance}
           elevatorAddressId={elevator.address}
-          addresses={elevatorFormInfo.addresses}
+          addresses={fetchAddressesInfo.addresses}
         />
       ))}
     </div>

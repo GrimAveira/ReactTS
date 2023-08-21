@@ -16,7 +16,7 @@ import CustomError from "../CustomError";
 function ManufacturerForm() {
   const dispatch = useAppDispatch();
   const { error, manufacturer, manufacturerTypesIsLoading, manufacturerTypes } =
-    useAppSelector((state) => state.manufacturerFormSlice);
+    useAppSelector((state) => state.manufacturerFormReducer);
 
   useEffect(() => {
     const controller = new AbortController();

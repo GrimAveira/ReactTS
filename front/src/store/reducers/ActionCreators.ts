@@ -7,6 +7,7 @@ import {
   IEmployeePost,
   IFeatureList,
   IManufacturerForm,
+  IPartForm,
   IPostFormToken,
   ISiganlToken,
   ISignal,
@@ -23,6 +24,7 @@ import ElevatorTypeService from "../../API/ElevatorTypeService";
 import EmployeeService from "../../API/EmployeeService";
 import PostService from "../../API/PostService";
 import FeatureService from "../../API/FeatureService";
+import PartService from "../../API/PartService";
 
 export const fetchArea = createAsyncThunk(
   "area/getAll",
@@ -471,6 +473,26 @@ export const addManufacturerType = createAsyncThunk(
       let response;
       if (payload.token !== null)
         response = await ManufacturerService.addType({
+          data: payload.data,
+          token: payload.token,
+        });
+      return response;
+    } catch (error: unknown) {
+      if (error instanceof AxiosError)
+        return thunkAPI.rejectWithValue({
+          status: error.message,
+          message: error.response?.data,
+        });
+    }
+  }
+);
+export const addPart = createAsyncThunk(
+  "API/postResponse",
+  async (payload: IPostFormToken<IPartForm>, thunkAPI) => {
+    try {
+      let response;
+      if (payload.token !== null)
+        response = await PartService.add({
           data: payload.data,
           token: payload.token,
         });

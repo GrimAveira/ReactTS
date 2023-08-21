@@ -70,6 +70,10 @@ export interface IFeatureList {
   feature: string;
   value: string;
 }
+export interface IPartForm {
+  name: string;
+  manufacturer: string;
+}
 export interface IManufacturerForm {
   name: string;
   type: string;
