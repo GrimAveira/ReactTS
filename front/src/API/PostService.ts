@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ISiganlToken } from "../interface";
+import { IPostFormToken, ISiganlToken } from "../interface";
 
 export default class PostService {
   static async getAll(payload: ISiganlToken) {
@@ -9,6 +9,18 @@ export default class PostService {
         Authorization: `Bearer ${payload.token}`,
       },
     });
+    return response.data;
+  }
+  static async add(payload: IPostFormToken<{ post: string }>) {
+    const response = await axios.post(
+      "http://localhost:8800/api/post/post",
+      payload.data,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
     return response.data;
   }
 }

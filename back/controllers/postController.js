@@ -202,7 +202,7 @@ class postController {
       [req.body.post],
       (err, data) => {
         if (err) return res.status(500).json(err.sqlMessage);
-        return res.status(200).json("Должность добавилась!");
+        return res.status(200).json("Профессия добавилась!");
       }
     );
   }

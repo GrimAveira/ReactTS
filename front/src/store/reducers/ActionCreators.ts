@@ -506,3 +506,23 @@ export const addPart = createAsyncThunk(
     }
   }
 );
+export const addPost = createAsyncThunk(
+  "API/postResponse",
+  async (payload: IPostFormToken<{ post: string }>, thunkAPI) => {
+    try {
+      let response;
+      if (payload.token !== null)
+        response = await PostService.add({
+          data: payload.data,
+          token: payload.token,
+        });
+      return response;
+    } catch (error: unknown) {
+      if (error instanceof AxiosError)
+        return thunkAPI.rejectWithValue({
+          status: error.message,
+          message: error.response?.data,
+        });
+    }
+  }
+);

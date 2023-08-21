@@ -1,34 +1,25 @@
 import React from "react";
 import AddInputForm from "../UI/AddInputForm";
-import axios from "axios";
 import styles from "../../css/components/inputAdds/PostForm.module.css";
 import { useState } from "react";
 import MyButtonDataBase from "../UI/MyButtonDataBase";
+import { useAppDispatch } from "../../hooks/redux";
+import { addPost } from "../../store/reducers/ActionCreators";
 
 function PostForm() {
+  const dispatch = useAppDispatch();
   const [post, setPost] = useState("");
 
-  const changeHandler = (event: {
-    preventDefault: () => void;
-    target: { value: React.SetStateAction<string> };
-  }) => {
+  const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
     setPost(event.target.value);
   };
-  const submitHandler = () => {
+  const submitHandler = (event: React.ChangeEvent<HTMLFormElement>) => {
+    event.preventDefault();
     if (window.confirm("Вы действительно хотите внести изменения?"))
-      axios
-        .post(
-          "http://localhost:8800/api/post/post",
-          { post },
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        )
-        .then((resp) => alert(resp.data))
-        .catch((err) => alert(err.response.data));
+      dispatch(
+        addPost({ data: { post }, token: localStorage.getItem("token") })
+      );
   };
   return (
     <form className={styles.form} onSubmit={submitHandler}>
