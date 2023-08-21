@@ -48,4 +48,16 @@ export default class ManufacturerService {
     );
     return response.data;
   }
+  static async addType(payload: IPostFormToken<{ manufacturerType: string }>) {
+    const response = await axios.post<{ manufacturerType: string }>(
+      "http://localhost:8800/api/post/manufacturerType",
+      payload.data,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+    return response.data;
+  }
 }

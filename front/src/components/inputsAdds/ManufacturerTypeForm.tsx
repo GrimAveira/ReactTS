@@ -1,34 +1,27 @@
 import React from "react";
 import AddInputForm from "../UI/AddInputForm";
-import axios from "axios";
 import styles from "../../css/components/inputAdds/ManufacturerTypeForm.module.css";
 import { useState } from "react";
 import MyButtonDataBase from "../UI/MyButtonDataBase";
+import { useAppDispatch } from "../../hooks/redux";
+import { addManufacturerType } from "../../store/reducers/ActionCreators";
 
 function ManufacturerTypeForm() {
   const [manufacturerType, setManufacturerType] = useState("");
-
-  const changeHandler = (event: {
-    preventDefault: () => void;
-    target: { value: React.SetStateAction<string> };
-  }) => {
+  const dispatch = useAppDispatch();
+  const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
     setManufacturerType(event.target.value);
   };
-  const submitHandler = () => {
+  const submitHandler = (event: React.ChangeEvent<HTMLFormElement>) => {
+    event.preventDefault();
     if (window.confirm("Вы действительно хотите внести изменения?"))
-      axios
-        .post(
-          "http://localhost:8800/api/post/manufacturerType",
-          { manufacturerType },
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        )
-        .then((resp) => alert(resp.data))
-        .catch((err) => alert(err.response.data));
+      dispatch(
+        addManufacturerType({
+          data: { manufacturerType },
+          token: localStorage.getItem("token"),
+        })
+      );
   };
 
   return (

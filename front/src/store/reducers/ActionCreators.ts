@@ -464,3 +464,23 @@ export const addManufacturer = createAsyncThunk(
     }
   }
 );
+export const addManufacturerType = createAsyncThunk(
+  "API/postResponse",
+  async (payload: IPostFormToken<{ manufacturerType: string }>, thunkAPI) => {
+    try {
+      let response;
+      if (payload.token !== null)
+        response = await ManufacturerService.addType({
+          data: payload.data,
+          token: payload.token,
+        });
+      return response;
+    } catch (error: unknown) {
+      if (error instanceof AxiosError)
+        return thunkAPI.rejectWithValue({
+          status: error.message,
+          message: error.response?.data,
+        });
+    }
+  }
+);
