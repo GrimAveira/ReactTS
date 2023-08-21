@@ -16,8 +16,10 @@ import fetchManufacturersReducer from "./reducers/FetchManufacturersSlice";
 import fetchPostsReducer from "./reducers/FetchPostsSlice";
 import fetchFeaturesReducer from "./reducers/FetchFeaturesSlice";
 import fetchManufacturerTypesReducer from "./reducers/FetchManufacturerTypesSlice";
+import partFormReducer from "./reducers/PartFormSlice";
 
 const rootReducer = combineReducers({
+  partFormReducer,
   fetchManufacturerTypesReducer,
   fetchFeaturesReducer,
   fetchPostsReducer,

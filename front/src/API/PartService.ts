@@ -3,8 +3,8 @@ import { IPartForm, IPostFormToken } from "../interface";
 
 export default class PartService {
   static async add(payload: IPostFormToken<IPartForm>) {
-    const response = await axios.post<IPartForm>(
-      "http://localhost:8800/api/post/manufacturer",
+    const response = await axios.post(
+      "http://localhost:8800/api/post/part",
       payload.data,
       {
         headers: {

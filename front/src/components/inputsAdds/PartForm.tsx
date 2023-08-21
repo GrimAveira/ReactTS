@@ -1,61 +1,54 @@
 import React, { useEffect } from "react";
-import axios from "axios";
 import styles from "../../css/components/inputAdds/PartForm.module.css";
-import { useState } from "react";
 import AddInputForm from "../UI/AddInputForm";
 import FormSelectAppMulti from "../UI/SelectFormMulti";
 import MyButtonDataBase from "../UI/MyButtonDataBase";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux";
+import {
+  addPart,
+  fetchManufacturers,
+} from "../../store/reducers/ActionCreators";
+import { changePartForm } from "../../store/reducers/PartFormSlice";
+import { IData } from "../../interface";
+import Loader from "../Loader";
+import CustomError from "../CustomError";
 
 function PartForm() {
-  const [part, setPart] = useState({
-    name: "",
-    manufacturer: "",
-  });
-  const [manufacturers, setManufacturers] = useState([]);
+  const dispatch = useAppDispatch();
+  const part = useAppSelector((state) => state.partFormReducer);
+  const fetchManufacturersInfo = useAppSelector(
+    (state) => state.fetchManufacturersReducer
+  );
   useEffect(() => {
-    axios
-      .get("http://localhost:8800/api/get/manufacturer", {
-        params: { type: "1" },
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
+    const controller = new AbortController();
+    dispatch(
+      fetchManufacturers({
+        signal: controller.signal,
+        token: localStorage.getItem("token"),
+        type: "1",
       })
-      .then((response) => setManufacturers(response.data))
-      .catch((err) => console.log(err));
-  }, []);
-  const changeHandlerInput = (event: {
-    preventDefault: () => void;
-    target: { name: any; value: any };
-  }) => {
+    );
+  }, [dispatch]);
+  const changeHandlerInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
-    setPart((emp) => ({
-      ...emp,
-      [event.target.name]: event.target.value,
-    }));
+    dispatch(
+      changePartForm({ name: event.target.name, value: event.target.value })
+    );
   };
   const changeHandlerSelect = (newValue: { name: any; value: any }) => {
-    setPart((prev) => ({
-      ...prev,
-      [newValue.name]: newValue.value,
-    }));
+    dispatch(changePartForm({ name: newValue.name, value: newValue.value }));
   };
-  const submitHandler = () => {
+  const submitHandler = (event: React.ChangeEvent<HTMLFormElement>) => {
+    event.preventDefault();
     if (window.confirm("Вы действительно хотите внести изменения?"))
-      axios
-        .post("http://localhost:8800/api/post/part", part, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        })
-        .then((resp) => alert(resp.data))
-        .catch((err) => alert(err.response.data));
+      dispatch(addPart({ data: part, token: localStorage.getItem("token") }));
   };
 
   const input = {
     name: "name",
     type: "text",
     placeholder: "Деталь",
-    errorMessage:
+    title:
       "Название детали должно состоять из 3-20 символов и не может включать специальные символы кроме пробела!",
     pattern: `^[А-Яа-я ]{3,20}$`,
     required: true,
@@ -66,11 +59,13 @@ function PartForm() {
     placeholder: "Прозводитель",
     label: "Прозводитель",
     required: true,
-    options: manufacturers.map((man: { id: string; name: string }) => {
+    options: fetchManufacturersInfo.manufacturers.map((man: IData) => {
       return { value: man.id, label: man.name, name: "manufacturer" };
     }),
   };
-
+  if (fetchManufacturersInfo.isLoading) return <Loader />;
+  if (fetchManufacturersInfo.error)
+    return <CustomError errorText={fetchManufacturersInfo.error} />;
   return (
     <form className={styles.form} onSubmit={submitHandler}>
       <AddInputForm onChange={changeHandlerInput} {...input} />
