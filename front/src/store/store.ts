@@ -11,8 +11,12 @@ import listFeaturesFormReducer from "./reducers/ListFeaturesFormSlice";
 import manufacturerFormReducer from "./reducers/ManufacturerFormSlice";
 import fetchAddressesReducer from "./reducers/FetchAddressesSlice";
 import fetchElevatorsReducer from "./reducers/FetchElevatorsSlice";
+import fetchElevatorTypesReducer from "./reducers/fetchElevatorTypesSlice";
+import fetchManufacturersReducer from "./reducers/fetchManufacturersSlice";
 
 const rootReducer = combineReducers({
+  fetchElevatorTypesReducer,
+  fetchManufacturersReducer,
   fetchElevatorsReducer,
   fetchAddressesReducer,
   addressReducer,

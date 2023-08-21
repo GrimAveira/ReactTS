@@ -17,7 +17,18 @@ import CustomError from "../CustomError";
 
 function ElevatorPassport() {
   const dispatch = useAppDispatch();
-  const elevatorInfo = useAppSelector((state) => state.passportElevatorReducer);
+  const passportElevator = useAppSelector(
+    (state) => state.passportElevatorReducer
+  );
+  const fetchManufacturersInfo = useAppSelector(
+    (state) => state.fetchManufacturersReducer
+  );
+  const fetchAddressesInfo = useAppSelector(
+    (state) => state.fetchAddressesReducer
+  );
+  const fetchElevatorTypesInfo = useAppSelector(
+    (state) => state.fetchElevatorTypesReducer
+  );
   useEffect(() => {
     const controller = new AbortController();
     const token = localStorage.getItem("token");
@@ -49,7 +60,7 @@ function ElevatorPassport() {
     if (window.confirm("Вы действительно хотите внести изменения?"))
       dispatch(
         addElevator({
-          elevatorPassport: elevatorInfo.elevatorPassport,
+          elevatorPassport: passportElevator,
           token: localStorage.getItem("token"),
         })
       );
@@ -78,7 +89,7 @@ function ElevatorPassport() {
       placeholder: "Производитель",
       label: "Производитель",
       required: true,
-      options: elevatorInfo.manufacturers.map((man: IData) => {
+      options: fetchManufacturersInfo.manufacturers.map((man: IData) => {
         return { value: man.id, label: man.name, name: "manufacturer" };
       }),
     },
@@ -87,7 +98,7 @@ function ElevatorPassport() {
       placeholder: "Адрес",
       label: "Адрес",
       required: true,
-      options: elevatorInfo.addresses.map((address: IAddress) => {
+      options: fetchAddressesInfo.addresses.map((address: IAddress) => {
         return {
           value: address.id,
           label: `Район ${address.area}, ул.${address.street}, д.${address.house},п. ${address.entrance}`,
@@ -100,18 +111,27 @@ function ElevatorPassport() {
       placeholder: "Тип лифта",
       label: "Тип лифта",
       required: true,
-      options: elevatorInfo.elevatorTypes.map((type: IData) => {
+      options: fetchElevatorTypesInfo.elevatorTypes.map((type: IData) => {
         return { value: type.id, label: type.name, name: "elevatorType" };
       }),
     },
   ];
   if (
-    elevatorInfo.addressesIsLoading ||
-    elevatorInfo.elevatorTypesIsLoading ||
-    elevatorInfo.manufacturersIsLoading
+    fetchManufacturersInfo.isLoading ||
+    fetchAddressesInfo.isLoading ||
+    fetchElevatorTypesInfo.isLoading
   )
     return <Loader />;
-  if (elevatorInfo.error) return <CustomError errorText={elevatorInfo.error} />;
+  if (
+    fetchManufacturersInfo.error ||
+    fetchAddressesInfo.error ||
+    fetchElevatorTypesInfo.error
+  )
+    return (
+      <CustomError
+        errorText={`${fetchManufacturersInfo.error} ${fetchAddressesInfo.error} ${fetchElevatorTypesInfo.error}`}
+      />
+    );
 
   return (
     <form className={styles.form} onSubmit={submitHandler}>
