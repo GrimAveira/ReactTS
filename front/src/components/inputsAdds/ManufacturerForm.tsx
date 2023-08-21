@@ -15,8 +15,10 @@ import CustomError from "../CustomError";
 
 function ManufacturerForm() {
   const dispatch = useAppDispatch();
-  const { error, manufacturer, manufacturerTypesIsLoading, manufacturerTypes } =
-    useAppSelector((state) => state.manufacturerFormReducer);
+  const manufacturer = useAppSelector((state) => state.manufacturerFormReducer);
+  const fetchManufacturerTypeInfo = useAppSelector(
+    (state) => state.fetchManufacturerTypesReducer
+  );
 
   useEffect(() => {
     const controller = new AbortController();
@@ -67,12 +69,13 @@ function ManufacturerForm() {
     placeholder: "Специализация",
     label: "Специализация",
     required: true,
-    options: manufacturerTypes.map((type: IData) => {
+    options: fetchManufacturerTypeInfo.manufacturerTypes.map((type: IData) => {
       return { value: type.id, label: type.name, name: "type" };
     }),
   };
-  if (manufacturerTypesIsLoading) return <Loader />;
-  if (error) return <CustomError errorText={error} />;
+  if (fetchManufacturerTypeInfo.isLoading) return <Loader />;
+  if (fetchManufacturerTypeInfo.error)
+    return <CustomError errorText={fetchManufacturerTypeInfo.error} />;
   return (
     <form className={styles.form} onSubmit={submitHandler}>
       <AddInputForm onChange={changeHandlerInput} {...input} />

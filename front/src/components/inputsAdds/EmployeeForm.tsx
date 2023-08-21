@@ -16,7 +16,7 @@ import CustomError from "../CustomError";
 function EmployeeForm() {
   const dispatch = useAppDispatch();
   const employee = useAppSelector((state) => state.employeeFormReducer);
-  const fetchPostsInfo = useAppSelector((state) => state.fetcPostsReducer);
+  const fetchPostsInfo = useAppSelector((state) => state.fetchPostsReducer);
   useEffect(() => {
     const controller = new AbortController();
     dispatch(

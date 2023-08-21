@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import AddInputForm from "../UI/AddInputForm";
 import FormSelectAppMulti from "../UI/SelectFormMulti";
 import MyButtonDataBase from "../UI/MyButtonDataBase";
-import { IData, IInputChanges } from "../../interface";
+import { IData, IElevator, IInputChanges } from "../../interface";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import {
   addElevatorFeature,
@@ -16,14 +16,13 @@ import CustomError from "../CustomError";
 
 function ListFeaturesForm() {
   const dispatch = useAppDispatch();
-  const {
-    elevatorIsLoading,
-    elevators,
-    error,
-    features,
-    featuresIsLoading,
-    featuresList,
-  } = useAppSelector((state) => state.listFeaturesFormReducer);
+  const fetchFeaturesInfo = useAppSelector(
+    (state) => state.fetchFeaturesReducer
+  );
+  const fetchElevatorsInfo = useAppSelector(
+    (state) => state.fetchElevatorsReducer
+  );
+  const featuresList = useAppSelector((state) => state.listFeaturesFormReducer);
   console.log(featuresList);
   useEffect(() => {
     const controller = new AbortController();
@@ -64,8 +63,12 @@ function ListFeaturesForm() {
       placeholder: "Лифт",
       label: "Лифт",
       required: true,
-      options: elevators.map((el) => {
-        return { value: el, label: el, name: "elevator" };
+      options: fetchElevatorsInfo.elevators.map((elevator: IElevator) => {
+        return {
+          value: elevator.serial_number,
+          label: elevator.serial_number,
+          name: "elevator",
+        };
       }),
     },
     {
@@ -73,7 +76,7 @@ function ListFeaturesForm() {
       placeholder: "Характеристика",
       label: "Характеристика",
       required: true,
-      options: features.map((feature: IData) => {
+      options: fetchFeaturesInfo.features.map((feature: IData) => {
         return {
           value: feature.id,
           label: feature.name,
@@ -82,8 +85,14 @@ function ListFeaturesForm() {
       }),
     },
   ];
-  if (elevatorIsLoading || featuresIsLoading) return <Loader />;
-  if (error) return <CustomError errorText={error} />;
+  if (fetchFeaturesInfo.isLoading || fetchElevatorsInfo.isLoading)
+    return <Loader />;
+  if (fetchFeaturesInfo.error || fetchElevatorsInfo.error)
+    return (
+      <CustomError
+        errorText={`${fetchFeaturesInfo.error} ${fetchElevatorsInfo.error}`}
+      />
+    );
   return (
     <form className={styles.form} onSubmit={submitHandler}>
       {selects.map((str) => (

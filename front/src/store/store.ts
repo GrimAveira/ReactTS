@@ -13,10 +13,14 @@ import fetchAddressesReducer from "./reducers/FetchAddressesSlice";
 import fetchElevatorsReducer from "./reducers/FetchElevatorsSlice";
 import fetchElevatorTypesReducer from "./reducers/FetchElevatorTypesSlice";
 import fetchManufacturersReducer from "./reducers/FetchManufacturersSlice";
-import fetcPostsReducer from "./reducers/FetchPostsSlice";
+import fetchPostsReducer from "./reducers/FetchPostsSlice";
+import fetchFeaturesReducer from "./reducers/FetchFeaturesSlice";
+import fetchManufacturerTypesReducer from "./reducers/FetchManufacturerTypesSlice";
 
 const rootReducer = combineReducers({
-  fetcPostsReducer,
+  fetchManufacturerTypesReducer,
+  fetchFeaturesReducer,
+  fetchPostsReducer,
   fetchElevatorTypesReducer,
   fetchManufacturersReducer,
   fetchElevatorsReducer,

@@ -1,22 +1,9 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { IData, IInputChanges, IManufacturerForm } from "../../interface";
-import { fetchManufacturerType } from "./ActionCreators";
+import { IInputChanges, IManufacturerForm } from "../../interface";
 
-interface ManufacturerFormData {
-  manufacturer: IManufacturerForm;
-  manufacturerTypes: IData[];
-  manufacturerTypesIsLoading: boolean;
-  error: string;
-}
-
-const initialState: ManufacturerFormData = {
-  manufacturer: {
-    name: "",
-    type: "",
-  },
-  manufacturerTypes: [],
-  manufacturerTypesIsLoading: false,
-  error: "",
+const initialState: IManufacturerForm = {
+  name: "",
+  type: "",
 };
 
 export const manufacturerFormSlice = createSlice({
@@ -24,29 +11,9 @@ export const manufacturerFormSlice = createSlice({
   initialState,
   reducers: {
     changeManufacturerFormData(state, action: PayloadAction<IInputChanges>) {
-      state.manufacturer[action.payload.name as keyof IManufacturerForm] =
+      state[action.payload.name as keyof IManufacturerForm] =
         action.payload.value;
     },
-  },
-  extraReducers(builder) {
-    builder
-      .addCase(fetchManufacturerType.pending.type, (state) => {
-        state.manufacturerTypesIsLoading = true;
-      })
-      .addCase(
-        fetchManufacturerType.fulfilled.type,
-        (state, action: PayloadAction<IData[]>) => {
-          state.manufacturerTypes = action.payload;
-          state.manufacturerTypesIsLoading = false;
-        }
-      )
-      .addCase(
-        fetchManufacturerType.rejected.type,
-        (state, action: PayloadAction<string>) => {
-          state.manufacturerTypesIsLoading = false;
-          state.error = action.payload;
-        }
-      );
   },
 });
 
