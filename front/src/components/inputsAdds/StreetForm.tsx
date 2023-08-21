@@ -1,33 +1,23 @@
 import AddInputForm from "../UI/AddInputForm";
-import axios from "axios";
 import styles from "../../css/components/inputAdds/StreetForm.module.css";
-import { SetStateAction, useState } from "react";
+import { useState } from "react";
 import MyButtonDataBase from "../UI/MyButtonDataBase";
+import { useAppDispatch } from "../../hooks/redux";
+import { addStreet } from "../../store/reducers/ActionCreators";
 
 function StreetForm() {
   const [street, setStreet] = useState("");
-
-  const changeHandler = (event: {
-    preventDefault: () => void;
-    target: { value: SetStateAction<string> };
-  }) => {
+  const dispatch = useAppDispatch();
+  const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
     setStreet(event.target.value);
   };
-  const submitHandler = () => {
+  const submitHandler = (event: React.ChangeEvent<HTMLFormElement>) => {
+    event.preventDefault();
     if (window.confirm("Вы действительно хотите внести изменения?"))
-      axios
-        .post(
-          "http://localhost:8800/api/post/street",
-          { street },
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        )
-        .then((resp) => alert(resp.data))
-        .catch((err) => alert(err.response.data));
+      dispatch(
+        addStreet({ data: { street }, token: localStorage.getItem("token") })
+      );
   };
   return (
     <form className={styles.form} onSubmit={submitHandler}>

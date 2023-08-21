@@ -1,11 +1,23 @@
 import axios from "axios";
-import { IData, ISignal } from "../interface";
+import { IData, IPostFormToken, ISignal } from "../interface";
 
 export default class StreetService {
-  static async getAll(params: ISignal | undefined) {
+  static async getAll(payload: ISignal | undefined) {
     const response = await axios.get<IData[]>(
       "http://localhost:8800/api/get/street",
-      params
+      payload
+    );
+    return response.data;
+  }
+  static async add(payload: IPostFormToken<{ street: string }>) {
+    const response = await axios.post(
+      "http://localhost:8800/api/post/street",
+      payload.data,
+      {
+        headers: {
+          Authorization: `Bearer ${payload.token}`,
+        },
+      }
     );
     return response.data;
   }

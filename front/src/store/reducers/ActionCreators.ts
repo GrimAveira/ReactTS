@@ -25,6 +25,7 @@ import EmployeeService from "../../API/EmployeeService";
 import PostService from "../../API/PostService";
 import FeatureService from "../../API/FeatureService";
 import PartService from "../../API/PartService";
+import RoleService from "../../API/RoleService";
 
 export const fetchArea = createAsyncThunk(
   "area/getAll",
@@ -513,6 +514,46 @@ export const addPost = createAsyncThunk(
       let response;
       if (payload.token !== null)
         response = await PostService.add({
+          data: payload.data,
+          token: payload.token,
+        });
+      return response;
+    } catch (error: unknown) {
+      if (error instanceof AxiosError)
+        return thunkAPI.rejectWithValue({
+          status: error.message,
+          message: error.response?.data,
+        });
+    }
+  }
+);
+export const addRole = createAsyncThunk(
+  "API/postResponse",
+  async (payload: IPostFormToken<{ role: string }>, thunkAPI) => {
+    try {
+      let response;
+      if (payload.token !== null)
+        response = await RoleService.add({
+          data: payload.data,
+          token: payload.token,
+        });
+      return response;
+    } catch (error: unknown) {
+      if (error instanceof AxiosError)
+        return thunkAPI.rejectWithValue({
+          status: error.message,
+          message: error.response?.data,
+        });
+    }
+  }
+);
+export const addStreet = createAsyncThunk(
+  "API/postResponse",
+  async (payload: IPostFormToken<{ street: string }>, thunkAPI) => {
+    try {
+      let response;
+      if (payload.token !== null)
+        response = await StreetService.add({
           data: payload.data,
           token: payload.token,
         });
