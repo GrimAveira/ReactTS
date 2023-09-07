@@ -15,7 +15,7 @@ import {
 import UserService from "../../API/UserService";
 import AddressService from "../../API/AddressService";
 import AppStatusService from "../../API/AppStatusService";
-import AppTypeService from "../../API/AppTypeService";
+import ApplicationTypeService from "../../API/ApplicationTypeService";
 import BreakingTypeService from "../../API/BreakingTypeService";
 import ElevatorService from "../../API/ElevatorService";
 import { AxiosError } from "axios";
@@ -26,6 +26,7 @@ import PostService from "../../API/PostService";
 import FeatureService from "../../API/FeatureService";
 import PartService from "../../API/PartService";
 import RoleService from "../../API/RoleService";
+import ApplicationService from "../../API/ApplicationService";
 
 export const fetchArea = createAsyncThunk(
   "area/getAll",
@@ -116,7 +117,8 @@ export const addAppType = createAsyncThunk(
   async (payload: IPostFormToken<{ appType: string }>, thunkAPI) => {
     try {
       let response;
-      if (payload.token !== null) response = await AppTypeService.add(payload);
+      if (payload.token !== null)
+        response = await ApplicationTypeService.add(payload);
       return response;
     } catch (error: unknown) {
       if (error instanceof AxiosError) {
@@ -555,6 +557,46 @@ export const addStreet = createAsyncThunk(
       if (payload.token !== null)
         response = await StreetService.add({
           data: payload.data,
+          token: payload.token,
+        });
+      return response;
+    } catch (error: unknown) {
+      if (error instanceof AxiosError)
+        return thunkAPI.rejectWithValue({
+          status: error.message,
+          message: error.response?.data,
+        });
+    }
+  }
+);
+export const fetchApplications = createAsyncThunk(
+  "applications/getAll",
+  async (payload: ISiganlToken, thunkAPI) => {
+    try {
+      let response;
+      if (payload.token !== null)
+        response = await ApplicationService.getAll({
+          signal: payload.signal,
+          token: payload.token,
+        });
+      return response;
+    } catch (error: unknown) {
+      if (error instanceof AxiosError)
+        return thunkAPI.rejectWithValue({
+          status: error.message,
+          message: error.response?.data,
+        });
+    }
+  }
+);
+export const fetchEmployeesApplications = createAsyncThunk(
+  "EmployeesApplications/getAll",
+  async (payload: ISiganlToken, thunkAPI) => {
+    try {
+      let response;
+      if (payload.token !== null)
+        response = await EmployeeService.getEmployeeApplication({
+          signal: payload.signal,
           token: payload.token,
         });
       return response;

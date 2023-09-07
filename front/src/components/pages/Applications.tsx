@@ -18,6 +18,7 @@ import { IApp, IEmployee } from "../../interface";
 
 function Applications() {
   const [modalActive, setModalActive] = useState(false);
+
   const [applications, setApplications] = useState([[]]);
   const [employeesApp, setEmployees] = useState({});
   const [breaking, setBreaking] = useState<[]>([]);

@@ -78,6 +78,23 @@ export interface IManufacturerForm {
   name: string;
   type: string;
 }
+export interface IApplication {
+  id: number;
+  start_date: string;
+  finish_date: string;
+  type: string;
+  breaking: string;
+  description: string;
+  status: string;
+  elevator: 322;
+  userName: string;
+  userSurname: string;
+  userPatronymic: string;
+  area: string;
+  street: number;
+  house: number;
+  entrance: number;
+}
 export interface IFormSelect {
   onChange: any;
   name: string;
@@ -148,7 +165,7 @@ export interface IApp {
   employees: {}[];
 }
 export interface IEmployee {
-  application_number: number | any;
+  application_number?: number | any;
   name: string;
   patronymic: string;
   personnel_number: number;

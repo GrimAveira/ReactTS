@@ -11,9 +11,7 @@ function Login() {
   const loginData = useAppSelector((state) => state.loginDataReducer);
   const navigate = useNavigate();
 
-  const changeHandler = (event: {
-    target: { name: string; value: string };
-  }) => {
+  const changeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(
       changeLoginData({ name: event.target.name, value: event.target.value })
     );
@@ -22,7 +20,7 @@ function Login() {
     const userData = await UserService.login(loginData);
     return userData;
   }
-  const submitHandler = async (event: { preventDefault: () => void }) => {
+  const submitHandler = async (event: React.ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
       const userData = await login(loginData);
