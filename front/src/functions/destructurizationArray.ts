@@ -1,6 +1,8 @@
 import { IEmployee } from "../interface";
 
-export default function destructurizationArray(array: IEmployee[]) {
+export default function destructurizationArray(
+  array: IEmployee[]
+): Map<Number, IEmployee[]> {
   let destructurizatedArray = new Map<Number, IEmployee[]>();
   array.forEach((employeer) => {
     let tmpArray = destructurizatedArray.get(employeer.application_number);
@@ -26,20 +28,5 @@ export default function destructurizationArray(array: IEmployee[]) {
         },
       ]);
   });
-  return array.reduce(
-    (obj: {}, app: IEmployee) => ({
-      ...obj,
-      [app.application_number]: [
-        ...(obj[app.application_number as keyof typeof obj] || []),
-        {
-          personnel_number: app.personnel_number,
-          name: app.name,
-          surname: app.surname,
-          patronymic: app.patronymic,
-          post: app.post,
-        },
-      ],
-    }),
-    {}
-  );
+  return destructurizatedArray;
 }

@@ -609,3 +609,23 @@ export const fetchEmployeesApplications = createAsyncThunk(
     }
   }
 );
+export const fetchApplicationsTypes = createAsyncThunk(
+  "ApplicationsTypes/getAll",
+  async (payload: ISiganlToken, thunkAPI) => {
+    try {
+      let response;
+      if (payload.token !== null)
+        response = await ApplicationTypeService.getAll({
+          signal: payload.signal,
+          token: payload.token,
+        });
+      return response;
+    } catch (error: unknown) {
+      if (error instanceof AxiosError)
+        return thunkAPI.rejectWithValue({
+          status: error.message,
+          message: error.response?.data,
+        });
+    }
+  }
+);

@@ -1,42 +1,35 @@
-import { IApplication, IData, IEmployee } from "../../interface";
+import { IApplication, IEmployee } from "../../interface";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { fetchArea } from "./ActionCreators";
-import Applications from "../../components/pages/Applications";
+import arrayPagination from "../../functions/arrayPagination";
+import destructurizationArray from "../../functions/destructurizationArray";
 
 interface FormState {
-  applications: [IApplication[]];
+  applications: IApplication[][];
   employeesApp: Map<Number, IEmployee[]>;
 }
 
-// const initialState: FormState = {
-// };
+const initialState: FormState = {
+  applications: [],
+  employeesApp: new Map<Number, IEmployee[]>(),
+};
 
-// export const applicationFormSlice = createSlice({
-//   name: "areaFetching",
-//   initialState: initialState,
-//   reducers: {},
-//   extraReducers: (builder) => {
-//     builder
-//       .addCase(fetchArea.pending.type, (state) => {
-//         state.isLoading = true;
-//       })
-//       .addCase(
-//         fetchArea.fulfilled.type,
-//         (state, action: PayloadAction<IData[]>) => {
-//           state.isLoading = false;
-//           state.error = "";
-//           state.area = action.payload;
-//         }
-//       )
-//       .addCase(
-//         fetchArea.rejected.type,
-//         (state, action: PayloadAction<string>) => {
-//           console.log(action);
-//           state.isLoading = false;
-//           state.error = action.payload;
-//         }
-//       );
-//   },
-// });
+export const applicationFormSlice = createSlice({
+  name: "areaFetching",
+  initialState: initialState,
+  reducers: {
+    paginationApplication(
+      state: FormState,
+      action: PayloadAction<IApplication[]>
+    ) {
+      state.applications = arrayPagination<IApplication>(action.payload, 3);
+    },
+    desctructrizationArray(
+      state: FormState,
+      action: PayloadAction<IEmployee[]>
+    ) {
+      state.employeesApp = destructurizationArray(action.payload);
+    },
+  },
+});
 
-// export default areaSlice.reducer;
+export default applicationFormSlice.reducer;
