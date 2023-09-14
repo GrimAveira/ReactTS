@@ -609,6 +609,46 @@ export const fetchEmployeesApplications = createAsyncThunk(
     }
   }
 );
+export const fetchBreakingTypes = createAsyncThunk(
+  "BreakingTypes/getAll",
+  async (payload: ISiganlToken, thunkAPI) => {
+    try {
+      let response;
+      if (payload.token !== null)
+        response = await BreakingTypeService.getAll({
+          signal: payload.signal,
+          token: payload.token,
+        });
+      return response;
+    } catch (error: unknown) {
+      if (error instanceof AxiosError)
+        return thunkAPI.rejectWithValue({
+          status: error.message,
+          message: error.response?.data,
+        });
+    }
+  }
+);
+export const fetchApplicationsStatuses = createAsyncThunk(
+  "AppStatus/getAll",
+  async (payload: ISiganlToken, thunkAPI) => {
+    try {
+      let response;
+      if (payload.token !== null)
+        response = await AppStatusService.getAll({
+          signal: payload.signal,
+          token: payload.token,
+        });
+      return response;
+    } catch (error: unknown) {
+      if (error instanceof AxiosError)
+        return thunkAPI.rejectWithValue({
+          status: error.message,
+          message: error.response?.data,
+        });
+    }
+  }
+);
 export const fetchApplicationsTypes = createAsyncThunk(
   "ApplicationsTypes/getAll",
   async (payload: ISiganlToken, thunkAPI) => {
@@ -616,6 +656,26 @@ export const fetchApplicationsTypes = createAsyncThunk(
       let response;
       if (payload.token !== null)
         response = await ApplicationTypeService.getAll({
+          signal: payload.signal,
+          token: payload.token,
+        });
+      return response;
+    } catch (error: unknown) {
+      if (error instanceof AxiosError)
+        return thunkAPI.rejectWithValue({
+          status: error.message,
+          message: error.response?.data,
+        });
+    }
+  }
+);
+export const fetchEmployeeAll = createAsyncThunk(
+  "Employee/getAll",
+  async (payload: ISiganlToken, thunkAPI) => {
+    try {
+      let response;
+      if (payload.token !== null)
+        response = await EmployeeService.getAll({
           signal: payload.signal,
           token: payload.token,
         });

@@ -1,20 +1,20 @@
-import { IApplication, IEmployee } from "../../interface";
+import { IApplication, IEmployeeWithApp } from "../../interface";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import arrayPagination from "../../functions/arrayPagination";
 import destructurizationArray from "../../functions/destructurizationArray";
 
 interface FormState {
   applications: IApplication[][];
-  employeesApp: Map<Number, IEmployee[]>;
+  employeesApp: Map<Number, IEmployeeWithApp[]>;
 }
 
 const initialState: FormState = {
   applications: [],
-  employeesApp: new Map<Number, IEmployee[]>(),
+  employeesApp: new Map<Number, IEmployeeWithApp[]>(),
 };
 
 export const applicationFormSlice = createSlice({
-  name: "areaFetching",
+  name: "applicationFormSlice",
   initialState: initialState,
   reducers: {
     paginationApplication(
@@ -25,7 +25,7 @@ export const applicationFormSlice = createSlice({
     },
     desctructrizationArray(
       state: FormState,
-      action: PayloadAction<IEmployee[]>
+      action: PayloadAction<IEmployeeWithApp[]>
     ) {
       state.employeesApp = destructurizationArray(action.payload);
     },
@@ -33,3 +33,7 @@ export const applicationFormSlice = createSlice({
 });
 
 export default applicationFormSlice.reducer;
+export const paginationApplication =
+  applicationFormSlice.actions.paginationApplication;
+export const desctructrizationArray =
+  applicationFormSlice.actions.desctructrizationArray;

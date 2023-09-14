@@ -164,8 +164,16 @@ export interface IApp {
   userSurname: string;
   employees: {}[];
 }
+export interface IEmployeeWithApp {
+  application_number: number;
+  name: string;
+  patronymic: string;
+  personnel_number: number;
+  post: number;
+  surname: string;
+}
 export interface IEmployee {
-  application_number?: number | any;
+  id: number;
   name: string;
   patronymic: string;
   personnel_number: number;

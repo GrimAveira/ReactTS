@@ -15,9 +15,36 @@ import Pagination from "../Pagination";
 import destructurizationArray from "../../functions/destructurizationArray";
 import Loader from "../Loader";
 import { IApp, IEmployee } from "../../interface";
+import { useAppSelector } from "../../hooks/redux";
 
 function Applications() {
   const [modalActive, setModalActive] = useState(false);
+
+  const applicationFormInfo = useAppSelector(
+    (state) => state.applicaitonFormReducer
+  );
+
+  const applicationsFetchInfo = useAppSelector(
+    (state) => state.fetchApplicationsReducer
+  );
+  const employeeAppFetchInfo = useAppSelector(
+    (state) => state.fetchEmployeeAppReducer
+  );
+  const breakingTypesFetchInfo = useAppSelector(
+    (state) => state.fetchBreakingTypesReducer
+  );
+  const applicationsStatusesFetchInfo = useAppSelector(
+    (state) => state.fetchApplicationsStatusesReducer
+  );
+  const applicationsTypesFetchInfo = useAppSelector(
+    (state) => state.fetchApplicationsTypesReducer
+  );
+  const elevatorsFetchInfo = useAppSelector(
+    (state) => state.fetchElevatorsReducer
+  );
+  const amployeesAllFetchInfo = useAppSelector(
+    (state) => state.fetchEmployeeAppReducer
+  );
 
   const [applications, setApplications] = useState([[]]);
   const [employeesApp, setEmployees] = useState({});
@@ -26,6 +53,7 @@ function Applications() {
   const [type, setType] = useState<[]>([]);
   const [elevator, setElevator] = useState<[]>([]);
   const [employeesAll, setAllEmployees] = useState<IEmployee[]>([]);
+
   const [triger, setTriger] = useState(false);
   const [counter, setCounter] = useState(0);
   const [isLoading, setIsLoading] = useState(true);

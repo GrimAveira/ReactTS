@@ -17,6 +17,13 @@ import fetchPostsReducer from "./reducers/FetchPostsSlice";
 import fetchFeaturesReducer from "./reducers/FetchFeaturesSlice";
 import fetchManufacturerTypesReducer from "./reducers/FetchManufacturerTypesSlice";
 import partFormReducer from "./reducers/PartFormSlice";
+import applicaitonFormReducer from "./reducers/ApplicationFormSlice";
+import fetchApplicationsReducer from "./reducers/FetchApplicationsSlice";
+import fetchEmployeeAppReducer from "./reducers/FetchEmployeeAppSlice";
+import fetchBreakingTypesReducer from "./reducers/FetchBreakingTypesSlice";
+import fetchApplicationsStatusesReducer from "./reducers/FetchApplicationsStatusesSlice";
+import fetchApplicationsTypesReducer from "./reducers/FetchApplicationsTypesSlice";
+import fetchEmployeeSliceReducer from "./reducers/FetchEmployeeSlice";
 
 const rootReducer = combineReducers({
   partFormReducer,
@@ -37,6 +44,13 @@ const rootReducer = combineReducers({
   employeeFormReducer,
   listFeaturesFormReducer,
   manufacturerFormReducer,
+  applicaitonFormReducer,
+  fetchApplicationsReducer,
+  fetchEmployeeAppReducer,
+  fetchBreakingTypesReducer,
+  fetchApplicationsStatusesReducer,
+  fetchApplicationsTypesReducer,
+  fetchEmployeeSliceReducer,
 });
 
 export const setupStore = () => {
