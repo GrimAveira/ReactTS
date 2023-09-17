@@ -1,9 +1,9 @@
-import { IEmployeeWithApp } from "../interface";
+import { IEmployee, IEmployeeWithApp } from "../interface";
 
 export default function destructurizationArray(
   array: IEmployeeWithApp[]
-): Map<Number, IEmployeeWithApp[]> {
-  let destructurizatedArray = new Map<Number, IEmployeeWithApp[]>();
+): Map<Number, IEmployee[]> {
+  let destructurizatedArray = new Map<Number, IEmployee[]>();
   array.forEach((employeer) => {
     let tmpArray = destructurizatedArray.get(employeer.application_number);
     if (tmpArray)

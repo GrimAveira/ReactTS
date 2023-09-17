@@ -1,6 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { fetchEmployeesApplications } from "./ActionCreators";
-import { IApplication, IEmployeeWithApp } from "../../interface/index";
+import { IEmployeeWithApp } from "../../interface/index";
 
 interface FetchEmployeeAppState {
   isLoading: boolean;

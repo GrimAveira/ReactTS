@@ -8,7 +8,7 @@ import { BiMessageRoundedDetail } from "react-icons/bi";
 import { TbListDetails } from "react-icons/tb";
 import Modal from "./Modal";
 import PartsModalForm from "./PartsModalForm";
-import { IElevator, IEmployee } from "../interface";
+import { IData, IElevator, IEmployee } from "../interface";
 
 function ManagerApplication(data: {
   id: number;
@@ -23,11 +23,11 @@ function ManagerApplication(data: {
   userSurname: string;
   userPatronymic: string;
   employees: IEmployee[];
-  typeBD: [];
-  breakingBD: [];
-  statusBD: [];
-  elevatorBD: [];
-  employeesApp: [];
+  typeBD: IData[];
+  breakingBD: IData[];
+  statusBD: IData[];
+  elevatorBD: IElevator[];
+  employeesApp: IEmployee[];
   area: string;
   street: string;
   entrance: number;

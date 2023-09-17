@@ -1,17 +1,17 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { fetchEmployeeAll, fetchEmployeesApplications } from "./ActionCreators";
-import { IApplication, IEmployee } from "../../interface/index";
+import { fetchEmployeeAll } from "./ActionCreators";
+import { IEmployee } from "../../interface/index";
 
 interface FetchEmployeeState {
   isLoading: boolean;
   error: string | undefined;
-  employeeApp: IEmployee[];
+  employees: IEmployee[];
 }
 
 const initialState: FetchEmployeeState = {
   isLoading: false,
   error: "",
-  employeeApp: [],
+  employees: [],
 };
 
 export const fetchEmployeeAppSlice = createSlice({
@@ -27,7 +27,7 @@ export const fetchEmployeeAppSlice = createSlice({
         fetchEmployeeAll.fulfilled.type,
         (state, action: PayloadAction<IEmployee[]>) => {
           state.isLoading = false;
-          state.employeeApp = action.payload;
+          state.employees = action.payload;
         }
       )
       .addCase(

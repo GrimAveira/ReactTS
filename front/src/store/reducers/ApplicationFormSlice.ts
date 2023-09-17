@@ -5,12 +5,11 @@ import destructurizationArray from "../../functions/destructurizationArray";
 
 interface FormState {
   applications: IApplication[][];
-  employeesApp: Map<Number, IEmployeeWithApp[]>;
+  employeesApp: {};
 }
-
 const initialState: FormState = {
   applications: [],
-  employeesApp: new Map<Number, IEmployeeWithApp[]>(),
+  employeesApp: {},
 };
 
 export const applicationFormSlice = createSlice({

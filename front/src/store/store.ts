@@ -23,7 +23,7 @@ import fetchEmployeeAppReducer from "./reducers/FetchEmployeeAppSlice";
 import fetchBreakingTypesReducer from "./reducers/FetchBreakingTypesSlice";
 import fetchApplicationsStatusesReducer from "./reducers/FetchApplicationsStatusesSlice";
 import fetchApplicationsTypesReducer from "./reducers/FetchApplicationsTypesSlice";
-import fetchEmployeeSliceReducer from "./reducers/FetchEmployeeSlice";
+import fetchEmployeeReducer from "./reducers/FetchEmployeeSlice";
 
 const rootReducer = combineReducers({
   partFormReducer,
@@ -50,11 +50,14 @@ const rootReducer = combineReducers({
   fetchBreakingTypesReducer,
   fetchApplicationsStatusesReducer,
   fetchApplicationsTypesReducer,
-  fetchEmployeeSliceReducer,
+  fetchEmployeeReducer,
 });
 
 export const setupStore = () => {
-  return configureStore({ reducer: rootReducer });
+  return configureStore({
+    reducer: rootReducer,
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware(),
+  });
 };
 
 export type RootState = ReturnType<typeof rootReducer>;

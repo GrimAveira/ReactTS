@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import styles from "../css/components/UserApplication.module.css";
-import { IApp, IEmployee } from "../interface";
+import { IApplication, IEmployee } from "../interface";
 
-function UserApplication(application: IApp) {
+function UserApplication(application: IApplication) {
   const { id, start_date, type, breaking, description, status, employees } =
     application;
   const [manager, setManager] = useState("");

@@ -91,9 +91,10 @@ export interface IApplication {
   userSurname: string;
   userPatronymic: string;
   area: string;
-  street: number;
+  street: string;
   house: number;
   entrance: number;
+  employees: IEmployee[];
 }
 export interface IFormSelect {
   onChange: any;
@@ -164,16 +165,15 @@ export interface IApp {
   userSurname: string;
   employees: {}[];
 }
-export interface IEmployeeWithApp {
-  application_number: number;
+export interface IEmployee {
   name: string;
   patronymic: string;
   personnel_number: number;
   post: number;
   surname: string;
 }
-export interface IEmployee {
-  id: number;
+export interface IEmployeeWithApp {
+  application_number: number;
   name: string;
   patronymic: string;
   personnel_number: number;

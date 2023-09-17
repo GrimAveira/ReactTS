@@ -5,7 +5,7 @@ import axios from "axios";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import FormSelectApp from "../UI/SelectApplicationForm";
-import { IApp, IEmployee } from "../../interface";
+import { IApp, IEmployee, IEmployeeWithApp } from "../../interface";
 
 function printDocument() {
   const input = document.getElementById("divToPrint");
@@ -76,7 +76,7 @@ function PDF() {
         .then((response) => {
           setEmployees(
             response.data.reduce(
-              (employees: IEmployee[], employeer: IEmployee) =>
+              (employees: IEmployeeWithApp[], employeer: IEmployeeWithApp) =>
                 employeer.application_number === Number(appId)
                   ? [...employees, employeer]
                   : employees,

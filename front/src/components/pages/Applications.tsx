@@ -5,20 +5,32 @@ import UserApplicationHeader from "../UserApplicationHeader";
 import ManagerApplication from "../ManagerApplication";
 import ManagerApplicationHeader from "../ManagerApplicationHeader";
 import styles from "../../css/pages/Applications.module.css";
-import axios from "axios";
 import { AiOutlinePlus } from "react-icons/ai";
 import Modal from "../Modal";
 import ModalVillage from "../ModalVillage";
 import ModalManager from "../ModalManager";
-import arrayPagination from "../../functions/arrayPagination";
 import Pagination from "../Pagination";
-import destructurizationArray from "../../functions/destructurizationArray";
 import Loader from "../Loader";
-import { IApp, IEmployee } from "../../interface";
-import { useAppSelector } from "../../hooks/redux";
+import { IApplication } from "../../interface";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux";
+import {
+  fetchApplications,
+  fetchApplicationsStatuses,
+  fetchApplicationsTypes,
+  fetchBreakingTypes,
+  fetchElevators,
+  fetchEmployeeAll,
+  fetchEmployeesApplications,
+} from "../../store/reducers/ActionCreators";
+import {
+  desctructrizationArray,
+  paginationApplication,
+} from "../../store/reducers/ApplicationFormSlice";
+import CustomError from "../CustomError";
 
 function Applications() {
   const [modalActive, setModalActive] = useState(false);
+  const dispatch = useAppDispatch();
 
   const applicationFormInfo = useAppSelector(
     (state) => state.applicaitonFormReducer
@@ -42,116 +54,70 @@ function Applications() {
   const elevatorsFetchInfo = useAppSelector(
     (state) => state.fetchElevatorsReducer
   );
-  const amployeesAllFetchInfo = useAppSelector(
-    (state) => state.fetchEmployeeAppReducer
+  const employeesAllFetchInfo = useAppSelector(
+    (state) => state.fetchEmployeeReducer
   );
-
-  const [applications, setApplications] = useState([[]]);
-  const [employeesApp, setEmployees] = useState({});
-  const [breaking, setBreaking] = useState<[]>([]);
-  const [status, setStatus] = useState<[]>([]);
-  const [type, setType] = useState<[]>([]);
-  const [elevator, setElevator] = useState<[]>([]);
-  const [employeesAll, setAllEmployees] = useState<IEmployee[]>([]);
 
   const [triger, setTriger] = useState(false);
   const [counter, setCounter] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    try {
-      axios
-        .get("http://localhost:8800/api/get/application", {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        })
-        .then((response) => {
-          setApplications(arrayPagination(response.data, 3));
-        })
-        .catch((error) => alert(error.response.data));
-      axios
-        .get("http://localhost:8800/api/get/employeeApplication", {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        })
-        .then((response) => {
-          setEmployees(destructurizationArray(response.data));
-        })
-        .catch((error) => console.log(error));
+    const controller = new AbortController();
+    const token = localStorage.getItem("token");
+    dispatch(fetchApplications({ signal: controller.signal, token }));
+    dispatch(fetchEmployeesApplications({ signal: controller.signal, token }));
+    dispatch(fetchBreakingTypes({ signal: controller.signal, token }));
+    dispatch(fetchApplicationsStatuses({ signal: controller.signal, token }));
+    dispatch(fetchApplicationsTypes({ signal: controller.signal, token }));
+    dispatch(fetchElevators({ signal: controller.signal, token }));
+    dispatch(fetchEmployeeAll({ signal: controller.signal, token }));
+    return () => {
+      controller.abort();
+    };
+  }, [triger, dispatch]);
 
-      if (localStorage.getItem("role") === "1") {
-        axios
-          .get("http://localhost:8800/api/get/status", {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          })
-          .then((response) =>
-            setStatus(
-              response.data.map(
-                (value: { id: number; name: string }) => value.name
-              )
-            )
-          )
-          .catch((error) => console.log(error.message));
-        axios
-          .get("http://localhost:8800/api/get/breaking", {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          })
-          .then((response) =>
-            setBreaking(
-              response.data.map(
-                (value: { id: number; name: string }) => value.name
-              )
-            )
-          )
-          .catch((error) => console.log(error));
-        axios
-          .get("http://localhost:8800/api/get/elevator", {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          })
-          .then((response) => {
-            setElevator(response.data);
-          })
-          .catch((error) => console.log(error));
-        axios
-          .get("http://localhost:8800/api/get/type", {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          })
-          .then((response) =>
-            setType(
-              response.data.map(
-                (value: { id: number; name: string }) => value.name
-              )
-            )
-          )
-          .catch((error) => console.log(error));
-        axios
-          .get("http://localhost:8800/api/get/allEmployees", {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          })
-          .then((response) => {
-            setAllEmployees(response.data);
-          })
-          .catch((error) => console.log(error));
-      }
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [triger]);
-  if (isLoading) return <Loader />;
+  useEffect(() => {
+    dispatch(paginationApplication(applicationsFetchInfo.applications));
+    dispatch(desctructrizationArray(employeeAppFetchInfo.employeeApp));
+  }, [
+    applicationsFetchInfo.applications,
+    employeeAppFetchInfo.employeeApp,
+    dispatch,
+  ]);
+
+  if (
+    applicationsFetchInfo.isLoading &&
+    employeeAppFetchInfo.isLoading &&
+    breakingTypesFetchInfo.isLoading &&
+    applicationsStatusesFetchInfo.isLoading &&
+    applicationsTypesFetchInfo.isLoading &&
+    elevatorsFetchInfo.isLoading &&
+    employeesAllFetchInfo.isLoading
+  )
+    return <Loader />;
+
+  if (
+    applicationsFetchInfo.error &&
+    employeeAppFetchInfo.error &&
+    breakingTypesFetchInfo.error &&
+    applicationsStatusesFetchInfo.error &&
+    applicationsTypesFetchInfo.error &&
+    elevatorsFetchInfo.error &&
+    employeesAllFetchInfo.error
+  )
+    return (
+      <CustomError
+        errorText={
+          applicationsFetchInfo.error ||
+          employeeAppFetchInfo.error ||
+          breakingTypesFetchInfo.error ||
+          applicationsStatusesFetchInfo.error ||
+          applicationsTypesFetchInfo.error ||
+          elevatorsFetchInfo.error ||
+          employeesAllFetchInfo.error
+        }
+      />
+    );
   return (
     <div className={styles.container}>
       <div className={styles.applications}>
@@ -160,38 +126,39 @@ function Applications() {
         ) : (
           <ManagerApplicationHeader />
         )}
-        {localStorage.getItem("role") === "2"
-          ? applications[counter].map((app: IApp) => {
-              return (
-                <UserApplication
-                  key={app.id}
-                  {...app}
-                  employees={
-                    employeesApp[app.id as keyof typeof employeesApp] || []
-                  }
-                />
-              );
-            })
-          : applications[counter].map((app: IApp) => {
-              return (
-                <ManagerApplication
-                  key={app.id}
-                  {...app}
-                  employeesApp={
-                    employeesApp[app.id as keyof typeof employeesApp] || []
-                  }
-                  employees={employeesAll}
-                  statusBD={status}
-                  typeBD={type}
-                  elevatorBD={elevator}
-                  breakingBD={breaking}
-                  area={app.area}
-                  street={app.street}
-                  house={app.house}
-                  entrance={app.entrance}
-                />
-              );
-            })}
+        {localStorage.getItem("role") === "2" &&
+          applicationFormInfo.applications[counter] &&
+          applicationFormInfo.applications[counter].map((app: IApplication) => {
+            return (
+              <UserApplication
+                key={app.id}
+                {...app}
+                employees={applicationFormInfo.employeesApp.get(app.id) || []}
+              />
+            );
+          })}
+        {localStorage.getItem("role") === "1" &&
+          applicationFormInfo.applications[counter] &&
+          applicationFormInfo.applications[counter].map((app: IApplication) => {
+            return (
+              <ManagerApplication
+                key={app.id}
+                {...app}
+                employeesApp={
+                  applicationFormInfo.employeesApp.get(app.id) || []
+                }
+                employees={employeesAllFetchInfo.employees}
+                statusBD={applicationsStatusesFetchInfo.statuses}
+                typeBD={applicationsTypesFetchInfo.types}
+                elevatorBD={elevatorsFetchInfo.elevators}
+                breakingBD={breakingTypesFetchInfo.breakingTypes}
+                area={app.area}
+                street={app.street}
+                house={app.house}
+                entrance={app.entrance}
+              />
+            );
+          })}
         <AiOutlinePlus
           className={styles.button}
           type="submit"
@@ -202,9 +169,9 @@ function Applications() {
         <Modal active={modalActive} setActive={setModalActive}>
           {localStorage.getItem("role") === "1" ? (
             <ModalManager
-              statusBD={status}
-              typeBD={type}
-              breakingBD={breaking}
+              statusBD={applicationsStatusesFetchInfo.statuses}
+              typeBD={applicationsTypesFetchInfo.types}
+              breakingBD={breakingTypesFetchInfo.breakingTypes}
               setTriger={setTriger}
             />
           ) : (
@@ -214,7 +181,7 @@ function Applications() {
       </div>
       <Pagination
         counter={counter}
-        length={applications.length}
+        length={applicationFormInfo.applications.length}
         setCounter={setCounter}
       />
     </div>

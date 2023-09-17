@@ -5,7 +5,7 @@ import FormSelectApp from "./UI/SelectApplicationForm";
 import ModalManagerHeader from "./ModalManagerHeader";
 import { MdOutlinePlaylistAddCheck } from "react-icons/md";
 import FormSelectAppMulti from "./UI/SelectFormMulti";
-import { IEmployee, IInputChanges } from "../interface";
+import { IData, IEmployee, IInputChanges } from "../interface";
 import { ActionMeta } from "react-select";
 
 function ModalManager({
@@ -14,9 +14,9 @@ function ModalManager({
   breakingBD,
   setTriger,
 }: {
-  statusBD: string[];
-  typeBD: string[];
-  breakingBD: string[];
+  statusBD: IData[];
+  typeBD: IData[];
+  breakingBD: IData[];
   setTriger: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const [applicationData, setApplicationData] = useState<{
