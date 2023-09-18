@@ -64,13 +64,19 @@ function Applications() {
   useEffect(() => {
     const controller = new AbortController();
     const token = localStorage.getItem("token");
-    dispatch(fetchApplications({ signal: controller.signal, token }));
-    dispatch(fetchEmployeesApplications({ signal: controller.signal, token }));
-    dispatch(fetchBreakingTypes({ signal: controller.signal, token }));
-    dispatch(fetchApplicationsStatuses({ signal: controller.signal, token }));
-    dispatch(fetchApplicationsTypes({ signal: controller.signal, token }));
-    dispatch(fetchElevators({ signal: controller.signal, token }));
-    dispatch(fetchEmployeeAll({ signal: controller.signal, token }));
+    try {
+      dispatch(fetchApplications({ signal: controller.signal, token }));
+      dispatch(
+        fetchEmployeesApplications({ signal: controller.signal, token })
+      );
+      dispatch(fetchBreakingTypes({ signal: controller.signal, token }));
+      dispatch(fetchApplicationsStatuses({ signal: controller.signal, token }));
+      dispatch(fetchApplicationsTypes({ signal: controller.signal, token }));
+      dispatch(fetchElevators({ signal: controller.signal, token }));
+      dispatch(fetchEmployeeAll({ signal: controller.signal, token }));
+    } catch (error) {
+      console.log(error);
+    }
     return () => {
       controller.abort();
     };
@@ -133,7 +139,7 @@ function Applications() {
               <UserApplication
                 key={app.id}
                 {...app}
-                employees={applicationFormInfo.employeesApp.get(app.id) || []}
+                employees={applicationFormInfo.employeesApp[app.id] || []}
               />
             );
           })}
@@ -144,9 +150,7 @@ function Applications() {
               <ManagerApplication
                 key={app.id}
                 {...app}
-                employeesApp={
-                  applicationFormInfo.employeesApp.get(app.id) || []
-                }
+                employeesApp={applicationFormInfo.employeesApp[app.id] || []}
                 employees={employeesAllFetchInfo.employees}
                 statusBD={applicationsStatusesFetchInfo.statuses}
                 typeBD={applicationsTypesFetchInfo.types}

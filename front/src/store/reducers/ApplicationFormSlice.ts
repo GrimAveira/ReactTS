@@ -1,11 +1,13 @@
-import { IApplication, IEmployeeWithApp } from "../../interface";
+import { IApplication, IEmployee, IEmployeeWithApp } from "../../interface";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import arrayPagination from "../../functions/arrayPagination";
 import destructurizationArray from "../../functions/destructurizationArray";
 
 interface FormState {
   applications: IApplication[][];
-  employeesApp: {};
+  employeesApp: {
+    [key: string]: IEmployee[];
+  };
 }
 const initialState: FormState = {
   applications: [],

@@ -157,7 +157,7 @@ function ModalManager({
       label: "Статус заявки",
       required: true,
       options: statusBD.map((status) => {
-        return { value: status, label: status, name: "status" };
+        return { value: status., label: status, name: "status" };
       }),
     },
     {
