@@ -12,37 +12,31 @@ function ModalManager({
   statusBD,
   typeBD,
   breakingBD,
+  employees,
   setTriger,
 }: {
   statusBD: IData[];
   typeBD: IData[];
   breakingBD: IData[];
+  employees: IEmployee[];
   setTriger: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const [applicationData, setApplicationData] = useState<{
-    type: string;
-    breaking: string;
+    type: number;
+    breaking: number;
     description: string;
-    status: string;
+    status: number;
     applicant: string;
     employees: {}[];
   }>({
-    type: "",
-    breaking: "",
+    type: 0,
+    breaking: 0,
+    status: 0,
     description: "",
-    status: "",
     applicant: "",
     employees: [],
   });
   const [users, setUsers] = useState([]);
-  const [userAddress, setUserAddress] = useState<{
-    area: string;
-    street: string;
-    house: number;
-    entrance: string;
-  }>({ area: "", street: "", house: 0, entrance: "" });
-  const [userIdAddressActive, setUserIdAddressActive] = useState("");
-  const [employees, setEmployees] = useState([]);
   useEffect(() => {
     const controller = new AbortController();
     try {
@@ -56,31 +50,13 @@ function ModalManager({
         .then((response) => {
           setUsers(response.data);
         });
-      axios
-        .get("http://localhost:8800/api/get/userAddress", {
-          params: { address: userIdAddressActive },
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        })
-        .then((response) => {
-          setUserAddress(response.data[0]);
-        });
-      axios
-        .get("http://localhost:8800/api/get/allEmployees", {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        })
-        .then((response) => setEmployees(response.data))
-        .catch((error) => alert(error.response.data));
     } catch (error: any) {
       console.log(error.message);
     }
-    return () => {
-      controller.abort();
-    };
-  }, [userIdAddressActive]);
+    // return () => {
+    //   controller.abort();
+    // };
+  }, []);
   const changeHandlerDescription = (event: {
     preventDefault: () => void;
     target: { name: any; value: any };
@@ -111,7 +87,6 @@ function ModalManager({
     actionMeta: ActionMeta<IInputChanges>
   ) => {
     if (newValue.name === "applicant") {
-      setUserIdAddressActive(newValue.value[1]);
       setApplicationData((prev) => ({
         ...prev,
         [newValue.name]: newValue.value[0],
@@ -137,7 +112,7 @@ function ModalManager({
       label: "Тип заявки",
       required: true,
       options: typeBD.map((type) => {
-        return { value: type, label: type, name: "type" };
+        return { value: type.id, label: type.name, name: "type" };
       }),
     },
     {
@@ -147,7 +122,7 @@ function ModalManager({
       label: "Тип поломки",
       required: true,
       options: breakingBD.map((breaking) => {
-        return { value: breaking, label: breaking, name: "breaking" };
+        return { value: breaking.id, label: breaking.name, name: "breaking" };
       }),
     },
     {
@@ -157,7 +132,7 @@ function ModalManager({
       label: "Статус заявки",
       required: true,
       options: statusBD.map((status) => {
-        return { value: status., label: status, name: "status" };
+        return { value: status.id, label: status.name, name: "status" };
       }),
     },
     {
@@ -175,7 +150,7 @@ function ModalManager({
           name: string;
         }) => {
           return {
-            value: [user.id, user.address],
+            value: user.id,
             label: `${user.id} ${user.login} ${
               user.surname
             } ${user.name.substring(0, 1)}.${user.surname.substring(0, 1)}.`,

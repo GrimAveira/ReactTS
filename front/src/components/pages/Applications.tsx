@@ -176,6 +176,7 @@ function Applications() {
               statusBD={applicationsStatusesFetchInfo.statuses}
               typeBD={applicationsTypesFetchInfo.types}
               breakingBD={breakingTypesFetchInfo.breakingTypes}
+              employees={employeesAllFetchInfo.employees}
               setTriger={setTriger}
             />
           ) : (

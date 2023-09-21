@@ -157,7 +157,7 @@ class getController {
   async getUsers(req, res) {
     try {
       db.query(
-        "SELECT id, login, name, surname, patronymic, address FROM elevator_company.user",
+        "SELECT id, login, name, surname, patronymic, address FROM elevator_company.users_view",
         (err, data) => {
           if (err) return res.status(500).json(err.sqlMessage);
           return res.json(data);
@@ -227,20 +227,6 @@ class getController {
     try {
       db.query(
         "SELECT part.id, part.manufacturer, part.name, manufacturer.name as manufacturer_name FROM elevator_company.part join manufacturer on manufacturer.id=part.manufacturer",
-        (err, data) => {
-          if (err) return res.status(500).json(err.sqlMessage);
-          return res.json(data);
-        }
-      );
-    } catch (error) {
-      console.log(error);
-    }
-  }
-  async getUserAddress(req, res) {
-    try {
-      db.query(
-        "SELECT * FROM elevator_company.address_view WHERE id=?",
-        [req.query.address],
         (err, data) => {
           if (err) return res.status(500).json(err.sqlMessage);
           return res.json(data);
