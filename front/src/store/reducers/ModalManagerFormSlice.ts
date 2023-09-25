@@ -1,4 +1,4 @@
-import { IEmployee, IInputChanges } from "../../interface";
+import { IEmployee, IInputChanges, IUserView } from "../../interface";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 interface ApplicationData {
@@ -8,16 +8,10 @@ interface ApplicationData {
   description: string;
   applicant: string;
 }
-
 interface IModalManagerState {
   applicationData: ApplicationData;
-  employeesApplication: Number[];
-  userAddress: {
-    area: string;
-    street: string;
-    house: string;
-    entrance: string;
-  };
+  employeesApplication: number[];
+  currentUser: IUserView | undefined;
 }
 
 const initialState: IModalManagerState = {
@@ -29,7 +23,12 @@ const initialState: IModalManagerState = {
     applicant: "",
   },
   employeesApplication: [],
-  userAddress: {
+  currentUser: {
+    id: "",
+    login: "",
+    name: "",
+    surname: "",
+    patronymic: "",
     area: "",
     street: "",
     house: "",
@@ -44,7 +43,19 @@ export const modalManagerFormSlice = createSlice({
       state.applicationData[action.payload.name as keyof ApplicationData] =
         action.payload.value;
     },
+    changeAppsEmployees(state, action: PayloadAction<number[]>) {
+      state.employeesApplication = action.payload;
+    },
+    changeCurrentUser(state, action: PayloadAction<IUserView>) {
+      state.currentUser = action.payload;
+    },
   },
 });
 
 export default modalManagerFormSlice.reducer;
+export const changeApplicationData =
+  modalManagerFormSlice.actions.changeApplicationData;
+export const changeAppsEmployees =
+  modalManagerFormSlice.actions.changeAppsEmployees;
+export const changeCurrentUser =
+  modalManagerFormSlice.actions.changeCurrentUser;

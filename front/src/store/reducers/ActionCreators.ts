@@ -11,6 +11,7 @@ import {
   IPostFormToken,
   ISiganlToken,
   ISignal,
+  IUserView,
 } from "../../interface";
 import UserService from "../../API/UserService";
 import AddressService from "../../API/AddressService";
@@ -676,6 +677,26 @@ export const fetchEmployeeAll = createAsyncThunk(
       let response;
       if (payload.token !== null)
         response = await EmployeeService.getAll({
+          signal: payload.signal,
+          token: payload.token,
+        });
+      return response;
+    } catch (error: unknown) {
+      if (error instanceof AxiosError)
+        return thunkAPI.rejectWithValue({
+          status: error.message,
+          message: error.response?.data,
+        });
+    }
+  }
+);
+export const fetchUsers = createAsyncThunk(
+  "users/getAll",
+  async (payload: ISiganlToken, thunkAPI) => {
+    try {
+      let response: IUserView[] | undefined;
+      if (payload.token !== null)
+        response = await UserService.getAll({
           signal: payload.signal,
           token: payload.token,
         });

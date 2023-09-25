@@ -1,5 +1,5 @@
 import axios from "axios";
-import { IUserData, IUserInfo } from "../interface";
+import { ISiganlToken, IUserData, IUserInfo, IUserView } from "../interface";
 
 export default class User {
   static async registration(userInfo: IUserInfo) {
@@ -22,5 +22,17 @@ export default class User {
         Authorization: `Bearer ${token}`,
       },
     });
+  }
+  static async getAll(payload: ISiganlToken): Promise<IUserView[]> {
+    const response = await axios.get<IUserView[]>(
+      "http://localhost:8800/api/get/users",
+      {
+        signal: payload.signal,
+        headers: {
+          Authorization: `Bearer ${payload.token}`,
+        },
+      }
+    );
+    return response.data;
   }
 }

@@ -1,5 +1,16 @@
 import StateManagedSelect, { GroupBase, Props } from "react-select";
 
+export interface IUserView {
+  id: string;
+  login: string;
+  name: string;
+  surname: string;
+  patronymic: string;
+  area: string;
+  street: string;
+  house: string;
+  entrance: string;
+}
 export interface IUserInfo {
   login: string;
   password: string;

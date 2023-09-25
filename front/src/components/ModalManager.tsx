@@ -5,8 +5,16 @@ import FormSelectApp from "./UI/SelectApplicationForm";
 import ModalManagerHeader from "./ModalManagerHeader";
 import { MdOutlinePlaylistAddCheck } from "react-icons/md";
 import FormSelectAppMulti from "./UI/SelectFormMulti";
-import { IData, IEmployee, IInputChanges } from "../interface";
+import { IData, IEmployee, IInputChanges, IUserView } from "../interface";
 import { ActionMeta } from "react-select";
+import { useAppDispatch, useAppSelector } from "../hooks/redux";
+import { fetchUsers } from "../store/reducers/ActionCreators";
+import {
+  changeApplicationData,
+  changeAppsEmployees,
+  changeCurrentUser,
+} from "../store/reducers/ModalManagerFormSlice";
+import { changeEmployeeForm } from "../store/reducers/EmployeeFormSlice";
 
 function ModalManager({
   statusBD,
@@ -21,87 +29,72 @@ function ModalManager({
   employees: IEmployee[];
   setTriger: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
-  const [applicationData, setApplicationData] = useState<{
-    type: number;
-    breaking: number;
-    description: string;
-    status: number;
-    applicant: string;
-    employees: {}[];
-  }>({
-    type: 0,
-    breaking: 0,
-    status: 0,
-    description: "",
-    applicant: "",
-    employees: [],
-  });
-  const [users, setUsers] = useState([]);
+  const dispatch = useAppDispatch();
+  const formInfo = useAppSelector((state) => state.modalManagerFormReducer);
+  const fetchUsersInfo = useAppSelector((state) => state.fetchUsersReducer);
   useEffect(() => {
     const controller = new AbortController();
-    try {
-      axios
-        .get("http://localhost:8800/api/get/users", {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-          signal: controller.signal,
-        })
-        .then((response) => {
-          setUsers(response.data);
-        });
-    } catch (error: any) {
-      console.log(error.message);
-    }
+    dispatch(
+      fetchUsers({
+        signal: controller.signal,
+        token: localStorage.getItem("token"),
+      })
+    );
     // return () => {
     //   controller.abort();
     // };
   }, []);
-  const changeHandlerDescription = (event: {
-    preventDefault: () => void;
-    target: { name: any; value: any };
-  }) => {
+  const changeHandlerDescription = (
+    event: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
     event.preventDefault();
-    setApplicationData((prev) => ({
-      ...prev,
-      [event.target.name]: event.target.value,
-    }));
+    dispatch(
+      changeApplicationData({
+        name: event.target.name,
+        value: event.target.value,
+      })
+    );
   };
   const submitHandler = (event: { preventDefault: () => void }) => {
     event.preventDefault();
     if (window.confirm("Вы действительно хотите внести изменения?"))
       axios
-        .post("http://localhost:8800/api/post/add", applicationData, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+        .post(
+          "http://localhost:8800/api/post/add",
+          {
+            applicationData: {
+              ...formInfo.applicationData,
+              employees: formInfo.employeesApplication,
+            },
           },
-        })
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        )
         .then((response) => {
           setTriger((triger) => !triger);
           alert(response.data);
         })
         .catch((error) => alert(error.response.data));
   };
-  const changeHandlerSelect = (
-    newValue: IInputChanges,
-    actionMeta: ActionMeta<IInputChanges>
-  ) => {
+  const changeHandlerSelect = (newValue: any) => {
     if (newValue.name === "applicant") {
-      setApplicationData((prev) => ({
-        ...prev,
-        [newValue.name]: newValue.value[0],
-      }));
+      dispatch(changeCurrentUser(newValue.value));
+      dispatch(
+        changeApplicationData({
+          name: "applicant",
+          value: newValue.value.personnel_number,
+        })
+      );
     } else
-      setApplicationData((prev) => ({
-        ...prev,
-        [newValue.name]: newValue.value,
-      }));
+      dispatch(
+        changeApplicationData({ name: newValue.name, value: newValue.value })
+      );
   };
-  const changeHandlerMultiSelect = (newValue: any[]) => {
-    setApplicationData((prev) => ({
-      ...prev,
-      employees: newValue.map((v) => v.value),
-    }));
+  const changeHandlerMultiSelect = (newValue: number[]) => {
+    dispatch(changeAppsEmployees(newValue));
   };
 
   const selects = [
@@ -141,23 +134,15 @@ function ModalManager({
       placeholder: "Пользователи",
       label: "Пользователи",
       required: true,
-      options: users.map(
-        (user: {
-          id: number;
-          address: string;
-          login: string;
-          surname: string;
-          name: string;
-        }) => {
-          return {
-            value: user.id,
-            label: `${user.id} ${user.login} ${
-              user.surname
-            } ${user.name.substring(0, 1)}.${user.surname.substring(0, 1)}.`,
-            name: "applicant",
-          };
-        }
-      ),
+      options: fetchUsersInfo.users.map((user: IUserView) => {
+        return {
+          value: user,
+          label: `${user.id} ${user.login} ${
+            user.surname
+          } ${user.name.substring(0, 1)}.${user.surname.substring(0, 1)}.`,
+          name: "applicant",
+        };
+      }),
     },
   ];
   const selectMulti = {
@@ -186,7 +171,7 @@ function ModalManager({
           className={styles.description}
           onChange={changeHandlerDescription}
           placeholder="В подъезде вашего дома сломан/неисправен лифт, что выражается в..."
-          value={applicationData.description}
+          value={formInfo.applicationData.description}
         />
         {selects.map((select) => (
           <FormSelectApp
@@ -196,8 +181,8 @@ function ModalManager({
           />
         ))}
         <div className={styles.address}>
-          {userAddress
-            ? `${userAddress.area} район, ${userAddress.street} улица, дом ${userAddress.house} подъезд ${userAddress.entrance}`
+          {formInfo.currentUser
+            ? `${formInfo.currentUser.area} район, ${formInfo.currentUser.street} улица, дом ${formInfo.currentUser.house} подъезд ${formInfo.currentUser.entrance}`
             : `Заявитель не выбран`}
         </div>
         {

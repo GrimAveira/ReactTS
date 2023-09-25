@@ -24,6 +24,8 @@ import fetchBreakingTypesReducer from "./reducers/FetchBreakingTypesSlice";
 import fetchApplicationsStatusesReducer from "./reducers/FetchApplicationsStatusesSlice";
 import fetchApplicationsTypesReducer from "./reducers/FetchApplicationsTypesSlice";
 import fetchEmployeeReducer from "./reducers/FetchEmployeeSlice";
+import fetchUsersReducer from "./reducers/FetchUsersSlice";
+import modalManagerFormReducer from "./reducers/ModalManagerFormSlice";
 
 const rootReducer = combineReducers({
   partFormReducer,
@@ -51,6 +53,8 @@ const rootReducer = combineReducers({
   fetchApplicationsStatusesReducer,
   fetchApplicationsTypesReducer,
   fetchEmployeeReducer,
+  fetchUsersReducer,
+  modalManagerFormReducer,
 });
 
 export const setupStore = () => {
