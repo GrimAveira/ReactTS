@@ -22,7 +22,11 @@ export const applicationFormSlice = createSlice({
       state: FormState,
       action: PayloadAction<IApplication[]>
     ) {
-      state.applications = arrayPagination<IApplication>(action.payload, 3);
+      let sortedArray = [...action.payload];
+      state.applications = arrayPagination<IApplication>(
+        sortedArray.sort((a, b) => a.id - b.id),
+        3
+      );
     },
     desctructrizationArray(
       state: FormState,

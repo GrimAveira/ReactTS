@@ -107,7 +107,7 @@ class postController {
           }
         );
       else {
-        let type, status, breaking;
+        console.log(req.body);
         if (
           !req.body.type ||
           !req.body.breaking ||
@@ -118,55 +118,31 @@ class postController {
         )
           return res.status(400).json("Недостаточно данных");
         db.query(
-          `SELECT id FROM elevator_company.application_type WHERE name='${req.body.type}'`,
+          `INSERT elevator_company.application (type,description,status,applicant,breaking) values (?,?,?,?,?)`,
+          [
+            req.body.type,
+            req.body.description,
+            req.body.status,
+            req.body.applicant,
+            req.body.breaking,
+          ],
           (err, data) => {
             if (err) return res.status(500).json(err.sqlMessage);
-            type = data[0].id;
             db.query(
-              `SELECT id FROM elevator_company.breaking_type WHERE name='${req.body.breaking}'`,
+              `SELECT MAX(id) from elevator_company.application`,
               (err, data) => {
                 if (err) return res.status(500).json(err.sqlMessage);
-                breaking = data[0].id;
-                db.query(
-                  `SELECT id FROM elevator_company.application_status WHERE name='${req.body.status}'`,
-                  (err, data) => {
-                    if (err) return res.status(500).json(err.sqlMessage);
-                    status = data[0].id;
-                    db.query(
-                      `INSERT elevator_company.application (type,description,status,applicant,breaking) values (?,?,?,?,?)`,
-                      [
-                        type,
-                        req.body.description,
-                        status,
-                        req.body.applicant,
-                        breaking,
-                      ],
-                      (err, data) => {
-                        if (err) return res.status(500).json(err.sqlMessage);
-                        db.query(
-                          `SELECT MAX(id) from elevator_company.application`,
-                          (err, data) => {
-                            if (err)
-                              return res.status(500).json(err.sqlMessage);
 
-                            req.body.employees.forEach((emp) => {
-                              db.query(
-                                `INSERT elevator_company.group_employees (application_number, personnel_number) values (?,?)`,
-                                [data[0]["MAX(id)"], emp],
-                                (err, data) => {
-                                  if (err) return res.json(err);
-                                }
-                              );
-                            });
-                            return res
-                              .status(200)
-                              .json("Заявка была успешно добавлена!");
-                          }
-                        );
-                      }
-                    );
-                  }
-                );
+                req.body.employees.forEach((emp) => {
+                  db.query(
+                    `INSERT elevator_company.group_employees (application_number, personnel_number) values (?,?)`,
+                    [data[0]["MAX(id)"], emp],
+                    (err, data) => {
+                      if (err) return res.json(err);
+                    }
+                  );
+                });
+                return res.status(200).json("Заявка была успешно добавлена!");
               }
             );
           }

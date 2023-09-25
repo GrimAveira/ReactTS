@@ -1,20 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import styles from "../css/components/ModalManager.module.css";
-import axios from "axios";
 import FormSelectApp from "./UI/SelectApplicationForm";
 import ModalManagerHeader from "./ModalManagerHeader";
 import { MdOutlinePlaylistAddCheck } from "react-icons/md";
 import FormSelectAppMulti from "./UI/SelectFormMulti";
-import { IData, IEmployee, IInputChanges, IUserView } from "../interface";
-import { ActionMeta } from "react-select";
+import { IData, IEmployee, IUserView } from "../interface";
 import { useAppDispatch, useAppSelector } from "../hooks/redux";
-import { fetchUsers } from "../store/reducers/ActionCreators";
+import { addApplication, fetchUsers } from "../store/reducers/ActionCreators";
 import {
   changeApplicationData,
   changeAppsEmployees,
   changeCurrentUser,
 } from "../store/reducers/ModalManagerFormSlice";
-import { changeEmployeeForm } from "../store/reducers/EmployeeFormSlice";
 
 function ModalManager({
   statusBD,
@@ -40,10 +37,10 @@ function ModalManager({
         token: localStorage.getItem("token"),
       })
     );
-    // return () => {
-    //   controller.abort();
-    // };
-  }, []);
+    return () => {
+      controller.abort();
+    };
+  }, [dispatch]);
   const changeHandlerDescription = (
     event: React.ChangeEvent<HTMLTextAreaElement>
   ) => {
@@ -57,27 +54,18 @@ function ModalManager({
   };
   const submitHandler = (event: { preventDefault: () => void }) => {
     event.preventDefault();
-    if (window.confirm("Вы действительно хотите внести изменения?"))
-      axios
-        .post(
-          "http://localhost:8800/api/post/add",
-          {
-            applicationData: {
-              ...formInfo.applicationData,
-              employees: formInfo.employeesApplication,
-            },
+    if (window.confirm("Вы действительно хотите внести изменения?")) {
+      dispatch(
+        addApplication({
+          data: {
+            ...formInfo.applicationData,
+            employees: formInfo.employeesApplication,
           },
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        )
-        .then((response) => {
-          setTriger((triger) => !triger);
-          alert(response.data);
+          token: localStorage.getItem("token"),
         })
-        .catch((error) => alert(error.response.data));
+      );
+      setTriger((value) => !value);
+    }
   };
   const changeHandlerSelect = (newValue: any) => {
     if (newValue.name === "applicant") {
@@ -85,7 +73,7 @@ function ModalManager({
       dispatch(
         changeApplicationData({
           name: "applicant",
-          value: newValue.value.personnel_number,
+          value: newValue.value.id,
         })
       );
     } else
@@ -93,13 +81,14 @@ function ModalManager({
         changeApplicationData({ name: newValue.name, value: newValue.value })
       );
   };
-  const changeHandlerMultiSelect = (newValue: number[]) => {
-    dispatch(changeAppsEmployees(newValue));
+  const changeHandlerMultiSelect = (
+    newValue: { value: number; label: string }[]
+  ) => {
+    console.log(newValue);
+    dispatch(changeAppsEmployees(newValue.map((value) => value.value)));
   };
-
   const selects = [
     {
-      id: 1,
       isMulti: false,
       placeholder: "Тип заявки",
       label: "Тип заявки",
@@ -109,7 +98,6 @@ function ModalManager({
       }),
     },
     {
-      id: 2,
       isMulti: false,
       placeholder: "Тип поломки",
       label: "Тип поломки",
@@ -119,7 +107,6 @@ function ModalManager({
       }),
     },
     {
-      id: 3,
       isMulti: false,
       placeholder: "Статус заявки",
       label: "Статус заявки",
@@ -129,7 +116,6 @@ function ModalManager({
       }),
     },
     {
-      id: 4,
       isMulti: false,
       placeholder: "Пользователи",
       label: "Пользователи",
@@ -175,7 +161,7 @@ function ModalManager({
         />
         {selects.map((select) => (
           <FormSelectApp
-            key={select.id}
+            key={select.label}
             {...select}
             onChange={changeHandlerSelect}
           />

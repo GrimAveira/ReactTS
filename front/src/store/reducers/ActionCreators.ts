@@ -710,3 +710,33 @@ export const fetchUsers = createAsyncThunk(
     }
   }
 );
+export const addApplication = createAsyncThunk(
+  "API/postResponse",
+  async (
+    payload: IPostFormToken<{
+      type: string;
+      breaking: string;
+      status: string;
+      description: string;
+      applicant: string;
+      employees: number[];
+    }>,
+    thunkAPI
+  ) => {
+    try {
+      let response;
+      if (payload.token !== null)
+        response = await ApplicationService.add({
+          data: payload.data,
+          token: payload.token,
+        });
+      return response;
+    } catch (error: unknown) {
+      if (error instanceof AxiosError)
+        return thunkAPI.rejectWithValue({
+          status: error.message,
+          message: error.response?.data,
+        });
+    }
+  }
+);

@@ -1,6 +1,6 @@
-import { IData, IUserView } from "../../interface";
+import { IUserView } from "../../interface";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { fetchPosts } from "./ActionCreators";
+import { fetchUsers } from "./ActionCreators";
 
 interface ElevatorsState {
   isLoading: boolean;
@@ -20,18 +20,18 @@ export const fetchUsersSlice = createSlice({
   reducers: {},
   extraReducers(builder) {
     builder
-      .addCase(fetchPosts.pending.type, (state) => {
+      .addCase(fetchUsers.pending.type, (state) => {
         state.isLoading = true;
       })
       .addCase(
-        fetchPosts.fulfilled.type,
+        fetchUsers.fulfilled.type,
         (state, action: PayloadAction<IUserView[]>) => {
           state.users = action.payload;
           state.isLoading = false;
         }
       )
       .addCase(
-        fetchPosts.rejected.type,
+        fetchUsers.rejected.type,
         (state, action: PayloadAction<string>) => {
           state.error = action.payload;
         }

@@ -1,5 +1,12 @@
 import StateManagedSelect, { GroupBase, Props } from "react-select";
 
+export interface IApplicationModalManager {
+  type: string;
+  breaking: string;
+  status: string;
+  description: string;
+  applicant: string;
+}
 export interface IUserView {
   id: string;
   login: string;

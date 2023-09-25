@@ -1,15 +1,12 @@
-import { IEmployee, IInputChanges, IUserView } from "../../interface";
+import {
+  IApplicationModalManager,
+  IInputChanges,
+  IUserView,
+} from "../../interface";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
-interface ApplicationData {
-  type: string;
-  breaking: string;
-  status: string;
-  description: string;
-  applicant: string;
-}
 interface IModalManagerState {
-  applicationData: ApplicationData;
+  applicationData: IApplicationModalManager;
   employeesApplication: number[];
   currentUser: IUserView | undefined;
 }
@@ -40,8 +37,9 @@ export const modalManagerFormSlice = createSlice({
   initialState: initialState,
   reducers: {
     changeApplicationData(state, action: PayloadAction<IInputChanges>) {
-      state.applicationData[action.payload.name as keyof ApplicationData] =
-        action.payload.value;
+      state.applicationData[
+        action.payload.name as keyof IApplicationModalManager
+      ] = action.payload.value;
     },
     changeAppsEmployees(state, action: PayloadAction<number[]>) {
       state.employeesApplication = action.payload;
